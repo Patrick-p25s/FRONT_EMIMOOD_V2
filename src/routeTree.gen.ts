@@ -20,6 +20,7 @@ import { Route as ProfilRouteImport } from './routes/profil'
 import { Route as PublicationsRouteImport } from './routes/publications'
 import { Route as RechercheRouteImport } from './routes/recherche'
 import { Route as RessourcesRouteImport } from './routes/ressources'
+import { Route as VideosRouteImport } from './routes/videos'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -76,6 +77,11 @@ const RessourcesRoute = RessourcesRouteImport.update({
   path: '/ressources',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VideosRoute = VideosRouteImport.update({
+  id: '/videos',
+  path: '/videos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -89,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/publications': typeof PublicationsRoute
   '/recherche': typeof RechercheRoute
   '/ressources': typeof RessourcesRoute
+  '/videos': typeof VideosRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
   '/publications': typeof PublicationsRoute
   '/recherche': typeof RechercheRoute
   '/ressources': typeof RessourcesRoute
+  '/videos': typeof VideosRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/publications': typeof PublicationsRoute
   '/recherche': typeof RechercheRoute
   '/ressources': typeof RessourcesRoute
+  '/videos': typeof VideosRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
     | '/publications'
     | '/recherche'
     | '/ressources'
+    | '/videos'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
     | '/publications'
     | '/recherche'
     | '/ressources'
+    | '/videos'
   id:
     | '__root__'
     | '/'
@@ -157,6 +168,7 @@ export interface FileRouteTypes {
     | '/publications'
     | '/recherche'
     | '/ressources'
+    | '/videos'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -171,6 +183,7 @@ export interface RootRouteChildren {
   PublicationsRoute: typeof PublicationsRoute
   RechercheRoute: typeof RechercheRoute
   RessourcesRoute: typeof RessourcesRoute
+  VideosRoute: typeof VideosRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -252,6 +265,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RessourcesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/videos': {
+      id: '/videos'
+      path: '/videos'
+      fullPath: '/videos'
+      preLoaderRoute: typeof VideosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -267,6 +287,7 @@ const rootRouteChildren: RootRouteChildren = {
   PublicationsRoute: PublicationsRoute,
   RechercheRoute: RechercheRoute,
   RessourcesRoute: RessourcesRoute,
+  VideosRoute: VideosRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
