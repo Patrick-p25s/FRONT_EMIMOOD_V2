@@ -10,33 +10,167 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CoursRouteImport } from './routes/cours'
+import { Route as EvaluationsRouteImport } from './routes/evaluations'
+import { Route as MessagesRouteImport } from './routes/messages'
+import { Route as NotificationsRouteImport } from './routes/notifications'
+import { Route as OpportunitesRouteImport } from './routes/opportunites'
+import { Route as ParametresRouteImport } from './routes/parametres'
+import { Route as ProfilRouteImport } from './routes/profil'
+import { Route as PublicationsRouteImport } from './routes/publications'
+import { Route as RechercheRouteImport } from './routes/recherche'
+import { Route as RessourcesRouteImport } from './routes/ressources'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CoursRoute = CoursRouteImport.update({
+  id: '/cours',
+  path: '/cours',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EvaluationsRoute = EvaluationsRouteImport.update({
+  id: '/evaluations',
+  path: '/evaluations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MessagesRoute = MessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotificationsRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OpportunitesRoute = OpportunitesRouteImport.update({
+  id: '/opportunites',
+  path: '/opportunites',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ParametresRoute = ParametresRouteImport.update({
+  id: '/parametres',
+  path: '/parametres',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfilRoute = ProfilRouteImport.update({
+  id: '/profil',
+  path: '/profil',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublicationsRoute = PublicationsRouteImport.update({
+  id: '/publications',
+  path: '/publications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RechercheRoute = RechercheRouteImport.update({
+  id: '/recherche',
+  path: '/recherche',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RessourcesRoute = RessourcesRouteImport.update({
+  id: '/ressources',
+  path: '/ressources',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/cours': typeof CoursRoute
+  '/evaluations': typeof EvaluationsRoute
+  '/messages': typeof MessagesRoute
+  '/notifications': typeof NotificationsRoute
+  '/opportunites': typeof OpportunitesRoute
+  '/parametres': typeof ParametresRoute
+  '/profil': typeof ProfilRoute
+  '/publications': typeof PublicationsRoute
+  '/recherche': typeof RechercheRoute
+  '/ressources': typeof RessourcesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cours': typeof CoursRoute
+  '/evaluations': typeof EvaluationsRoute
+  '/messages': typeof MessagesRoute
+  '/notifications': typeof NotificationsRoute
+  '/opportunites': typeof OpportunitesRoute
+  '/parametres': typeof ParametresRoute
+  '/profil': typeof ProfilRoute
+  '/publications': typeof PublicationsRoute
+  '/recherche': typeof RechercheRoute
+  '/ressources': typeof RessourcesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/cours': typeof CoursRoute
+  '/evaluations': typeof EvaluationsRoute
+  '/messages': typeof MessagesRoute
+  '/notifications': typeof NotificationsRoute
+  '/opportunites': typeof OpportunitesRoute
+  '/parametres': typeof ParametresRoute
+  '/profil': typeof ProfilRoute
+  '/publications': typeof PublicationsRoute
+  '/recherche': typeof RechercheRoute
+  '/ressources': typeof RessourcesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/cours'
+    | '/evaluations'
+    | '/messages'
+    | '/notifications'
+    | '/opportunites'
+    | '/parametres'
+    | '/profil'
+    | '/publications'
+    | '/recherche'
+    | '/ressources'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/cours'
+    | '/evaluations'
+    | '/messages'
+    | '/notifications'
+    | '/opportunites'
+    | '/parametres'
+    | '/profil'
+    | '/publications'
+    | '/recherche'
+    | '/ressources'
+  id:
+    | '__root__'
+    | '/'
+    | '/cours'
+    | '/evaluations'
+    | '/messages'
+    | '/notifications'
+    | '/opportunites'
+    | '/parametres'
+    | '/profil'
+    | '/publications'
+    | '/recherche'
+    | '/ressources'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CoursRoute: typeof CoursRoute
+  EvaluationsRoute: typeof EvaluationsRoute
+  MessagesRoute: typeof MessagesRoute
+  NotificationsRoute: typeof NotificationsRoute
+  OpportunitesRoute: typeof OpportunitesRoute
+  ParametresRoute: typeof ParametresRoute
+  ProfilRoute: typeof ProfilRoute
+  PublicationsRoute: typeof PublicationsRoute
+  RechercheRoute: typeof RechercheRoute
+  RessourcesRoute: typeof RessourcesRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +182,91 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cours': {
+      id: '/cours'
+      path: '/cours'
+      fullPath: '/cours'
+      preLoaderRoute: typeof CoursRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/evaluations': {
+      id: '/evaluations'
+      path: '/evaluations'
+      fullPath: '/evaluations'
+      preLoaderRoute: typeof EvaluationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/messages': {
+      id: '/messages'
+      path: '/messages'
+      fullPath: '/messages'
+      preLoaderRoute: typeof MessagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/opportunites': {
+      id: '/opportunites'
+      path: '/opportunites'
+      fullPath: '/opportunites'
+      preLoaderRoute: typeof OpportunitesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/parametres': {
+      id: '/parametres'
+      path: '/parametres'
+      fullPath: '/parametres'
+      preLoaderRoute: typeof ParametresRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profil': {
+      id: '/profil'
+      path: '/profil'
+      fullPath: '/profil'
+      preLoaderRoute: typeof ProfilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/publications': {
+      id: '/publications'
+      path: '/publications'
+      fullPath: '/publications'
+      preLoaderRoute: typeof PublicationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recherche': {
+      id: '/recherche'
+      path: '/recherche'
+      fullPath: '/recherche'
+      preLoaderRoute: typeof RechercheRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ressources': {
+      id: '/ressources'
+      path: '/ressources'
+      fullPath: '/ressources'
+      preLoaderRoute: typeof RessourcesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CoursRoute: CoursRoute,
+  EvaluationsRoute: EvaluationsRoute,
+  MessagesRoute: MessagesRoute,
+  NotificationsRoute: NotificationsRoute,
+  OpportunitesRoute: OpportunitesRoute,
+  ParametresRoute: ParametresRoute,
+  ProfilRoute: ProfilRoute,
+  PublicationsRoute: PublicationsRoute,
+  RechercheRoute: RechercheRoute,
+  RessourcesRoute: RessourcesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
