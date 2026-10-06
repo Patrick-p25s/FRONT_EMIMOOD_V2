@@ -6,7 +6,7 @@ export type VideoResult = { id: string; title: string; channel: string; thumbnai
 export const searchYoutube = createServerFn({ method: 'POST' })
   .inputValidator((d: { q: string }) => z.object({ q: z.string().trim().min(1).max(120) }).parse(d))
   .handler(async ({ data }): Promise<{ results: VideoResult[]; error: string | null }> => {
-    const key = process.env.YOUTUBE_API_KEY;
+    const key = process.env['YOUTUBE_API_KEY'];
     if (!key) return { results: [], error: 'missing_key' };
     const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=12&safeSearch=strict&relevanceLanguage=fr&q=${encodeURIComponent(data.q)}&key=${key}`;
     const res = await fetch(url);
