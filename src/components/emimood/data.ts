@@ -20,3 +20,40 @@ export const opportunities = [
  {id:3,type:'Bourse',title:'Programme de mobilité académique',org:'Relations internationales',text:'Une opportunité pour enrichir votre parcours et découvrir une nouvelle université.',date:'Dossier à préparer'},
 ];
 export function pageHead(title:string,description:string) {return {meta:[{title:`${title} — EMIMood`},{name:'description',content:description},{property:'og:title',content:`${title} — EMIMood`},{property:'og:description',content:description},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary_large_image'}]};}
+
+export const courseChapters = [
+ {id:1,title:'Développement web',chapters:[
+  {title:'HTML et structure des pages',content:['Le HTML décrit la structure d’une page : titres, paragraphes, listes, liens et formulaires.','Exercice : réalisez la page d’accueil de votre projet avec une structure sémantique.']},
+  {title:'CSS et mise en page',content:['Le CSS contrôle les couleurs, les espacements et la disposition grâce à Flexbox et Grid.','Exercice : adaptez votre page pour mobile et ordinateur.']},
+  {title:'JavaScript moderne',content:['Variables, fonctions, tableaux et objets : les bases pour rendre une page interactive.']},
+  {title:'Introduction à React',content:['React construit des interfaces avec des composants réutilisables et un état.','Regardez la vidéo puis créez votre premier composant.'],video:'SqcY0GlETPk'},
+ ]},
+ {id:2,title:'Base de données',chapters:[
+  {title:'Modèle relationnel',content:['Tables, lignes, colonnes, clés primaires et clés étrangères.']},
+  {title:'Requêtes SELECT',content:['SELECT, WHERE, ORDER BY : interroger une table.']},
+  {title:'Les jointures SQL',content:['INNER JOIN, LEFT JOIN : combiner plusieurs tables à partir d’une clé commune.'],video:'9yeOJ0ZMUYw'},
+ ]},
+ {id:3,title:'Gestion de projet',chapters:[
+  {title:'Cycle de vie d’un projet',content:['Initialisation, planification, exécution, suivi et clôture.']},
+  {title:'Méthodes agiles',content:['Itérations courtes, livraisons fréquentes et collaboration avec le client.']},
+  {title:'La méthode Scrum',content:['Rôles (Product Owner, Scrum Master, équipe), sprints et cérémonies.']},
+ ]},
+];
+export function docPages(title:string,subject:string,author:string){return [
+ {heading:title.replace(/\.pdf$/,''),body:[`Document de ${subject}, préparé par ${author}.`,'Sommaire : 1. Objectifs · 2. Notions essentielles · 3. Exercices.']},
+ {heading:'1. Objectifs',body:['Comprendre les notions fondamentales du chapitre.','Savoir les appliquer dans un projet universitaire.']},
+ {heading:'2. Notions essentielles',body:['Chaque notion est illustrée par un exemple commenté.','Prenez des notes et comparez vos réponses avec votre groupe.']},
+ {heading:'3. Exercices',body:['Exercice 1 : résumez le chapitre en cinq points.','Exercice 2 : proposez un exemple d’application personnel.']},
+];}
+export type Quiz={title:string;questions:{text:string;options:string[];answer:number}[]};
+export const quizzes:Quiz[]=[
+ {title:'Base de données',questions:[
+  {text:'Quelle commande permet de lire des données ?',options:['INSERT','SELECT','DELETE','DROP'],answer:1},
+  {text:'Une clé primaire doit être…',options:['Unique et non nulle','Toujours un texte','Facultative','Dupliquée'],answer:0},
+  {text:'LEFT JOIN renvoie…',options:['Seulement les correspondances','Toutes les lignes de la table de gauche','Toutes les lignes de droite','Aucune ligne'],answer:1},
+ ]},
+ {title:'Gestion de projet',questions:[
+  {text:'Qui priorise le backlog en Scrum ?',options:['Le Scrum Master','Le Product Owner','Le client final','Le testeur'],answer:1},
+  {text:'Un sprint dure généralement…',options:['1 à 4 semaines','6 mois','1 jour','1 an'],answer:0},
+ ]},
+];

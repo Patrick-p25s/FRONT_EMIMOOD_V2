@@ -101,6 +101,7 @@ export function QuizRunner({ quiz, onClose }: { quiz: Quiz; onClose: (score?: nu
 export { quizzes };
 
 /* ---------- Vidéos YouTube ---------- */
+function decode(t: string) { return t.replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&'); }
 function extractId(v: string) { const m = v.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/); return m?.[1] ?? null; }
 export function VideosPage() {
   const search = useServerFn(searchYoutube);
@@ -125,14 +126,14 @@ export function VideosPage() {
     </form>
     {playing && <div className="item-card mb-6">
       <div className="aspect-video rounded-lg overflow-hidden"><iframe className="w-full h-full" src={`https://www.youtube-nocookie.com/embed/${playing.id}?autoplay=1`} title={playing.title} allow="autoplay; encrypted-media; picture-in-picture" allowFullScreen /></div>
-      <h2 className="mt-3" dangerouslySetInnerHTML={{ __html: playing.title }} /><p className="small">{playing.channel}</p>
+      <h2 className="mt-3">{decode(playing.title)}</h2><p className="small">{playing.channel}</p>
     </div>}
     {error === 'missing_key' && <p className="empty"><Link2 className="mx-auto mb-2" />La recherche YouTube n’est pas encore activée (clé YouTube à configurer). Vous pouvez déjà coller un lien YouTube pour le regarder ici.</p>}
     {error === 'request_failed' && <p className="empty">La recherche a échoué. Réessayez dans un instant.</p>}
     <div className="content-grid">
       {results.map(v => <button key={v.id} onClick={() => { setPlaying(v); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="item-card text-left">
         <div className="relative rounded-md overflow-hidden"><img src={v.thumbnail} alt="" className="w-full aspect-video object-cover" loading="lazy" /><PlayCircle className="absolute inset-0 m-auto size-12 text-primary-foreground drop-shadow" /></div>
-        <h2 className="text-base line-clamp-2" dangerouslySetInnerHTML={{ __html: v.title }} />
+        <h2 className="text-base line-clamp-2">{decode(v.title)}</h2>
         <p className="small">{v.channel}</p>
       </button>)}
     </div>
