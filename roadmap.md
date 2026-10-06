@@ -1,6 +1,8 @@
 # EMIMood
-- [ ] Créer une première interface étudiante en français, avec navigation et contenus de démonstration.
-- [ ] Ajouter les thèmes clair, sombre et système accessibles au profil et aux paramètres.
-- [ ] Vérifier les parcours et l’affichage ordinateur/mobile.
-- [ ] Connecter les comptes et les données universitaires avec Lovable Cloud (activation nécessaire).
-- [ ] Étendre ensuite les permissions et outils enseignant, modérateur et administrateur ; non inclus dans la première interface.
+- [x] Créer une première interface étudiante en français, avec navigation et contenus de démonstration.
+- [x] Ajouter les thèmes clair, sombre et système accessibles au profil et aux paramètres.
+- [x] Vérifier les parcours et l’affichage ordinateur/mobile.
+- [x] Activer Lovable Cloud pour les futurs comptes et données.
+
+## Périmètre ultérieur non livré
+Les comptes par invitation, les données persistantes et les outils des trois autres rôles restent à réaliser ; cette livraison est une démonstration étudiante, pas la plateforme complète des cahiers des charges.
