@@ -18,6 +18,8 @@ import {
   Monitor,
   ArrowUpRight,
   PlayCircle,
+  ShieldCheck,
+  Building2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -116,6 +118,21 @@ export function Shell({ children }: { children: ReactNode }) {
             </Link>
           ))}
         </nav>
+        <p className="nav-label mt-7">Gestion (démo)</p>
+        <nav>
+          {(
+            [
+              { to: "/enseignant", label: "Enseignant", icon: GraduationCap },
+              { to: "/delegue", label: "Délégué", icon: ShieldCheck },
+              { to: "/administration", label: "Super admin", icon: Building2 },
+            ] as const
+          ).map((item) => (
+            <Link key={item.to} to={item.to} activeProps={{ className: "active" }} className="nav-item">
+              <item.icon />
+              {item.label}
+            </Link>
+          ))}
+        </nav>
         <div className="sidebar-bottom">
           <Link to="/parametres" activeProps={{ className: "active" }} className="nav-item">
             <Settings />
@@ -173,6 +190,23 @@ export function Shell({ children }: { children: ReactNode }) {
                 <DropdownMenuItem asChild>
                   <Link to="/parametres">
                     <Settings /> Paramètres
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuLabel>Gestion (démo)</DropdownMenuLabel>
+                <DropdownMenuItem asChild>
+                  <Link to="/enseignant">
+                    <GraduationCap /> Espace enseignant
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/delegue">
+                    <ShieldCheck /> Espace délégué
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/administration">
+                    <Building2 /> Super administration
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
