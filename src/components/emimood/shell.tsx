@@ -18,6 +18,8 @@ import {
   Monitor,
   ArrowUpRight,
   PlayCircle,
+  ShieldCheck,
+  Building2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -113,6 +115,21 @@ export function Shell({ children }: { children: ReactNode }) {
               <item.icon />
               {item.label}
               {item.to === "/messages" && <span className="nav-badge">3</span>}
+            </Link>
+          ))}
+        </nav>
+        <p className="nav-label mt-7">Gestion (démo)</p>
+        <nav>
+          {(
+            [
+              { to: "/enseignant", label: "Enseignant", icon: GraduationCap },
+              { to: "/delegue", label: "Délégué", icon: ShieldCheck },
+              { to: "/administration", label: "Super admin", icon: Building2 },
+            ] as const
+          ).map((item) => (
+            <Link key={item.to} to={item.to} activeProps={{ className: "active" }} className="nav-item">
+              <item.icon />
+              {item.label}
             </Link>
           ))}
         </nav>
