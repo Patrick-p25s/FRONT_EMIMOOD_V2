@@ -110,6 +110,7 @@ export function CourseDetail({ courseId, onBack }: { courseId: number; onBack: (
   const [index, setIndex] = useState(0);
   const [done, setDone] = useState<number[]>([]);
   const ch = course.chapters[index]!;
+
   return (
     <div>
       <Button variant="ghost" onClick={onBack} className="mb-3">
@@ -264,10 +265,12 @@ function decode(t: string) {
     .replace(/&gt;/g, ">")
     .replace(/&amp;/g, "&");
 }
+
 function extractId(v: string) {
   const m = v.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/);
   return m?.[1] ?? null;
 }
+
 export function VideosPage() {
   const search = useServerFn(searchYoutube);
   const [q, setQ] = useState("");

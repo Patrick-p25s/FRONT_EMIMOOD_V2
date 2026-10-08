@@ -172,6 +172,7 @@ const CarouselItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLD
     );
   },
 );
+
 CarouselItem.displayName = "CarouselItem";
 
 const CarouselPrevious = React.forwardRef<HTMLButtonElement, React.ComponentProps<typeof Button>>(
@@ -200,6 +201,7 @@ const CarouselPrevious = React.forwardRef<HTMLButtonElement, React.ComponentProp
     );
   },
 );
+
 CarouselPrevious.displayName = "CarouselPrevious";
 
 const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<typeof Button>>(
@@ -228,6 +230,7 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<ty
     );
   },
 );
+
 CarouselNext.displayName = "CarouselNext";
 
 export {
