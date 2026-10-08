@@ -193,6 +193,23 @@ export function Shell({ children }: { children: ReactNode }) {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
+                <DropdownMenuLabel>Gestion (démo)</DropdownMenuLabel>
+                <DropdownMenuItem asChild>
+                  <Link to="/enseignant">
+                    <GraduationCap /> Espace enseignant
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/delegue">
+                    <ShieldCheck /> Espace délégué
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/administration">
+                    <Building2 /> Super administration
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
                 <ThemeMenu />
               </DropdownMenuContent>
             </DropdownMenu>
