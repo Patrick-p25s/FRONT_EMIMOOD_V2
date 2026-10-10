@@ -6,4 +6,6 @@
 - [x] Espaces de gestion démo : enseignant, délégué, super administrateur, avec endpoints FastAPI suggérés.
 
 ## Périmètre ultérieur non livré
-Les comptes par invitation, les données persistantes et les outils des trois autres rôles restent à réaliser ; cette livraison est une démonstration étudiante, pas la plateforme complète des cahiers des charges.
+Les comptes par invitation, les données persistantes et les outils des trois autres rôles restent à réaliser ; cette livraison est une démonstration étudiante, pas la plateforme complète des cahiers des charges.- [ ] Schémas (images) de la base de données et de la structure backend FastAPI.
+- [ ] Landing page publique + page de connexion (prête pour FastAPI, sans Supabase).
+- [ ] Séparer les espaces par rôle : étudiant, enseignant, super_admin.
