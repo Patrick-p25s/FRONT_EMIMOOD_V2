@@ -31,9 +31,11 @@ import {
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 import { useTheme } from "./theme";
+import { useAuth, roleLabels } from "@/lib/auth";
+import { LogOut } from "lucide-react";
 import type { ReactNode } from "react";
 const links = [
-  { to: "/", label: "Accueil", icon: Home },
+  { to: "/accueil", label: "Accueil", icon: Home },
   { to: "/cours", label: "Mes cours", icon: BookOpen },
   { to: "/ressources", label: "Ressources", icon: Files },
   { to: "/videos", label: "Vidéos", icon: PlayCircle },
@@ -65,10 +67,22 @@ export function ThemeMenu() {
 }
 export function Shell({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
+  const role = user?.role;
+  const manage = [
+    { to: "/enseignant", label: "Espace enseignant", icon: GraduationCap, show: role === "teacher" },
+    { to: "/administration", label: "Super administration", icon: Building2, show: role === "super_admin" },
+    { to: "/delegue", label: "Espace délégué", icon: ShieldCheck, show: role === "student" },
+  ].filter((m) => m.show) as { to: "/enseignant" | "/administration" | "/delegue"; label: string; icon: typeof Home }[];
+  const initials = (user?.name ?? "?").split(" ").map((w) => w[0]).slice(0, 2).join("");
+  const signOut = () => {
+    logout();
+    navigate({ to: "/connexion", replace: true });
+  };
   return (
     <>
       <aside className="sidebar">
-        <Link to="/" className="brand">
+        <Link to="/accueil" className="brand">
           <span className="brand-mark">
             <GraduationCap size={33} strokeWidth={2.3} />
           </span>
@@ -118,15 +132,9 @@ export function Shell({ children }: { children: ReactNode }) {
             </Link>
           ))}
         </nav>
-        <p className="nav-label mt-7">Gestion (démo)</p>
+        <p className="nav-label mt-7">Gestion</p>
         <nav>
-          {(
-            [
-              { to: "/enseignant", label: "Enseignant", icon: GraduationCap },
-              { to: "/delegue", label: "Délégué", icon: ShieldCheck },
-              { to: "/administration", label: "Super admin", icon: Building2 },
-            ] as const
-          ).map((item) => (
+          {manage.map((item) => (
             <Link key={item.to} to={item.to} activeProps={{ className: "active" }} className="nav-item">
               <item.icon />
               {item.label}
@@ -139,10 +147,10 @@ export function Shell({ children }: { children: ReactNode }) {
             Paramètres
           </Link>
           <Link to="/profil" className="account text-foreground no-underline">
-            <Avatar />
+            <Avatar initials={initials} />
             <div>
-              <strong className="text-xs">Patrick Nomentsoa</strong>
-              <p className="small">Étudiant · L3 Informatique</p>
+              <strong className="text-xs">{user?.name}</strong>
+              <p className="small">{role ? roleLabels[role] : ""}</p>
             </div>
             <ChevronDown size={13} />
           </Link>
@@ -176,12 +184,12 @@ export function Shell({ children }: { children: ReactNode }) {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="px-1" aria-label="Menu du profil">
-                  <Avatar />
+                  <Avatar initials={initials} />
                   <ChevronDown size={13} />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Patrick Nomentsoa</DropdownMenuLabel>
+                <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
                 <DropdownMenuItem asChild>
                   <Link to="/profil">
                     <UserRound /> Mon profil
@@ -193,24 +201,19 @@ export function Shell({ children }: { children: ReactNode }) {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuLabel>Gestion (démo)</DropdownMenuLabel>
-                <DropdownMenuItem asChild>
-                  <Link to="/enseignant">
-                    <GraduationCap /> Espace enseignant
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/delegue">
-                    <ShieldCheck /> Espace délégué
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/administration">
-                    <Building2 /> Super administration
-                  </Link>
-                </DropdownMenuItem>
+                {manage.map((item) => (
+                  <DropdownMenuItem asChild key={item.to}>
+                    <Link to={item.to}>
+                      <item.icon /> {item.label}
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
                 <DropdownMenuSeparator />
                 <ThemeMenu />
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={signOut}>
+                  <LogOut /> Se déconnecter
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
