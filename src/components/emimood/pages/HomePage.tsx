@@ -1,19 +1,11 @@
 import { Link } from "@tanstack/react-router";
-import {
-  CalendarDays,
-  BookOpen,
-  Files,
-  ClipboardCheck,
-  ArrowUpRight,
-  FileText,
-  ChevronRight,
-  Clock3,
-  Sparkles,
-} from "lucide-react";
+import { ArrowUpRight, BookOpen, CalendarDays, ChevronRight, ClipboardCheck, Clock3, FileText, Files, Sparkles } from "lucide-react";
 import campus from "@/assets/campus-community.jpg";
-import { Heading, SectionHeading } from "./shell";
-import { Feed } from "./feed";
-import { resources } from "./data";
+import { Heading } from "@/components/emimood/molecules/Heading";
+import { SectionHeading } from "@/components/emimood/molecules/SectionHeading";
+import { Feed } from "@/components/emimood/organisms/Feed";
+import { resources } from "@/components/emimood/data/resources";
+
 export function HomePage() {
   return (
     <div className="page">
