@@ -70,11 +70,29 @@ export function Shell({ children }: { children: ReactNode }) {
   const { user, logout } = useAuth();
   const role = user?.role;
   const manage = [
-    { to: "/enseignant", label: "Espace enseignant", icon: GraduationCap, show: role === "teacher" },
-    { to: "/administration", label: "Super administration", icon: Building2, show: role === "super_admin" },
+    {
+      to: "/enseignant",
+      label: "Espace enseignant",
+      icon: GraduationCap,
+      show: role === "teacher",
+    },
+    {
+      to: "/administration",
+      label: "Super administration",
+      icon: Building2,
+      show: role === "super_admin",
+    },
     { to: "/delegue", label: "Espace délégué", icon: ShieldCheck, show: role === "student" },
-  ].filter((m) => m.show) as { to: "/enseignant" | "/administration" | "/delegue"; label: string; icon: typeof Home }[];
-  const initials = (user?.name ?? "?").split(" ").map((w) => w[0]).slice(0, 2).join("");
+  ].filter((m) => m.show) as {
+    to: "/enseignant" | "/administration" | "/delegue";
+    label: string;
+    icon: typeof Home;
+  }[];
+  const initials = (user?.name ?? "?")
+    .split(" ")
+    .map((w) => w[0])
+    .slice(0, 2)
+    .join("");
   const signOut = () => {
     logout();
     navigate({ to: "/connexion", replace: true });
@@ -135,7 +153,12 @@ export function Shell({ children }: { children: ReactNode }) {
         <p className="nav-label mt-7">Gestion</p>
         <nav>
           {manage.map((item) => (
-            <Link key={item.to} to={item.to} activeProps={{ className: "active" }} className="nav-item">
+            <Link
+              key={item.to}
+              to={item.to}
+              activeProps={{ className: "active" }}
+              className="nav-item"
+            >
               <item.icon />
               {item.label}
             </Link>
