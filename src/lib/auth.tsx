@@ -15,7 +15,7 @@ export const roleHome: Record<Role, "/accueil" | "/enseignant" | "/administratio
 };
 
 // URL du backend FastAPI (ex. http://localhost:8000). Sans elle, connexion de démonstration.
-const API_URL = (import.meta.env.VITE_API_URL as string | undefined) ?? "";
+const API_URL = (import.meta.env["VITE_API_URL"] as string | undefined) ?? "";
 const KEY = "emimood-session";
 
 type Ctx = {
