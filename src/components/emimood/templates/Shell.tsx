@@ -1,70 +1,13 @@
-import { Link, useNavigate } from "@tanstack/react-router";
-import {
-  BookOpen,
-  Home,
-  Files,
-  MessageSquare,
-  Bell,
-  UserRound,
-  Settings,
-  BriefcaseBusiness,
-  ClipboardCheck,
-  MessagesSquare,
-  GraduationCap,
-  Search,
-  ChevronDown,
-  Sun,
-  Moon,
-  Monitor,
-  ArrowUpRight,
-  PlayCircle,
-  ShieldCheck,
-  Building2,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-  DropdownMenuLabel,
-} from "@/components/ui/dropdown-menu";
-import { useTheme } from "./theme";
-import { useAuth, roleLabels } from "@/lib/auth";
-import { LogOut } from "lucide-react";
 import type { ReactNode } from "react";
-const links = [
-  { to: "/accueil", label: "Accueil", icon: Home },
-  { to: "/cours", label: "Mes cours", icon: BookOpen },
-  { to: "/ressources", label: "Ressources", icon: Files },
-  { to: "/videos", label: "Vidéos", icon: PlayCircle },
-  { to: "/publications", label: "Publications", icon: MessagesSquare },
-  { to: "/evaluations", label: "Évaluations", icon: ClipboardCheck },
-  { to: "/opportunites", label: "Opportunités", icon: BriefcaseBusiness },
-  { to: "/messages", label: "Messages", icon: MessageSquare },
-  { to: "/notifications", label: "Notifications", icon: Bell },
-] as const;
-export function Avatar({ initials = "PN", warm = false }: { initials?: string; warm?: boolean }) {
-  return <span className={`avatar ${warm ? "warm" : ""}`}>{initials}</span>;
-}
-export function ThemeMenu() {
-  const { setTheme } = useTheme();
-  return (
-    <>
-      <DropdownMenuLabel>Apparence</DropdownMenuLabel>
-      <DropdownMenuItem onClick={() => setTheme("light")}>
-        <Sun /> Clair
-      </DropdownMenuItem>
-      <DropdownMenuItem onClick={() => setTheme("dark")}>
-        <Moon /> Sombre
-      </DropdownMenuItem>
-      <DropdownMenuItem onClick={() => setTheme("system")}>
-        <Monitor /> Système
-      </DropdownMenuItem>
-    </>
-  );
-}
+import { Link, useNavigate } from "@tanstack/react-router";
+import { Bell, Building2, ChevronDown, GraduationCap, Home, LogOut, MessageSquare, Search, Settings, ShieldCheck, UserRound } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { roleLabels, useAuth } from "@/lib/auth";
+import { links } from "@/components/emimood/templates/navLinks";
+import { Avatar } from "@/components/emimood/atoms/Avatar";
+import { ThemeMenu } from "@/components/emimood/molecules/ThemeMenu";
+
 export function Shell({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
@@ -263,42 +206,5 @@ export function Shell({ children }: { children: ReactNode }) {
         ))}
       </nav>
     </>
-  );
-}
-export function Heading({
-  title,
-  subtitle,
-  action,
-}: {
-  title: string;
-  subtitle: string;
-  action?: ReactNode;
-}) {
-  return (
-    <div className="page-heading">
-      <div>
-        <h1>{title}</h1>
-        <p className="subtitle">{subtitle}</p>
-      </div>
-      {action}
-    </div>
-  );
-}
-export function SectionHeading({
-  title,
-  to,
-}: {
-  title: string;
-  to?: "/cours" | "/ressources" | "/opportunites" | "/publications" | "/evaluations";
-}) {
-  return (
-    <div className="section-heading">
-      <h2>{title}</h2>
-      {to && (
-        <Link to={to}>
-          Voir tout <ArrowUpRight size={13} />
-        </Link>
-      )}
-    </div>
   );
 }

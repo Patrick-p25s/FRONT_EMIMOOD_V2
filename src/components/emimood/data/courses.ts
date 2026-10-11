@@ -1,0 +1,36 @@
+
+export const courses = [
+  {
+    id: 1,
+    title: "Développement web",
+    code: "INF 302",
+    teacher: "Pr. Rakoto Andry",
+    chapters: 12,
+    progress: 65,
+    icon: "code",
+    description: "HTML, CSS, JavaScript et applications web modernes.",
+    chapter: "Chapitre 7 · Introduction à React",
+  },
+  {
+    id: 2,
+    title: "Base de données",
+    code: "INF 304",
+    teacher: "Pr. Rasoanaivo Hery",
+    chapters: 10,
+    progress: 40,
+    icon: "database",
+    description: "Modélisation relationnelle, SQL et gestion des données.",
+    chapter: "Chapitre 4 · Les jointures SQL",
+  },
+  {
+    id: 3,
+    title: "Gestion de projet",
+    code: "MAN 301",
+    teacher: "Pr. Razafindrakoto",
+    chapters: 8,
+    progress: 80,
+    icon: "project",
+    description: "Méthodes agiles et organisation des projets numériques.",
+    chapter: "Chapitre 6 · La méthode Scrum",
+  },
+];

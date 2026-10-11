@@ -13,7 +13,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import { ThemeProvider } from "@/components/emimood/theme";
-import { Shell } from "@/components/emimood/shell";
+import { Shell } from "@/components/emimood/templates";
 import { AuthProvider, useAuth, canAccess } from "@/lib/auth";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
