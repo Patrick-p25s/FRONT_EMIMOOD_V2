@@ -4,6 +4,8 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
+  useNavigate,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
@@ -12,6 +14,7 @@ import { useEffect, type ReactNode } from "react";
 
 import { ThemeProvider } from "@/components/emimood/theme";
 import { Shell } from "@/components/emimood/shell";
+import { AuthProvider, useAuth, canAccess } from "@/lib/auth";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
@@ -125,8 +128,39 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <ThemeProvider><Shell><Outlet /></Shell></ThemeProvider> breaks all child routes. */}
-      <ThemeProvider><Shell><Outlet /></Shell></ThemeProvider>
+      {/* Required: nested routes render inside AppFrame via <Outlet />. */}
+      <ThemeProvider>
+        <AuthProvider>
+          <AppFrame />
+        </AuthProvider>
+      </ThemeProvider>
     </QueryClientProvider>
+  );
+}
+
+const publicPaths = ["/", "/connexion"];
+
+function AppFrame() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { user, ready } = useAuth();
+  const navigate = useNavigate();
+  const isPublic = publicPaths.includes(pathname);
+  useEffect(() => {
+    if (ready && !user && !isPublic) navigate({ to: "/connexion", replace: true });
+  }, [ready, user, isPublic, navigate]);
+
+  if (isPublic) return <Outlet />;
+  if (!ready || !user) return null;
+  return (
+    <Shell>
+      {canAccess(user.role, pathname) ? (
+        <Outlet />
+      ) : (
+        <div className="page">
+          <h1 className="text-xl font-bold">Accès réservé</h1>
+          <p className="subtitle">Cet espace n’est pas disponible pour votre rôle.</p>
+        </div>
+      )}
+    </Shell>
   );
 }

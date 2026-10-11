@@ -36,6 +36,18 @@ export const teacherConsole: RoleConsole = {
       ],
     },
     {
+      key: "matieres",
+      label: "Matières",
+      intro: "Créez les matières de vos classes (dans votre université).",
+      addLabel: "Nouvelle matière",
+      rows: [r(1, "Bases de données", "L3 Informatique · 4 crédits", "Active"), r(2, "Algorithmique", "L2 Informatique · 5 crédits", "Active")],
+      endpoints: [
+        { method: "GET", path: "/teachers/me/subjects", desc: "Mes matières" },
+        { method: "POST", path: "/subjects", desc: "Créer une matière (classe de mon université)" },
+        { method: "PATCH", path: "/subjects/{subject_id}", desc: "Modifier une matière" },
+      ],
+    },
+    {
       key: "cours",
       label: "Cours & chapitres",
       intro: "Créez des cours, ajoutez des chapitres et publiez-les.",
@@ -76,6 +88,27 @@ export const teacherConsole: RoleConsole = {
         { method: "GET", path: "/evaluations/{id}/submissions", desc: "Copies rendues" },
         { method: "PUT", path: "/submissions/{submission_id}/grade", desc: "Noter une copie avec commentaire" },
         { method: "POST", path: "/evaluations/{id}/publish-results", desc: "Publier les résultats" },
+      ],
+    },
+    {
+      key: "resultats",
+      label: "Résultats",
+      intro: "Résultats de chaque étudiant ayant passé vos évaluations.",
+      rows: [r(1, "Fanja Andriamalala — QCM Jointures", "17/20 · rendu le 9 oct.", "Publié"), r(2, "Hery Rabe — QCM Jointures", "11/20 · rendu le 10 oct.", "À corriger")],
+      endpoints: [
+        { method: "GET", path: "/evaluations/{id}/results", desc: "Résultats par étudiant" },
+        { method: "GET", path: "/students/{student_id}/results?subject={id}", desc: "Historique d’un étudiant" },
+        { method: "GET", path: "/evaluations/{id}/results/export", desc: "Export CSV" },
+      ],
+    },
+    {
+      key: "feedbacks",
+      label: "Feedbacks",
+      intro: "Avis des étudiants sur vos cours et chapitres.",
+      rows: [r(1, "« Le chapitre 4 est très clair »", "Note 5/5 · Bases de données", "Publié"), r(2, "« Plus d’exercices SQL svp »", "Note 3/5 · Bases de données", "Publié")],
+      endpoints: [
+        { method: "GET", path: "/courses/{course_id}/feedbacks", desc: "Feedbacks d’un cours" },
+        { method: "POST", path: "/courses/{course_id}/feedbacks", desc: "(Étudiant) Laisser un avis" },
       ],
     },
     {
@@ -157,6 +190,42 @@ export const superAdminConsole: RoleConsole = {
         { method: "GET", path: "/universities", desc: "Lister les universités" },
         { method: "POST", path: "/universities", desc: "Créer une université" },
         { method: "PATCH", path: "/universities/{id}", desc: "Modifier / suspendre" },
+      ],
+    },
+    {
+      key: "annees",
+      label: "Années universitaires",
+      intro: "Chaque université a ses années ; les classes sont créées dans une année.",
+      addLabel: "Nouvelle année (ex. 2026-2027)",
+      rows: [r(1, "2026-2027 — EMIT", "Année en cours · 12 classes", "Active"), r(2, "2025-2026 — EMIT", "Archivée", "Journalisé")],
+      endpoints: [
+        { method: "GET", path: "/universities/{id}/academic-years", desc: "Années d’une université" },
+        { method: "POST", path: "/universities/{id}/academic-years", desc: "Créer une année" },
+        { method: "PATCH", path: "/academic-years/{year_id}", desc: "Définir l’année en cours / archiver" },
+      ],
+    },
+    {
+      key: "classes",
+      label: "Classes",
+      intro: "Classes d’une université pour une année donnée.",
+      addLabel: "Nouvelle classe (ex. L3 Informatique)",
+      rows: [r(1, "L3 Informatique · 2026-2027", "42 étudiants", "Active"), r(2, "M1 Génie logiciel · 2026-2027", "28 étudiants", "Active")],
+      endpoints: [
+        { method: "GET", path: "/academic-years/{year_id}/classes", desc: "Classes d’une année" },
+        { method: "POST", path: "/academic-years/{year_id}/classes", desc: "Créer une classe" },
+        { method: "POST", path: "/classes/{class_id}/students", desc: "Inscrire des étudiants" },
+      ],
+    },
+    {
+      key: "enseignants",
+      label: "Enseignants",
+      intro: "Créez un enseignant ou attribuez ce rôle à un utilisateur existant dans une université précise.",
+      addLabel: "Email de l’enseignant",
+      rows: [r(1, "Hanta Rakoto", "EMIT · Bases de données, Algorithmique", "Actif"), r(2, "Jean Randria", "EMIT · invitation envoyée", "En attente")],
+      endpoints: [
+        { method: "POST", path: "/universities/{id}/teachers", desc: "Créer un compte enseignant" },
+        { method: "PUT", path: "/universities/{id}/teachers/{user_id}", desc: "Assigner un utilisateur comme enseignant" },
+        { method: "DELETE", path: "/universities/{id}/teachers/{user_id}", desc: "Retirer le rôle" },
       ],
     },
     {

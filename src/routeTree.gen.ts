@@ -10,7 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AccueilRouteImport } from './routes/accueil'
 import { Route as AdministrationRouteImport } from './routes/administration'
+import { Route as ConnexionRouteImport } from './routes/connexion'
 import { Route as CoursRouteImport } from './routes/cours'
 import { Route as DelegueRouteImport } from './routes/delegue'
 import { Route as EnseignantRouteImport } from './routes/enseignant'
@@ -30,9 +32,19 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccueilRoute = AccueilRouteImport.update({
+  id: '/accueil',
+  path: '/accueil',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdministrationRoute = AdministrationRouteImport.update({
   id: '/administration',
   path: '/administration',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConnexionRoute = ConnexionRouteImport.update({
+  id: '/connexion',
+  path: '/connexion',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CoursRoute = CoursRouteImport.update({
@@ -103,7 +115,9 @@ const VideosRoute = VideosRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/accueil': typeof AccueilRoute
   '/administration': typeof AdministrationRoute
+  '/connexion': typeof ConnexionRoute
   '/cours': typeof CoursRoute
   '/delegue': typeof DelegueRoute
   '/enseignant': typeof EnseignantRoute
@@ -120,7 +134,9 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/accueil': typeof AccueilRoute
   '/administration': typeof AdministrationRoute
+  '/connexion': typeof ConnexionRoute
   '/cours': typeof CoursRoute
   '/delegue': typeof DelegueRoute
   '/enseignant': typeof EnseignantRoute
@@ -138,7 +154,9 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/accueil': typeof AccueilRoute
   '/administration': typeof AdministrationRoute
+  '/connexion': typeof ConnexionRoute
   '/cours': typeof CoursRoute
   '/delegue': typeof DelegueRoute
   '/enseignant': typeof EnseignantRoute
@@ -157,7 +175,9 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/accueil'
     | '/administration'
+    | '/connexion'
     | '/cours'
     | '/delegue'
     | '/enseignant'
@@ -174,7 +194,9 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/accueil'
     | '/administration'
+    | '/connexion'
     | '/cours'
     | '/delegue'
     | '/enseignant'
@@ -191,7 +213,9 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/accueil'
     | '/administration'
+    | '/connexion'
     | '/cours'
     | '/delegue'
     | '/enseignant'
@@ -209,7 +233,9 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AccueilRoute: typeof AccueilRoute
   AdministrationRoute: typeof AdministrationRoute
+  ConnexionRoute: typeof ConnexionRoute
   CoursRoute: typeof CoursRoute
   DelegueRoute: typeof DelegueRoute
   EnseignantRoute: typeof EnseignantRoute
@@ -234,11 +260,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/accueil': {
+      id: '/accueil'
+      path: '/accueil'
+      fullPath: '/accueil'
+      preLoaderRoute: typeof AccueilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/administration': {
       id: '/administration'
       path: '/administration'
       fullPath: '/administration'
       preLoaderRoute: typeof AdministrationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/connexion': {
+      id: '/connexion'
+      path: '/connexion'
+      fullPath: '/connexion'
+      preLoaderRoute: typeof ConnexionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cours': {
@@ -337,7 +377,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AccueilRoute: AccueilRoute,
   AdministrationRoute: AdministrationRoute,
+  ConnexionRoute: ConnexionRoute,
   CoursRoute: CoursRoute,
   DelegueRoute: DelegueRoute,
   EnseignantRoute: EnseignantRoute,
