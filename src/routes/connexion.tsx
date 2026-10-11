@@ -25,7 +25,7 @@ function LoginPage() {
   const [role, setRole] = useState<Role>("student");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const demo = !import.meta.env.VITE_API_URL;
+  const demo = !import.meta.env["VITE_API_URL"];
 
   return (
     <div className="grid min-h-screen place-items-center bg-background px-4">
