@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Bell, Building2, ChevronDown, GraduationCap, Home, LogOut, MessageSquare, Search, Settings, ShieldCheck, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
