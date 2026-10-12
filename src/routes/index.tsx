@@ -54,7 +54,7 @@ const features = [
   },
 ];
 
-function   Landing() {
+function Landing() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="mx-auto flex max-w-6xl items-center justify-between px-5 py-5">

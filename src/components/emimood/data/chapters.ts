@@ -1,4 +1,3 @@
-
 export const courseChapters = [
   {
     id: 1,

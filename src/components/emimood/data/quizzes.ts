@@ -1,4 +1,3 @@
-
 export type Quiz = {
   title: string;
   questions: { text: string; options: string[]; answer: number }[];
