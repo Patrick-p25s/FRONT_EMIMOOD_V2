@@ -88,6 +88,9 @@ function Landing() {
                 Accéder à mon espace <ArrowRight />
               </Link>
             </Button>
+            <Button asChild size="lg" variant="outline">
+              <Link to="/inscription">Créer un compte</Link>
+            </Button>
           </div>
           <p className="mt-3 text-xs text-muted-foreground">
             Inscription uniquement avec un code d’invitation de votre université.

@@ -138,7 +138,7 @@ function RootComponent() {
   );
 }
 
-const publicPaths = ["/", "/connexion"];
+const publicPaths = ["/", "/connexion", "/inscription"];
 
 function AppFrame() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });

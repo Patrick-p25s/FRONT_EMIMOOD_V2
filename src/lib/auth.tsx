@@ -1,69 +1,113 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { clearTokens, getRefreshToken, setTokens } from "@/api/client";
+import {
+  identityApi,
+  type RegisterPayload,
+  type Role,
+  type User,
+  type UserContext,
+} from "@/api/identity";
 
-export type Role = "student" | "teacher" | "super_admin";
-export type SessionUser = { name: string; email: string; role: Role; token?: string };
+export type { Role } from "@/api/identity";
+export type SessionUser = User & { name: string };
 
 export const roleLabels: Record<Role, string> = {
   student: "Étudiant",
   teacher: "Enseignant",
+  moderator: "Modérateur",
   super_admin: "Super administrateur",
 };
 export const roleHome: Record<Role, "/accueil" | "/enseignant" | "/administration"> = {
   student: "/accueil",
   teacher: "/enseignant",
+  moderator: "/enseignant",
   super_admin: "/administration",
 };
 
-// URL du backend FastAPI (ex. http://localhost:8000). Sans elle, connexion de démonstration.
-const API_URL = (import.meta.env["VITE_API_URL"] as string | undefined) ?? "";
-const KEY = "emimood-session";
-
 type Ctx = {
   user: SessionUser | null;
+  context: UserContext | null;
   ready: boolean;
-  login: (email: string, password: string, demoRole: Role) => Promise<SessionUser>;
-  logout: () => void;
+  login: (email: string, password: string) => Promise<SessionUser>;
+  register: (payload: RegisterPayload) => Promise<SessionUser>;
+  logout: () => Promise<void>;
+  refreshProfile: () => Promise<void>;
+  updateProfile: (
+    data: Pick<User, "first_name" | "last_name" | "phone_number" | "avatar_url" | "bio">,
+  ) => Promise<void>;
 };
 const AuthContext = createContext<Ctx | null>(null);
 
+function toSessionUser(user: User): SessionUser {
+  return { ...user, name: `${user.first_name} ${user.last_name}`.trim() };
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<SessionUser | null>(null);
+  const [context, setContext] = useState<UserContext | null>(null);
   const [ready, setReady] = useState(false);
+
+  const loadProfile = async () => {
+    const profile = await identityApi.me();
+    const sessionUser = toSessionUser(profile);
+    const academicContext = await identityApi.context(profile);
+    setUser(sessionUser);
+    setContext(academicContext);
+    return sessionUser;
+  };
+
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(KEY);
-      if (raw) setUser(JSON.parse(raw));
-    } catch {
-      /* ignore */
-    }
-    setReady(true);
+    loadProfile()
+      .catch(() => clearTokens())
+      .finally(() => setReady(true));
   }, []);
 
-  async function login(email: string, password: string, demoRole: Role) {
-    let u: SessionUser;
-    if (API_URL) {
-      // POST /api/v1/auth/login -> { access_token, user: { full_name, email, role } }
-      const res = await fetch(`${API_URL}/api/v1/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-      if (!res.ok) throw new Error("Email ou mot de passe incorrect.");
-      const data = await res.json();
-      u = { name: data.user.full_name, email: data.user.email, role: data.user.role, token: data.access_token };
-    } else {
-      const names: Record<Role, string> = { student: "Patrick Nomentsoa", teacher: "Hanta Rakoto", super_admin: "Administrateur EMIT" };
-      u = { name: names[demoRole], email, role: demoRole };
+  async function login(email: string, password: string) {
+    const tokens = await identityApi.login(email, password);
+    setTokens(tokens);
+    try {
+      return await loadProfile();
+    } catch (error) {
+      clearTokens();
+      throw error;
     }
-    localStorage.setItem(KEY, JSON.stringify(u));
-    setUser(u);
-    return u;
   }
-  function logout() {
-    localStorage.removeItem(KEY);
-    setUser(null);
+
+  async function register(payload: RegisterPayload) {
+    const tokens = await identityApi.register(payload);
+    setTokens(tokens);
+    try {
+      return await loadProfile();
+    } catch (error) {
+      clearTokens();
+      throw error;
+    }
   }
-  return <AuthContext.Provider value={{ user, ready, login, logout }}>{children}</AuthContext.Provider>;
+
+  async function logout() {
+    try {
+      await identityApi.logout(getRefreshToken());
+    } finally {
+      clearTokens();
+      setUser(null);
+      setContext(null);
+    }
+  }
+
+  async function refreshProfile() {
+    await loadProfile();
+  }
+  async function updateProfile(
+    data: Pick<User, "first_name" | "last_name" | "phone_number" | "avatar_url" | "bio">,
+  ) {
+    setUser(toSessionUser(await identityApi.updateMe(data)));
+  }
+
+  return (
+    <AuthContext.Provider value={{ user, context, ready, login, register, logout, refreshProfile, updateProfile }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 export function useAuth() {
@@ -72,9 +116,8 @@ export function useAuth() {
   return ctx;
 }
 
-/** Rôles autorisés par espace — à reproduire côté FastAPI avec require_role(). */
 export const spaceAccess: Record<string, Role[]> = {
-  "/enseignant": ["teacher"],
+  "/enseignant": ["teacher", "moderator"],
   "/administration": ["super_admin"],
   "/delegue": ["student"],
 };

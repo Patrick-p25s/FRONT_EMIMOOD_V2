@@ -17,6 +17,7 @@ import { Route as CoursRouteImport } from './routes/cours'
 import { Route as DelegueRouteImport } from './routes/delegue'
 import { Route as EnseignantRouteImport } from './routes/enseignant'
 import { Route as EvaluationsRouteImport } from './routes/evaluations'
+import { Route as InscriptionRouteImport } from './routes/inscription'
 import { Route as MessagesRouteImport } from './routes/messages'
 import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as OpportunitesRouteImport } from './routes/opportunites'
@@ -65,6 +66,11 @@ const EnseignantRoute = EnseignantRouteImport.update({
 const EvaluationsRoute = EvaluationsRouteImport.update({
   id: '/evaluations',
   path: '/evaluations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InscriptionRoute = InscriptionRouteImport.update({
+  id: '/inscription',
+  path: '/inscription',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MessagesRoute = MessagesRouteImport.update({
@@ -122,6 +128,7 @@ export interface FileRoutesByFullPath {
   '/delegue': typeof DelegueRoute
   '/enseignant': typeof EnseignantRoute
   '/evaluations': typeof EvaluationsRoute
+  '/inscription': typeof InscriptionRoute
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
   '/opportunites': typeof OpportunitesRoute
@@ -141,6 +148,7 @@ export interface FileRoutesByTo {
   '/delegue': typeof DelegueRoute
   '/enseignant': typeof EnseignantRoute
   '/evaluations': typeof EvaluationsRoute
+  '/inscription': typeof InscriptionRoute
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
   '/opportunites': typeof OpportunitesRoute
@@ -161,6 +169,7 @@ export interface FileRoutesById {
   '/delegue': typeof DelegueRoute
   '/enseignant': typeof EnseignantRoute
   '/evaluations': typeof EvaluationsRoute
+  '/inscription': typeof InscriptionRoute
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
   '/opportunites': typeof OpportunitesRoute
@@ -182,6 +191,7 @@ export interface FileRouteTypes {
     | '/delegue'
     | '/enseignant'
     | '/evaluations'
+    | '/inscription'
     | '/messages'
     | '/notifications'
     | '/opportunites'
@@ -201,6 +211,7 @@ export interface FileRouteTypes {
     | '/delegue'
     | '/enseignant'
     | '/evaluations'
+    | '/inscription'
     | '/messages'
     | '/notifications'
     | '/opportunites'
@@ -220,6 +231,7 @@ export interface FileRouteTypes {
     | '/delegue'
     | '/enseignant'
     | '/evaluations'
+    | '/inscription'
     | '/messages'
     | '/notifications'
     | '/opportunites'
@@ -240,6 +252,7 @@ export interface RootRouteChildren {
   DelegueRoute: typeof DelegueRoute
   EnseignantRoute: typeof EnseignantRoute
   EvaluationsRoute: typeof EvaluationsRoute
+  InscriptionRoute: typeof InscriptionRoute
   MessagesRoute: typeof MessagesRoute
   NotificationsRoute: typeof NotificationsRoute
   OpportunitesRoute: typeof OpportunitesRoute
@@ -307,6 +320,13 @@ declare module '@tanstack/react-router' {
       path: '/evaluations'
       fullPath: '/evaluations'
       preLoaderRoute: typeof EvaluationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inscription': {
+      id: '/inscription'
+      path: '/inscription'
+      fullPath: '/inscription'
+      preLoaderRoute: typeof InscriptionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/messages': {
@@ -384,6 +404,7 @@ const rootRouteChildren: RootRouteChildren = {
   DelegueRoute: DelegueRoute,
   EnseignantRoute: EnseignantRoute,
   EvaluationsRoute: EvaluationsRoute,
+  InscriptionRoute: InscriptionRoute,
   MessagesRoute: MessagesRoute,
   NotificationsRoute: NotificationsRoute,
   OpportunitesRoute: OpportunitesRoute,

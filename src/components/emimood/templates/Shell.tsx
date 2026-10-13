@@ -29,7 +29,7 @@ import { ThemeMenu } from "@/components/emimood/molecules/ThemeMenu";
 
 export function Shell({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { user, context, logout } = useAuth();
   const role = user?.role;
   const manage = [
     {
@@ -55,6 +55,10 @@ export function Shell({ children }: { children: ReactNode }) {
     .map((w) => w[0])
     .slice(0, 2)
     .join("");
+  const universityName = context?.university?.name ?? "EMIMood";
+  const academicLabel = [context?.mention?.name, context?.level?.name, context?.classe?.name]
+    .filter(Boolean)
+    .join(" · ");
   const signOut = () => {
     logout();
     navigate({ to: "/connexion", replace: true });
@@ -76,8 +80,8 @@ export function Shell({ children }: { children: ReactNode }) {
             <GraduationCap size={19} />
           </span>
           <div>
-            <strong className="text-xs">EMIT Fianarantsoa</strong>
-            <p className="small">Notre communauté</p>
+            <strong className="text-xs">{universityName}</strong>
+            <p className="small">{academicLabel || "Notre communauté"}</p>
           </div>
           <ChevronDown size={13} />
         </div>
