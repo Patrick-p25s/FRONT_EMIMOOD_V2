@@ -20,14 +20,14 @@ export function Shell({ children }: { children: ReactNode }) {
       show: role === "teacher",
     },
     {
-      to: "/administration",
+      to: "/admin",
       label: "Super administration",
       icon: Building2,
       show: role === "super_admin",
     },
     { to: "/delegue", label: "Espace délégué", icon: ShieldCheck, show: role === "student" },
   ].filter((m) => m.show) as {
-    to: "/enseignant" | "/administration" | "/delegue";
+    to: "/enseignant" | "/admin" | "/delegue";
     label: string;
     icon: typeof Home;
   }[];
@@ -37,7 +37,7 @@ export function Shell({ children }: { children: ReactNode }) {
     .slice(0, 2)
     .join("");
   const signOut = () => {
-    logout();
+    void logout();
     navigate({ to: "/connexion", replace: true });
   };
   return (

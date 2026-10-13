@@ -3,7 +3,10 @@ import { useState } from "react";
 import { GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useAuth, roleHome, roleLabels, type Role } from "@/lib/auth";
+import { useAuth, roleHome, roleLabels, isDemo, type Role } from "@/lib/auth";
+import { safeNext } from "@/lib/api/list";
+
+type LoginSearch = { next?: string; reason?: string };
 
 export const Route = createFileRoute("/connexion")({
   head: () => ({
@@ -16,6 +19,10 @@ export const Route = createFileRoute("/connexion")({
       { name: "twitter:card", content: "summary" },
     ],
   }),
+  validateSearch: (s: Record<string, unknown>): LoginSearch => ({
+    next: typeof s.next === "string" ? s.next : undefined,
+    reason: typeof s.reason === "string" ? s.reason : undefined,
+  }),
   component: LoginPage,
 });
 
@@ -25,7 +32,8 @@ function LoginPage() {
   const [role, setRole] = useState<Role>("student");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const demo = !import.meta.env["VITE_API_URL"];
+  const demo = isDemo;
+  const search = Route.useSearch();
 
   return (
     <div className="grid min-h-screen place-items-center bg-background px-4">
@@ -38,7 +46,10 @@ function LoginPage() {
           setError("");
           try {
             const u = await login(String(f.get("email")), String(f.get("password")), role);
-            navigate({ to: roleHome[u.role] });
+            const next = safeNext(search.next);
+            const nextIsAdmin = !!next && (next === "/admin" || next.startsWith("/admin/") || next.startsWith("/admin?"));
+            if (next && (!nextIsAdmin || u.role === "super_admin")) navigate({ href: next, replace: true });
+            else navigate({ to: roleHome[u.role], replace: true });
           } catch (err) {
             setError(err instanceof Error ? err.message : "Connexion impossible.");
           } finally {
@@ -54,6 +65,9 @@ function LoginPage() {
         </Link>
         <h1 className="text-2xl font-bold">Connexion</h1>
         <p className="mb-5 text-sm text-muted-foreground">Avec votre compte universitaire.</p>
+        {search.reason === "session_expired" && (
+          <p role="alert" className="mb-4 rounded-md border bg-muted px-3 py-2 text-sm">Votre session a expiré, reconnectez-vous.</p>
+        )}
         <label className="text-sm font-medium" htmlFor="email">Email</label>
         <Input id="email" name="email" type="email" required defaultValue={demo ? "patrick@emit.mg" : ""} className="mb-3 mt-1" />
         <label className="text-sm font-medium" htmlFor="password">Mot de passe</label>
@@ -71,7 +85,7 @@ function LoginPage() {
             </div>
           </fieldset>
         )}
-        {error && <p className="mb-3 text-sm text-destructive">{error}</p>}
+        {error && <p role="alert" className="mb-3 text-sm text-destructive">{error}</p>}
         <Button type="submit" className="w-full" disabled={busy}>
           {busy ? "Connexion…" : "Se connecter"}
         </Button>

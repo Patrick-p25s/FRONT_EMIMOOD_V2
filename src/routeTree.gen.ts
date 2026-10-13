@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccueilRouteImport } from './routes/accueil'
-import { Route as AdministrationRouteImport } from './routes/administration'
 import { Route as ConnexionRouteImport } from './routes/connexion'
 import { Route as CoursRouteImport } from './routes/cours'
 import { Route as DelegueRouteImport } from './routes/delegue'
@@ -35,11 +34,6 @@ const IndexRoute = IndexRouteImport.update({
 const AccueilRoute = AccueilRouteImport.update({
   id: '/accueil',
   path: '/accueil',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdministrationRoute = AdministrationRouteImport.update({
-  id: '/administration',
-  path: '/administration',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConnexionRoute = ConnexionRouteImport.update({
@@ -116,7 +110,6 @@ const VideosRoute = VideosRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/accueil': typeof AccueilRoute
-  '/administration': typeof AdministrationRoute
   '/connexion': typeof ConnexionRoute
   '/cours': typeof CoursRoute
   '/delegue': typeof DelegueRoute
@@ -135,7 +128,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/accueil': typeof AccueilRoute
-  '/administration': typeof AdministrationRoute
   '/connexion': typeof ConnexionRoute
   '/cours': typeof CoursRoute
   '/delegue': typeof DelegueRoute
@@ -155,7 +147,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/accueil': typeof AccueilRoute
-  '/administration': typeof AdministrationRoute
   '/connexion': typeof ConnexionRoute
   '/cours': typeof CoursRoute
   '/delegue': typeof DelegueRoute
@@ -176,7 +167,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/accueil'
-    | '/administration'
     | '/connexion'
     | '/cours'
     | '/delegue'
@@ -195,7 +185,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/accueil'
-    | '/administration'
     | '/connexion'
     | '/cours'
     | '/delegue'
@@ -214,7 +203,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/accueil'
-    | '/administration'
     | '/connexion'
     | '/cours'
     | '/delegue'
@@ -234,7 +222,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccueilRoute: typeof AccueilRoute
-  AdministrationRoute: typeof AdministrationRoute
   ConnexionRoute: typeof ConnexionRoute
   CoursRoute: typeof CoursRoute
   DelegueRoute: typeof DelegueRoute
@@ -265,13 +252,6 @@ declare module '@tanstack/react-router' {
       path: '/accueil'
       fullPath: '/accueil'
       preLoaderRoute: typeof AccueilRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/administration': {
-      id: '/administration'
-      path: '/administration'
-      fullPath: '/administration'
-      preLoaderRoute: typeof AdministrationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/connexion': {
@@ -378,7 +358,6 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccueilRoute: AccueilRoute,
-  AdministrationRoute: AdministrationRoute,
   ConnexionRoute: ConnexionRoute,
   CoursRoute: CoursRoute,
   DelegueRoute: DelegueRoute,
