@@ -1,69 +1,176 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import { useNavigate, useRouterState } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { API_URL, ApiError, api, endSession, initCrossTab, onConnection, onRefreshed, onSessionEnd, refreshTokens } from "@/lib/api/client";
+import { accessExpiresIn, tokenStore } from "@/lib/api/tokenStore";
 
-export type Role = "student" | "teacher" | "super_admin";
-export type SessionUser = { name: string; email: string; role: Role; token?: string };
+export type Role = "student" | "teacher" | "moderator" | "super_admin";
+export type Statut = "active" | "suspend" | "inactive";
+export type SessionUser = { id: string; name: string; email: string; role: Role; statut: Statut; university_id: string | null };
+export type MeResponse = {
+  id: string;
+  university_id: string | null;
+  classe_id: string | null;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone_number: string | null;
+  avatar_url: string | null;
+  bio: string | null;
+  role: Role;
+  statut: Statut;
+  is_verified: boolean;
+  created_at: string;
+  updated_at: string;
+};
 
 export const roleLabels: Record<Role, string> = {
   student: "Étudiant",
   teacher: "Enseignant",
+  moderator: "Modérateur",
   super_admin: "Super administrateur",
 };
-export const roleHome: Record<Role, "/accueil" | "/enseignant" | "/administration"> = {
+export const statutLabels: Record<Statut, string> = { active: "Actif", suspend: "Suspendu", inactive: "Désactivé" };
+export const roleHome: Record<Role, "/accueil" | "/enseignant" | "/admin"> = {
   student: "/accueil",
   teacher: "/enseignant",
-  super_admin: "/administration",
+  moderator: "/accueil",
+  super_admin: "/admin",
 };
-
-// URL du backend FastAPI (ex. http://localhost:8000). Sans elle, connexion de démonstration.
-const API_URL = (import.meta.env["VITE_API_URL"] as string | undefined) ?? "";
-const KEY = "emimood-session";
+export const isDemo = !API_URL;
 
 type Ctx = {
   user: SessionUser | null;
   ready: boolean;
+  connectionLost: boolean;
   login: (email: string, password: string, demoRole: Role) => Promise<SessionUser>;
-  logout: () => void;
+  logout: () => Promise<void>;
+  changePassword: (current: string, next: string) => Promise<void>;
 };
 const AuthContext = createContext<Ctx | null>(null);
+
+const toUser = (m: MeResponse): SessionUser => ({
+  id: m.id,
+  name: `${m.first_name} ${m.last_name}`.trim(),
+  email: m.email,
+  role: m.role,
+  statut: m.statut,
+  university_id: m.university_id,
+});
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<SessionUser | null>(null);
   const [ready, setReady] = useState(false);
+  const [connectionLost, setConnectionLost] = useState(false);
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const pathname = useRouterState({ select: (s) => s.location.href });
+  const pathRef = useRef(pathname);
+  pathRef.current = pathname;
+  const userRef = useRef(user);
+  userRef.current = user;
+
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(KEY);
-      if (raw) setUser(JSON.parse(raw));
-    } catch {
-      /* ignore */
-    }
-    setReady(true);
-  }, []);
+    initCrossTab();
+    const offEnd = onSessionEnd((reason) => {
+      setUser(null);
+      queryClient.clear();
+      if (reason.kind === "expired") {
+        navigate({ to: "/connexion", search: { reason: "session_expired", next: pathRef.current }, replace: true });
+      } else if (reason.kind === "blocked") {
+        toast.error(reason.message);
+        navigate({ to: "/connexion", replace: true });
+      } else {
+        navigate({ to: "/connexion", replace: true });
+      }
+    });
+    const offConn = onConnection((lost) => {
+      setConnectionLost(lost);
+    });
+    // Après chaque rafraîchissement : re-vérifier le rôle et le statut
+    const offRef = onRefreshed(() => {
+      const prev = userRef.current;
+      if (!prev) return;
+      api<MeResponse>("/users/me")
+        .then((me) => {
+          if (me.role !== prev.role || me.statut !== "active") endSession({ kind: "blocked", message: "Votre compte a changé, reconnectez-vous." });
+        })
+        .catch(() => undefined);
+    });
+    const onVisible = () => {
+      if (document.visibilityState === "visible" && userRef.current && !isDemo && accessExpiresIn() < 60) void refreshTokens();
+    };
+    document.addEventListener("visibilitychange", onVisible);
+
+    (async () => {
+      if (isDemo || !tokenStore.getRefresh()) return setReady(true);
+      const ok = await refreshTokens(null);
+      if (ok) {
+        try {
+          setUser(toUser(await api<MeResponse>("/users/me")));
+        } catch {
+          /* géré par le client */
+        }
+      }
+      setReady(true);
+    })();
+    return () => {
+      offEnd();
+      offConn();
+      offRef();
+      document.removeEventListener("visibilitychange", onVisible);
+    };
+  }, [navigate, queryClient]);
 
   async function login(email: string, password: string, demoRole: Role) {
-    let u: SessionUser;
-    if (API_URL) {
-      // POST /api/v1/auth/login -> { access_token, user: { full_name, email, role } }
-      const res = await fetch(`${API_URL}/api/v1/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-      if (!res.ok) throw new Error("Email ou mot de passe incorrect.");
-      const data = await res.json();
-      u = { name: data.user.full_name, email: data.user.email, role: data.user.role, token: data.access_token };
-    } else {
-      const names: Record<Role, string> = { student: "Patrick Nomentsoa", teacher: "Hanta Rakoto", super_admin: "Administrateur EMIT" };
-      u = { name: names[demoRole], email, role: demoRole };
+    if (isDemo) {
+      const names: Record<Role, string> = {
+        student: "Patrick Nomentsoa",
+        teacher: "Hanta Rakoto",
+        moderator: "Modérateur EMIT",
+        super_admin: "Administrateur EMIT",
+      };
+      const u: SessionUser = { id: "demo", name: names[demoRole], email, role: demoRole, statut: "active", university_id: null };
+      setUser(u);
+      return u;
     }
-    localStorage.setItem(KEY, JSON.stringify(u));
+    try {
+      const t = await api<{ accessToken: string; refreshToken: string }>("/auth/login", {
+        method: "POST",
+        body: { email, password },
+        auth: false,
+      });
+      tokenStore.setRefresh(t.refreshToken);
+      tokenStore.setAccess(t.accessToken);
+    } catch (e) {
+      if (e instanceof ApiError && e.status === 429) throw e;
+      if (e instanceof ApiError && e.status === 0) throw e;
+      throw new Error("Email ou mot de passe incorrect");
+    }
+    const u = toUser(await api<MeResponse>("/users/me"));
     setUser(u);
     return u;
   }
-  function logout() {
-    localStorage.removeItem(KEY);
+
+  async function logout() {
+    const rt = tokenStore.getRefresh();
+    if (rt && !isDemo) {
+      await api("/auth/logout", { method: "POST", body: { refreshToken: rt }, auth: false }).catch(() => undefined);
+    }
+    endSession({ kind: "logout" });
     setUser(null);
   }
-  return <AuthContext.Provider value={{ user, ready, login, logout }}>{children}</AuthContext.Provider>;
+
+  async function changePassword(current: string, next: string) {
+    await api("/auth/change-password", { method: "POST", body: { current_password: current, new_password: next } });
+    toast.success("Mot de passe modifié. Reconnectez-vous sur tous vos appareils.");
+    endSession({ kind: "logout" });
+  }
+
+  return (
+    <AuthContext.Provider value={{ user, ready, connectionLost, login, logout, changePassword }}>{children}</AuthContext.Provider>
+  );
 }
 
 export function useAuth() {
@@ -72,13 +179,14 @@ export function useAuth() {
   return ctx;
 }
 
-/** Rôles autorisés par espace — à reproduire côté FastAPI avec require_role(). */
+/** Rôles autorisés par espace — le serveur FastAPI applique les vrais droits. */
 export const spaceAccess: Record<string, Role[]> = {
   "/enseignant": ["teacher"],
-  "/administration": ["super_admin"],
+  "/admin": ["super_admin"],
   "/delegue": ["student"],
 };
 export function canAccess(role: Role | undefined, path: string) {
-  const allowed = spaceAccess[path];
+  const key = Object.keys(spaceAccess).find((p) => path === p || path.startsWith(`${p}/`));
+  const allowed = key ? spaceAccess[key] : undefined;
   return !allowed || (!!role && allowed.includes(role));
 }

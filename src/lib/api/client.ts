@@ -108,7 +108,7 @@ export function refreshTokens(staleToken: string | null = tokenStore.getAccess()
     const locks = typeof navigator !== "undefined" ? navigator.locks : undefined;
     const ok = locks ? await locks.request("auth-refresh", run) : await run();
     if (ok) refreshListeners.forEach((l) => l());
-    else localEnd({ kind: "expired" }), post({ type: "logout" });
+    else endSession({ kind: "expired" });
     return ok;
   })().finally(() => {
     inflight = null;
