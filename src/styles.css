@@ -835,6 +835,427 @@ h1 {
 .detail-content h3 {
   margin: 20px 0 10px;
 }
+.admin-page {
+  --admin-ink: var(--foreground);
+  --admin-green: var(--success);
+  --admin-coral: var(--primary);
+  --admin-line: var(--border);
+  width: min(100%, 1600px);
+  margin: 0 auto;
+  padding: 25px 36px 48px;
+  color: var(--admin-ink);
+}
+.admin-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 13px;
+  border-bottom: 1px solid var(--admin-line);
+  color: var(--muted-foreground);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+}
+.admin-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--success);
+  letter-spacing: 0;
+  text-transform: none;
+}
+.admin-live i,
+.admin-status i {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: currentColor;
+}
+.admin-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 27px 0 25px;
+}
+.admin-kicker {
+  color: var(--admin-green);
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 1.15px;
+  text-transform: uppercase;
+}
+.admin-hero h1 {
+  margin-top: 7px;
+  color: var(--admin-ink);
+  font-size: 30px;
+  letter-spacing: 0;
+}
+.admin-hero > div > p:last-child,
+.admin-section-heading > div > p:last-child {
+  margin-top: 6px;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 1.65;
+}
+.admin-hero > button,
+.admin-table-title > button,
+.admin-section-heading > button {
+  flex: 0 0 auto;
+}
+.admin-hero > button {
+  min-height: 42px;
+  box-shadow: 0 5px 14px oklch(0.45 0.14 30 / 0.16);
+}
+.admin-hero button svg,
+.admin-table-title button svg,
+.admin-section-heading button svg,
+.admin-path button svg {
+  width: 16px;
+  height: 16px;
+}
+.admin-notice {
+  margin: -5px 0 18px;
+  padding: 11px 14px;
+  border: 1px solid color-mix(in oklab, var(--success) 45%, var(--border));
+  border-radius: 6px;
+  background: color-mix(in oklab, var(--success) 12%, var(--card));
+  color: var(--success);
+  font-size: 12px;
+}
+.admin-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 23px;
+}
+.admin-metric {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--admin-line);
+  border-radius: 6px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+.admin-metric-icon {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 6px;
+  background: color-mix(in oklab, var(--success) 14%, var(--card));
+  color: var(--admin-green);
+}
+.admin-metric-icon svg {
+  width: 18px;
+  height: 18px;
+}
+.admin-metric:nth-child(2) .admin-metric-icon {
+  background: color-mix(in oklab, var(--accent) 70%, var(--card));
+  color: var(--foreground);
+}
+.admin-metric:nth-child(3) .admin-metric-icon {
+  background: color-mix(in oklab, var(--warm) 75%, var(--card));
+  color: var(--primary);
+}
+.admin-metric.attention .admin-metric-icon {
+  background: color-mix(in oklab, var(--primary) 14%, var(--card));
+  color: var(--admin-coral);
+}
+.admin-metric > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+.admin-metric strong {
+  color: var(--admin-ink);
+  font-size: 23px;
+  font-weight: 750;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+.admin-metric > div > span {
+  margin-top: 5px;
+  font-size: 11px;
+  font-weight: 650;
+}
+.admin-metric small {
+  margin-top: 4px;
+  color: var(--muted-foreground);
+  font-size: 10px;
+  line-height: 1.4;
+}
+.admin-workspace {
+  display: grid;
+  grid-template-columns: 205px minmax(0, 1fr);
+  align-items: start;
+  gap: 24px;
+}
+.admin-nav {
+  position: sticky;
+  top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  border: 1px solid var(--admin-line);
+  border-radius: 6px;
+  background: var(--card);
+}
+.admin-nav > button {
+  display: flex;
+  min-height: 39px;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  transition:
+    background 140ms ease,
+    color 140ms ease;
+}
+.admin-nav > button:hover {
+  background: var(--muted);
+  color: var(--admin-ink);
+}
+.admin-nav > button.selected {
+  background: color-mix(in oklab, var(--success) 14%, var(--card));
+  color: var(--admin-green);
+  font-weight: 700;
+}
+.admin-nav > button svg {
+  flex: 0 0 auto;
+}
+.admin-nav-help {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 4px 8px;
+  margin: 12px 2px 2px;
+  padding: 12px 9px 7px;
+  border-top: 1px solid var(--admin-line);
+  color: var(--admin-green);
+}
+.admin-nav-help svg {
+  grid-row: span 2;
+}
+.admin-nav-help strong {
+  color: var(--admin-ink);
+  font-size: 10px;
+}
+.admin-nav-help span {
+  color: var(--muted-foreground);
+  font-size: 9px;
+  line-height: 1.55;
+}
+.admin-content {
+  min-width: 0;
+}
+.admin-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 2px 0 14px;
+}
+.admin-section-heading h2 {
+  margin-top: 4px;
+  color: var(--admin-ink);
+  font-size: 19px;
+  font-weight: 750;
+}
+.admin-section-heading > div > p:last-child {
+  margin-top: 4px;
+  font-size: 11px;
+}
+.admin-table-card {
+  min-width: 0;
+  overflow: hidden;
+  margin-bottom: 25px;
+  border: 1px solid var(--admin-line);
+  border-radius: 6px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+.admin-table-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 17px;
+  border-bottom: 1px solid var(--admin-line);
+}
+.admin-table-title h3 {
+  color: var(--admin-ink);
+  font-size: 13px;
+  font-weight: 750;
+}
+.admin-table-title span {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
+.admin-table-wrap {
+  overflow-x: auto;
+  scrollbar-color: var(--border) transparent;
+}
+.admin-table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  white-space: nowrap;
+}
+.admin-table-wrap th {
+  padding: 10px 15px;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 0.65px;
+  text-transform: uppercase;
+}
+.admin-table-wrap td {
+  padding: 12px 15px;
+  border-top: 1px solid var(--border);
+  color: var(--admin-ink);
+  font-size: 11px;
+}
+.admin-table-wrap tbody tr {
+  transition: background 120ms ease;
+}
+.admin-table-wrap tbody tr:hover {
+  background: var(--accent);
+}
+.admin-table-wrap td strong,
+.admin-table-wrap td > span:not(.admin-status) {
+  display: block;
+  font-weight: 650;
+}
+.admin-table-wrap td > span:not(.admin-status) {
+  margin-top: 3px;
+  color: var(--muted-foreground);
+  font-size: 10px;
+  font-weight: 450;
+}
+.admin-table-wrap td i:not(.admin-status i) {
+  padding: 0 3px;
+  color: var(--muted-foreground);
+  font-style: normal;
+}
+.admin-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 650;
+}
+.admin-status.active {
+  background: color-mix(in oklab, var(--success) 14%, var(--card));
+  color: var(--success);
+}
+.admin-status.pending {
+  background: color-mix(in oklab, var(--warm) 75%, var(--card));
+  color: var(--primary);
+}
+.admin-status.disabled {
+  background: var(--muted);
+  color: var(--muted-foreground);
+}
+.admin-status i {
+  width: 6px;
+  height: 6px;
+}
+.admin-action {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+}
+.admin-action:hover {
+  background: var(--muted);
+  color: var(--admin-ink);
+}
+.admin-search {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--admin-line);
+  color: var(--muted-foreground);
+}
+.admin-search input {
+  height: 34px;
+  border-color: var(--admin-line);
+  box-shadow: none;
+  font-size: 11px;
+}
+.admin-empty {
+  padding: 24px !important;
+  color: var(--muted-foreground) !important;
+  text-align: center;
+}
+.admin-users-head {
+  margin-top: 27px;
+}
+.admin-path {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 1px 0 0 229px;
+  padding: 15px 17px;
+  border: 1px solid color-mix(in oklab, var(--success) 35%, var(--border));
+  border-radius: 6px;
+  background: color-mix(in oklab, var(--success) 10%, var(--card));
+}
+.admin-path > div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--admin-green);
+}
+.admin-path > div > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.admin-path strong {
+  color: var(--admin-ink);
+  font-size: 11px;
+}
+.admin-path span {
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
+.admin-path > button {
+  flex: 0 0 auto;
+  color: var(--admin-green);
+  font-size: 11px;
+}
+.admin-page button:focus-visible,
+.admin-page input:focus-visible {
+  outline: 2px solid var(--admin-green);
+  outline-offset: 2px;
+}
 @media (min-width: 1500px) {
   .page {
     padding-top: 38px;
@@ -881,6 +1302,31 @@ h1 {
   }
 }
 @media (max-width: 950px) {
+  .admin-page {
+    padding-inline: 25px;
+  }
+  .admin-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .admin-workspace {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .admin-nav {
+    position: static;
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 6px;
+  }
+  .admin-nav > button {
+    flex: 0 0 auto;
+  }
+  .admin-nav-help {
+    display: none;
+  }
+  .admin-path {
+    margin-left: 0;
+  }
   .home-grid {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -900,6 +1346,103 @@ h1 {
   }
 }
 @media (max-width: 700px) {
+  .admin-page {
+    padding: 16px 15px 35px;
+  }
+  .admin-topline {
+    padding-bottom: 10px;
+    font-size: 9px;
+  }
+  .admin-hero {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+    padding: 22px 0 18px;
+  }
+  .admin-hero h1 {
+    font-size: 25px;
+  }
+  .admin-hero > div > p:last-child {
+    max-width: 390px;
+    font-size: 12px;
+  }
+  .admin-hero > button {
+    width: 100%;
+    justify-content: center;
+  }
+  .admin-metrics {
+    gap: 8px;
+    margin-bottom: 17px;
+  }
+  .admin-metric {
+    gap: 9px;
+    padding: 11px;
+  }
+  .admin-metric-icon {
+    width: 32px;
+    height: 32px;
+  }
+  .admin-metric-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+  .admin-metric strong {
+    font-size: 20px;
+  }
+  .admin-metric > div > span {
+    font-size: 10px;
+  }
+  .admin-metric small {
+    font-size: 9px;
+  }
+  .admin-nav {
+    margin-inline: -2px;
+  }
+  .admin-nav > button {
+    min-height: 36px;
+    gap: 7px;
+    padding-inline: 9px;
+    font-size: 10px;
+  }
+  .admin-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .admin-section-heading h2 {
+    font-size: 17px;
+  }
+  .admin-section-heading > button {
+    min-height: 34px;
+  }
+  .admin-table-card {
+    margin-bottom: 21px;
+  }
+  .admin-table-title {
+    padding: 12px;
+  }
+  .admin-table-wrap table {
+    min-width: 600px;
+  }
+  .admin-users-head {
+    margin-top: 23px;
+  }
+  .admin-search {
+    padding: 8px 10px;
+  }
+  .admin-path {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 11px;
+    padding: 13px;
+  }
+  .admin-path span {
+    line-height: 1.5;
+  }
+  .admin-path > button {
+    padding-left: 0;
+  }
   .sidebar {
     display: none;
   }

@@ -9,4 +9,5 @@ export * from "./PublicationsPage";
 export * from "./ResourcesPage";
 export * from "./SearchPage";
 export * from "./SettingsPage";
+export * from "./SuperAdministrationPage";
 export * from "./VideosPage";
