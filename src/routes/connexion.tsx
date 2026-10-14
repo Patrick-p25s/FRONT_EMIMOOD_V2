@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { useAuth, roleHome, roleLabels, isDemo, type Role } from "@/lib/auth";
 import { safeNext } from "@/lib/api/list";
 
-type LoginSearch = { next?: string; reason?: string };
+type LoginSearch = { next?: string | undefined; reason?: string | undefined };
 
 export const Route = createFileRoute("/connexion")({
   head: () => ({
@@ -20,8 +20,8 @@ export const Route = createFileRoute("/connexion")({
     ],
   }),
   validateSearch: (s: Record<string, unknown>): LoginSearch => ({
-    next: typeof s.next === "string" ? s.next : undefined,
-    reason: typeof s.reason === "string" ? s.reason : undefined,
+    next: typeof s["next"] === "string" ? s["next"] : undefined,
+    reason: typeof s["reason"] === "string" ? s["reason"] : undefined,
   }),
   component: LoginPage,
 });

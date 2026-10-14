@@ -349,7 +349,7 @@ export function OnceSecretDialog({ secret, title, onClose }: { secret: string | 
 export function SecretField({ load, label = "Code d’invitation" }: { load: () => Promise<string>; label?: string }) {
   const [value, setValue] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const timer = useRef<ReturnType<typeof setTimeout>>();
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   useEffect(() => () => clearTimeout(timer.current), []);
   const show = async () => {
     setBusy(true);
@@ -406,7 +406,7 @@ export function SimpleSelect({
   className?: string;
 }) {
   return (
-    <Select value={value ?? (allLabel ? ALL : "")} onValueChange={(v) => onChange(v === ALL ? undefined : v)} disabled={disabled}>
+    <Select value={value ?? (allLabel ? ALL : "")} onValueChange={(v) => onChange(v === ALL ? undefined : v)} disabled={disabled ?? false}>
       <SelectTrigger id={id} className={cn("w-full sm:w-52", className)} aria-label={placeholder}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>

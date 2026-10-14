@@ -11,7 +11,7 @@ export function useAdminList<T>(resource: Resource, path: string, params: Params
   return useQuery({
     queryKey: adminKeys.list(resource, params),
     queryFn: async () =>
-      normalizeList<T>(await api<Paginated<T> | T[]>(path, { query: params }), Number(params.page ?? 1), Number(params.page_size ?? 20)),
+      normalizeList<T>(await api<Paginated<T> | T[]>(path, { query: params }), Number(params['page'] ?? 1), Number(params['page_size'] ?? 20)),
     placeholderData: keepPreviousData,
     enabled,
   });

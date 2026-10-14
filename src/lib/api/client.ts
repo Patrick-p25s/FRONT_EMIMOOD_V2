@@ -6,7 +6,7 @@ const GENERIC = "Une erreur est survenue, réessayez";
 export class ApiError extends Error {
   status: number;
   detail: string;
-  fieldErrors?: Record<string, string>;
+  fieldErrors?: Record<string, string> | undefined;
   constructor(status: number, detail: string, fieldErrors?: Record<string, string>) {
     super(detail);
     this.status = status;
@@ -170,7 +170,7 @@ export async function api<T>(path: string, opts: Opts = {}): Promise<T> {
         method,
         headers,
         credentials: "omit",
-        body: body === undefined ? undefined : JSON.stringify(body),
+        body: body === undefined ? null : JSON.stringify(body),
       });
       return { res, token };
     } catch {
