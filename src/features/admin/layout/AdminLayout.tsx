@@ -103,7 +103,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
                     <li key={it.to}>
                       <Link
                         to={it.to}
-                        search={(p) => ({ u: (p as { u?: string }).u })}
+                        search={(p: { u?: string | undefined }) => ({ u: p.u })}
                         aria-current={active ? "page" : undefined}
                         className={cn(
                           "flex items-center gap-2.5 rounded-md px-2 py-2 text-sm font-medium no-underline transition-colors",

@@ -2,19 +2,19 @@ import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 
 export type AdminSearch = {
-  u?: string;
-  q?: string;
-  page?: number;
-  page_size?: number;
-  statut?: string;
-  role?: string;
-  classe?: string;
-  mention?: string;
-  level?: string;
-  year?: string;
-  univ?: string;
-  active?: string;
-  tab?: string;
+  u?: string | undefined;
+  q?: string | undefined;
+  page?: number | undefined;
+  page_size?: number | undefined;
+  statut?: string | undefined;
+  role?: string | undefined;
+  classe?: string | undefined;
+  mention?: string | undefined;
+  level?: string | undefined;
+  year?: string | undefined;
+  univ?: string | undefined;
+  active?: string | undefined;
+  tab?: string | undefined;
 };
 
 /** Filtres, page et recherche dans l'URL (liens partageables). */
