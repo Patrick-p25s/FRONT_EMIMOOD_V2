@@ -1,15 +1,29 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { clearTokens, getRefreshToken, setTokens } from "@/api/client";
-import {
-  identityApi,
-  type RegisterPayload,
-  type Role,
-  type User,
-  type UserContext,
-} from "@/api/identity";
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import { useNavigate, useRouterState } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { API_URL, ApiError, api, endSession, initCrossTab, onConnection, onRefreshed, onSessionEnd, refreshTokens } from "@/lib/api/client";
+import { accessExpiresIn, tokenStore } from "@/lib/api/tokenStore";
 
-export type { Role } from "@/api/identity";
-export type SessionUser = User & { name: string };
+export type Role = "student" | "teacher" | "moderator" | "super_admin";
+export type Statut = "active" | "suspend" | "inactive";
+export type SessionUser = { id: string; name: string; email: string; role: Role; statut: Statut; university_id: string | null };
+export type MeResponse = {
+  id: string;
+  university_id: string | null;
+  classe_id: string | null;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone_number: string | null;
+  avatar_url: string | null;
+  bio: string | null;
+  role: Role;
+  statut: Statut;
+  is_verified: boolean;
+  created_at: string;
+  updated_at: string;
+};
 
 export const roleLabels: Record<Role, string> = {
   student: "Étudiant",
@@ -17,98 +31,145 @@ export const roleLabels: Record<Role, string> = {
   moderator: "Modérateur",
   super_admin: "Super administrateur",
 };
-export const roleHome: Record<Role, "/accueil" | "/enseignant" | "/administration"> = {
+export const statutLabels: Record<Statut, string> = { active: "Actif", suspend: "Suspendu", inactive: "Désactivé" };
+export const roleHome: Record<Role, "/accueil" | "/enseignant" | "/admin"> = {
   student: "/accueil",
   teacher: "/enseignant",
-  moderator: "/enseignant",
-  super_admin: "/administration",
+  moderator: "/accueil",
+  super_admin: "/admin",
 };
+export const isDemo = !API_URL;
 
 type Ctx = {
   user: SessionUser | null;
-  context: UserContext | null;
   ready: boolean;
-  login: (email: string, password: string) => Promise<SessionUser>;
-  register: (payload: RegisterPayload) => Promise<SessionUser>;
+  connectionLost: boolean;
+  login: (email: string, password: string, demoRole: Role) => Promise<SessionUser>;
   logout: () => Promise<void>;
-  refreshProfile: () => Promise<void>;
-  updateProfile: (
-    data: Pick<User, "first_name" | "last_name" | "phone_number" | "avatar_url" | "bio">,
-  ) => Promise<void>;
+  changePassword: (current: string, next: string) => Promise<void>;
 };
 const AuthContext = createContext<Ctx | null>(null);
 
-function toSessionUser(user: User): SessionUser {
-  return { ...user, name: `${user.first_name} ${user.last_name}`.trim() };
-}
+const toUser = (m: MeResponse): SessionUser => ({
+  id: m.id,
+  name: `${m.first_name} ${m.last_name}`.trim(),
+  email: m.email,
+  role: m.role,
+  statut: m.statut,
+  university_id: m.university_id,
+});
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<SessionUser | null>(null);
-  const [context, setContext] = useState<UserContext | null>(null);
   const [ready, setReady] = useState(false);
-
-  const loadProfile = async () => {
-    const profile = await identityApi.me();
-    const sessionUser = toSessionUser(profile);
-    const academicContext = await identityApi.context(profile);
-    setUser(sessionUser);
-    setContext(academicContext);
-    return sessionUser;
-  };
+  const [connectionLost, setConnectionLost] = useState(false);
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const pathname = useRouterState({ select: (s) => s.location.href });
+  const pathRef = useRef(pathname);
+  pathRef.current = pathname;
+  const userRef = useRef(user);
+  userRef.current = user;
 
   useEffect(() => {
-    loadProfile()
-      .catch(() => clearTokens())
-      .finally(() => setReady(true));
-  }, []);
+    initCrossTab();
+    const offEnd = onSessionEnd((reason) => {
+      setUser(null);
+      queryClient.clear();
+      if (reason.kind === "expired") {
+        navigate({ to: "/connexion", search: { reason: "session_expired", next: pathRef.current }, replace: true });
+      } else if (reason.kind === "blocked") {
+        toast.error(reason.message);
+        navigate({ to: "/connexion", replace: true });
+      } else {
+        navigate({ to: "/connexion", replace: true });
+      }
+    });
+    const offConn = onConnection((lost) => {
+      setConnectionLost(lost);
+    });
+    // Après chaque rafraîchissement : re-vérifier le rôle et le statut
+    const offRef = onRefreshed(() => {
+      const prev = userRef.current;
+      if (!prev) return;
+      api<MeResponse>("/users/me")
+        .then((me) => {
+          if (me.role !== prev.role || me.statut !== "active") endSession({ kind: "blocked", message: "Votre compte a changé, reconnectez-vous." });
+        })
+        .catch(() => undefined);
+    });
+    const onVisible = () => {
+      if (document.visibilityState === "visible" && userRef.current && !isDemo && accessExpiresIn() < 60) void refreshTokens();
+    };
+    document.addEventListener("visibilitychange", onVisible);
 
-  async function login(email: string, password: string) {
-    const tokens = await identityApi.login(email, password);
-    setTokens(tokens);
-    try {
-      return await loadProfile();
-    } catch (error) {
-      clearTokens();
-      throw error;
-    }
-  }
+    (async () => {
+      if (isDemo || !tokenStore.getRefresh()) return setReady(true);
+      const ok = await refreshTokens(null);
+      if (ok) {
+        try {
+          setUser(toUser(await api<MeResponse>("/users/me")));
+        } catch {
+          /* géré par le client */
+        }
+      }
+      setReady(true);
+    })();
+    return () => {
+      offEnd();
+      offConn();
+      offRef();
+      document.removeEventListener("visibilitychange", onVisible);
+    };
+  }, [navigate, queryClient]);
 
-  async function register(payload: RegisterPayload) {
-    const tokens = await identityApi.register(payload);
-    setTokens(tokens);
-    try {
-      return await loadProfile();
-    } catch (error) {
-      clearTokens();
-      throw error;
+  async function login(email: string, password: string, demoRole: Role) {
+    if (isDemo) {
+      const names: Record<Role, string> = {
+        student: "Patrick Nomentsoa",
+        teacher: "Hanta Rakoto",
+        moderator: "Modérateur EMIT",
+        super_admin: "Administrateur EMIT",
+      };
+      const u: SessionUser = { id: "demo", name: names[demoRole], email, role: demoRole, statut: "active", university_id: null };
+      setUser(u);
+      return u;
     }
+    try {
+      const t = await api<{ accessToken: string; refreshToken: string }>("/auth/login", {
+        method: "POST",
+        body: { email, password },
+        auth: false,
+      });
+      tokenStore.setRefresh(t.refreshToken);
+      tokenStore.setAccess(t.accessToken);
+    } catch (e) {
+      if (e instanceof ApiError && e.status === 429) throw e;
+      if (e instanceof ApiError && e.status === 0) throw e;
+      throw new Error("Email ou mot de passe incorrect");
+    }
+    const u = toUser(await api<MeResponse>("/users/me"));
+    setUser(u);
+    return u;
   }
 
   async function logout() {
-    try {
-      await identityApi.logout(getRefreshToken());
-    } finally {
-      clearTokens();
-      setUser(null);
-      setContext(null);
+    const rt = tokenStore.getRefresh();
+    if (rt && !isDemo) {
+      await api("/auth/logout", { method: "POST", body: { refreshToken: rt }, auth: false }).catch(() => undefined);
     }
+    endSession({ kind: "logout" });
+    setUser(null);
   }
 
-  async function refreshProfile() {
-    await loadProfile();
-  }
-  async function updateProfile(
-    data: Pick<User, "first_name" | "last_name" | "phone_number" | "avatar_url" | "bio">,
-  ) {
-    setUser(toSessionUser(await identityApi.updateMe(data)));
+  async function changePassword(current: string, next: string) {
+    await api("/auth/change-password", { method: "POST", body: { current_password: current, new_password: next } });
+    toast.success("Mot de passe modifié. Reconnectez-vous sur tous vos appareils.");
+    endSession({ kind: "logout" });
   }
 
   return (
-    <AuthContext.Provider
-      value={{ user, context, ready, login, register, logout, refreshProfile, updateProfile }}
-    >
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={{ user, ready, connectionLost, login, logout, changePassword }}>{children}</AuthContext.Provider>
   );
 }
 
@@ -118,12 +179,14 @@ export function useAuth() {
   return ctx;
 }
 
+/** Rôles autorisés par espace — le serveur FastAPI applique les vrais droits. */
 export const spaceAccess: Record<string, Role[]> = {
-  "/enseignant": ["teacher", "moderator"],
-  "/administration": ["super_admin"],
+  "/enseignant": ["teacher"],
+  "/admin": ["super_admin"],
   "/delegue": ["student"],
 };
 export function canAccess(role: Role | undefined, path: string) {
-  const allowed = spaceAccess[path];
+  const key = Object.keys(spaceAccess).find((p) => path === p || path.startsWith(`${p}/`));
+  const allowed = key ? spaceAccess[key] : undefined;
   return !allowed || (!!role && allowed.includes(role));
 }

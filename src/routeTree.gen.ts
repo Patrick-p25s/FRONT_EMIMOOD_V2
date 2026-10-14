@@ -11,13 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccueilRouteImport } from './routes/accueil'
-import { Route as AdministrationRouteImport } from './routes/administration'
 import { Route as ConnexionRouteImport } from './routes/connexion'
 import { Route as CoursRouteImport } from './routes/cours'
 import { Route as DelegueRouteImport } from './routes/delegue'
 import { Route as EnseignantRouteImport } from './routes/enseignant'
 import { Route as EvaluationsRouteImport } from './routes/evaluations'
-import { Route as InscriptionRouteImport } from './routes/inscription'
 import { Route as MessagesRouteImport } from './routes/messages'
 import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as OpportunitesRouteImport } from './routes/opportunites'
@@ -36,11 +34,6 @@ const IndexRoute = IndexRouteImport.update({
 const AccueilRoute = AccueilRouteImport.update({
   id: '/accueil',
   path: '/accueil',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdministrationRoute = AdministrationRouteImport.update({
-  id: '/administration',
-  path: '/administration',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConnexionRoute = ConnexionRouteImport.update({
@@ -66,11 +59,6 @@ const EnseignantRoute = EnseignantRouteImport.update({
 const EvaluationsRoute = EvaluationsRouteImport.update({
   id: '/evaluations',
   path: '/evaluations',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InscriptionRoute = InscriptionRouteImport.update({
-  id: '/inscription',
-  path: '/inscription',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MessagesRoute = MessagesRouteImport.update({
@@ -122,13 +110,11 @@ const VideosRoute = VideosRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/accueil': typeof AccueilRoute
-  '/administration': typeof AdministrationRoute
   '/connexion': typeof ConnexionRoute
   '/cours': typeof CoursRoute
   '/delegue': typeof DelegueRoute
   '/enseignant': typeof EnseignantRoute
   '/evaluations': typeof EvaluationsRoute
-  '/inscription': typeof InscriptionRoute
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
   '/opportunites': typeof OpportunitesRoute
@@ -142,13 +128,11 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/accueil': typeof AccueilRoute
-  '/administration': typeof AdministrationRoute
   '/connexion': typeof ConnexionRoute
   '/cours': typeof CoursRoute
   '/delegue': typeof DelegueRoute
   '/enseignant': typeof EnseignantRoute
   '/evaluations': typeof EvaluationsRoute
-  '/inscription': typeof InscriptionRoute
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
   '/opportunites': typeof OpportunitesRoute
@@ -163,13 +147,11 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/accueil': typeof AccueilRoute
-  '/administration': typeof AdministrationRoute
   '/connexion': typeof ConnexionRoute
   '/cours': typeof CoursRoute
   '/delegue': typeof DelegueRoute
   '/enseignant': typeof EnseignantRoute
   '/evaluations': typeof EvaluationsRoute
-  '/inscription': typeof InscriptionRoute
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
   '/opportunites': typeof OpportunitesRoute
@@ -185,13 +167,11 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/accueil'
-    | '/administration'
     | '/connexion'
     | '/cours'
     | '/delegue'
     | '/enseignant'
     | '/evaluations'
-    | '/inscription'
     | '/messages'
     | '/notifications'
     | '/opportunites'
@@ -205,13 +185,11 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/accueil'
-    | '/administration'
     | '/connexion'
     | '/cours'
     | '/delegue'
     | '/enseignant'
     | '/evaluations'
-    | '/inscription'
     | '/messages'
     | '/notifications'
     | '/opportunites'
@@ -225,13 +203,11 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/accueil'
-    | '/administration'
     | '/connexion'
     | '/cours'
     | '/delegue'
     | '/enseignant'
     | '/evaluations'
-    | '/inscription'
     | '/messages'
     | '/notifications'
     | '/opportunites'
@@ -246,13 +222,11 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccueilRoute: typeof AccueilRoute
-  AdministrationRoute: typeof AdministrationRoute
   ConnexionRoute: typeof ConnexionRoute
   CoursRoute: typeof CoursRoute
   DelegueRoute: typeof DelegueRoute
   EnseignantRoute: typeof EnseignantRoute
   EvaluationsRoute: typeof EvaluationsRoute
-  InscriptionRoute: typeof InscriptionRoute
   MessagesRoute: typeof MessagesRoute
   NotificationsRoute: typeof NotificationsRoute
   OpportunitesRoute: typeof OpportunitesRoute
@@ -278,13 +252,6 @@ declare module '@tanstack/react-router' {
       path: '/accueil'
       fullPath: '/accueil'
       preLoaderRoute: typeof AccueilRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/administration': {
-      id: '/administration'
-      path: '/administration'
-      fullPath: '/administration'
-      preLoaderRoute: typeof AdministrationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/connexion': {
@@ -320,13 +287,6 @@ declare module '@tanstack/react-router' {
       path: '/evaluations'
       fullPath: '/evaluations'
       preLoaderRoute: typeof EvaluationsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/inscription': {
-      id: '/inscription'
-      path: '/inscription'
-      fullPath: '/inscription'
-      preLoaderRoute: typeof InscriptionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/messages': {
@@ -398,13 +358,11 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccueilRoute: AccueilRoute,
-  AdministrationRoute: AdministrationRoute,
   ConnexionRoute: ConnexionRoute,
   CoursRoute: CoursRoute,
   DelegueRoute: DelegueRoute,
   EnseignantRoute: EnseignantRoute,
   EvaluationsRoute: EvaluationsRoute,
-  InscriptionRoute: InscriptionRoute,
   MessagesRoute: MessagesRoute,
   NotificationsRoute: NotificationsRoute,
   OpportunitesRoute: OpportunitesRoute,

@@ -2,11 +2,9 @@ import { Check, Monitor, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/emimood/molecules/Heading";
 import { type Theme, useTheme } from "@/components/emimood/theme";
-import { useAuth } from "@/lib/auth";
 
 export function SettingsPage() {
   const { theme, setTheme } = useTheme();
-  const { context } = useAuth();
   return (
     <div className="page">
       <Heading title="Paramètres" subtitle="Un espace qui vous ressemble." />
@@ -46,19 +44,15 @@ export function SettingsPage() {
       </section>
       <section className="settings-section">
         <h2>Mon établissement</h2>
-        <p>{context?.university?.name ?? "Aucune université associée"}</p>
-        {context?.classe && (
-          <p className="small mt-2">
-            {[context.mention?.name, context.level?.name, context.classe.name, context.academicYear?.name]
-              .filter(Boolean)
-              .join(" · ")}
-          </p>
-        )}
+        <p>EMIT — Fianarantsoa</p>
+        <p className="small mt-2">L3 Informatique · Semestre 5</p>
       </section>
       <section className="settings-section">
         <h2>À propos</h2>
         <p className="small">
-          EMIMood · Connecté à votre compte universitaire.
+          EMIMood · Version de démonstration
+          <br />
+          Les comptes et contenus réels ne sont pas encore configurés.
         </p>
       </section>
     </div>

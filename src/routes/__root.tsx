@@ -1,7 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
-  Link,
   createRootRouteWithContext,
   useRouter,
   useRouterState,
@@ -14,30 +13,14 @@ import { useEffect, type ReactNode } from "react";
 
 import { ThemeProvider } from "@/components/emimood/theme";
 import { Shell } from "@/components/emimood/templates";
+import { NotFoundView, FullScreenLoader } from "@/components/emimood/molecules/NotFoundView";
+import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider, useAuth, canAccess } from "@/lib/auth";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page introuvable</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          La page recherchée n’existe pas ou a été déplacée.
-        </p>
-        <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Retour à l’accueil
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
+  return <NotFoundView />;
 }
 
 function ErrorComponent({ error, reset }: ErrorComponentProps) {
@@ -132,27 +115,37 @@ function RootComponent() {
       <ThemeProvider>
         <AuthProvider>
           <AppFrame />
+          <Toaster richColors position="top-right" />
         </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );
 }
 
-const publicPaths = ["/", "/connexion", "/inscription"];
+const publicPaths = ["/", "/connexion"];
 
 function AppFrame() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const { user, ready } = useAuth();
+  const href = useRouterState({ select: (s) => s.location.href });
+  const { user, ready, connectionLost } = useAuth();
   const navigate = useNavigate();
   const isPublic = publicPaths.includes(pathname);
+  const isAdmin = pathname === "/admin" || pathname.startsWith("/admin/");
   useEffect(() => {
-    if (ready && !user && !isPublic) navigate({ to: "/connexion", replace: true });
-  }, [ready, user, isPublic, navigate]);
+    if (ready && !user && !isPublic) navigate({ to: "/connexion", search: { next: href }, replace: true });
+  }, [ready, user, isPublic, navigate, href]);
 
   if (isPublic) return <Outlet />;
-  if (!ready || !user) return null;
+  if (!ready || !user) return <FullScreenLoader label={connectionLost ? "Connexion perdue, nouvelle tentative…" : "Chargement…"} />;
+  // L'espace admin a son propre layout et son propre garde (aucun Shell utilisateur).
+  if (isAdmin) return <Outlet />;
   return (
     <Shell>
+      {connectionLost && (
+        <div role="status" className="mb-3 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+          Connexion perdue, nouvelle tentative…
+        </div>
+      )}
       {canAccess(user.role, pathname) ? (
         <Outlet />
       ) : (

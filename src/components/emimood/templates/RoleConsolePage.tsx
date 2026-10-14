@@ -6,11 +6,7 @@ import { SectionPanel } from "@/components/emimood/organisms/SectionPanel";
 export function RoleConsolePage({ config }: { config: RoleConsole }) {
   return (
     <div className="page">
-      <Heading
-        title={config.title}
-        subtitle={config.subtitle}
-        action={<span className="tag">{config.badge}</span>}
-      />
+      <Heading title={config.title} subtitle={config.subtitle} action={<span className="tag">{config.badge}</span>} />
       <p className="small mb-4">Démonstration : les actions ne sont pas enregistrées.</p>
       <Tabs defaultValue={config.sections[0]?.key ?? ""}>
         <TabsList className="mb-4 h-auto flex-wrap justify-start">

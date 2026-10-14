@@ -1,3 +1,4 @@
+
 export const initialPosts = [
   {
     id: 1,

@@ -1,15 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import {
-  ArrowUpRight,
-  BookOpen,
-  CalendarDays,
-  ChevronRight,
-  ClipboardCheck,
-  Clock3,
-  FileText,
-  Files,
-  Sparkles,
-} from "lucide-react";
+import { ArrowUpRight, BookOpen, CalendarDays, ChevronRight, ClipboardCheck, Clock3, FileText, Files, Sparkles } from "lucide-react";
 import campus from "@/assets/campus-community.jpg";
 import { Heading } from "@/components/emimood/molecules/Heading";
 import { SectionHeading } from "@/components/emimood/molecules/SectionHeading";

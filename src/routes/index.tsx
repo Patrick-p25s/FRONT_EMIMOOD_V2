@@ -54,7 +54,7 @@ const features = [
   },
 ];
 
-function Landing() {
+function   Landing() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="mx-auto flex max-w-6xl items-center justify-between px-5 py-5">
@@ -87,9 +87,6 @@ function Landing() {
               <Link to="/connexion">
                 Accéder à mon espace <ArrowRight />
               </Link>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link to="/inscription">Créer un compte</Link>
             </Button>
           </div>
           <p className="mt-3 text-xs text-muted-foreground">
