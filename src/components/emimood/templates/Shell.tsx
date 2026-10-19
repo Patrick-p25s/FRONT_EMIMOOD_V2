@@ -1,8 +1,27 @@
 import type { ReactNode } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Bell, Building2, ChevronDown, GraduationCap, Home, LogOut, MessageSquare, Search, Settings, ShieldCheck, UserRound } from "lucide-react";
+import {
+  Bell,
+  Building2,
+  ChevronDown,
+  GraduationCap,
+  Home,
+  LogOut,
+  MessageSquare,
+  Search,
+  Settings,
+  ShieldCheck,
+  UserRound,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { roleLabels, useAuth } from "@/lib/auth";
 import { links } from "@/components/emimood/templates/navLinks";
 import { Avatar } from "@/components/emimood/atoms/Avatar";
@@ -62,51 +81,53 @@ export function Shell({ children }: { children: ReactNode }) {
           </div>
           <ChevronDown size={13} />
         </div>
-        <p className="nav-label">Mon espace</p>
-        <nav>
-          {links.slice(0, 7).map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              activeOptions={{ exact: true }}
-              activeProps={{ className: "active" }}
-              className="nav-item"
-            >
-              <item.icon />
-              {item.label}
-              {item.to === "/evaluations" && <span className="nav-badge">2</span>}
-            </Link>
-          ))}
-        </nav>
-        <p className="nav-label mt-7">Communauté</p>
-        <nav>
-          {links.slice(7).map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              activeProps={{ className: "active" }}
-              className="nav-item"
-            >
-              <item.icon />
-              {item.label}
-              {item.to === "/messages" && <span className="nav-badge">3</span>}
-            </Link>
-          ))}
-        </nav>
-        <p className="nav-label mt-7">Gestion</p>
-        <nav>
-          {manage.map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              activeProps={{ className: "active" }}
-              className="nav-item"
-            >
-              <item.icon />
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <div className="overflow-y-scroll">
+          <p className="nav-label">Mon espace</p>
+          <nav>
+            {links.slice(0, 7).map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                activeOptions={{ exact: true }}
+                activeProps={{ className: "active" }}
+                className="nav-item"
+              >
+                <item.icon />
+                {item.label}
+                {item.to === "/evaluations" && <span className="nav-badge">2</span>}
+              </Link>
+            ))}
+          </nav>
+          <p className="nav-label mt-7">Communauté</p>
+          <nav>
+            {links.slice(7).map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                activeProps={{ className: "active" }}
+                className="nav-item"
+              >
+                <item.icon />
+                {item.label}
+                {item.to === "/messages" && <span className="nav-badge">3</span>}
+              </Link>
+            ))}
+          </nav>
+          <p className="nav-label mt-7">Gestion</p>
+          <nav>
+            {manage.map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                activeProps={{ className: "active" }}
+                className="nav-item"
+              >
+                <item.icon />
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
         <div className="sidebar-bottom">
           <Link to="/parametres" activeProps={{ className: "active" }} className="nav-item">
             <Settings />
