@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccueilRouteImport } from './routes/accueil'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as ConnexionRouteImport } from './routes/connexion'
 import { Route as CoursRouteImport } from './routes/cours'
 import { Route as DelegueRouteImport } from './routes/delegue'
@@ -25,6 +26,12 @@ import { Route as PublicationsRouteImport } from './routes/publications'
 import { Route as RechercheRouteImport } from './routes/recherche'
 import { Route as RessourcesRouteImport } from './routes/ressources'
 import { Route as VideosRouteImport } from './routes/videos'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminAcademicYearsRouteImport } from './routes/admin.academic-years'
+import { Route as AdminClassesRouteImport } from './routes/admin.classes'
+import { Route as AdminSubjectsRouteImport } from './routes/admin.subjects'
+import { Route as AdminUniversitiesRouteImport } from './routes/admin.universities'
+import { Route as AdminUsersRouteImport } from './routes/admin.users'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,6 +41,11 @@ const IndexRoute = IndexRouteImport.update({
 const AccueilRoute = AccueilRouteImport.update({
   id: '/accueil',
   path: '/accueil',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConnexionRoute = ConnexionRouteImport.update({
@@ -106,10 +118,41 @@ const VideosRoute = VideosRouteImport.update({
   path: '/videos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAcademicYearsRoute = AdminAcademicYearsRouteImport.update({
+  id: '/academic-years',
+  path: '/academic-years',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminClassesRoute = AdminClassesRouteImport.update({
+  id: '/classes',
+  path: '/classes',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSubjectsRoute = AdminSubjectsRouteImport.update({
+  id: '/subjects',
+  path: '/subjects',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminUniversitiesRoute = AdminUniversitiesRouteImport.update({
+  id: '/universities',
+  path: '/universities',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminUsersRoute = AdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/accueil': typeof AccueilRoute
+  '/admin': typeof AdminRouteWithChildren
   '/connexion': typeof ConnexionRoute
   '/cours': typeof CoursRoute
   '/delegue': typeof DelegueRoute
@@ -124,6 +167,12 @@ export interface FileRoutesByFullPath {
   '/recherche': typeof RechercheRoute
   '/ressources': typeof RessourcesRoute
   '/videos': typeof VideosRoute
+  '/admin/academic-years': typeof AdminAcademicYearsRoute
+  '/admin/classes': typeof AdminClassesRoute
+  '/admin/subjects': typeof AdminSubjectsRoute
+  '/admin/universities': typeof AdminUniversitiesRoute
+  '/admin/users': typeof AdminUsersRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -142,11 +191,18 @@ export interface FileRoutesByTo {
   '/recherche': typeof RechercheRoute
   '/ressources': typeof RessourcesRoute
   '/videos': typeof VideosRoute
+  '/admin/academic-years': typeof AdminAcademicYearsRoute
+  '/admin/classes': typeof AdminClassesRoute
+  '/admin/subjects': typeof AdminSubjectsRoute
+  '/admin/universities': typeof AdminUniversitiesRoute
+  '/admin/users': typeof AdminUsersRoute
+  '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/accueil': typeof AccueilRoute
+  '/admin': typeof AdminRouteWithChildren
   '/connexion': typeof ConnexionRoute
   '/cours': typeof CoursRoute
   '/delegue': typeof DelegueRoute
@@ -161,12 +217,19 @@ export interface FileRoutesById {
   '/recherche': typeof RechercheRoute
   '/ressources': typeof RessourcesRoute
   '/videos': typeof VideosRoute
+  '/admin/academic-years': typeof AdminAcademicYearsRoute
+  '/admin/classes': typeof AdminClassesRoute
+  '/admin/subjects': typeof AdminSubjectsRoute
+  '/admin/universities': typeof AdminUniversitiesRoute
+  '/admin/users': typeof AdminUsersRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/accueil'
+    | '/admin'
     | '/connexion'
     | '/cours'
     | '/delegue'
@@ -181,6 +244,12 @@ export interface FileRouteTypes {
     | '/recherche'
     | '/ressources'
     | '/videos'
+    | '/admin/academic-years'
+    | '/admin/classes'
+    | '/admin/subjects'
+    | '/admin/universities'
+    | '/admin/users'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -199,10 +268,17 @@ export interface FileRouteTypes {
     | '/recherche'
     | '/ressources'
     | '/videos'
+    | '/admin/academic-years'
+    | '/admin/classes'
+    | '/admin/subjects'
+    | '/admin/universities'
+    | '/admin/users'
+    | '/admin'
   id:
     | '__root__'
     | '/'
     | '/accueil'
+    | '/admin'
     | '/connexion'
     | '/cours'
     | '/delegue'
@@ -217,11 +293,18 @@ export interface FileRouteTypes {
     | '/recherche'
     | '/ressources'
     | '/videos'
+    | '/admin/academic-years'
+    | '/admin/classes'
+    | '/admin/subjects'
+    | '/admin/universities'
+    | '/admin/users'
+    | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccueilRoute: typeof AccueilRoute
+  AdminRoute: typeof AdminRouteWithChildren
   ConnexionRoute: typeof ConnexionRoute
   CoursRoute: typeof CoursRoute
   DelegueRoute: typeof DelegueRoute
@@ -252,6 +335,13 @@ declare module '@tanstack/react-router' {
       path: '/accueil'
       fullPath: '/accueil'
       preLoaderRoute: typeof AccueilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/connexion': {
@@ -352,12 +442,75 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VideosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/academic-years': {
+      id: '/admin/academic-years'
+      path: '/academic-years'
+      fullPath: '/admin/academic-years'
+      preLoaderRoute: typeof AdminAcademicYearsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/classes': {
+      id: '/admin/classes'
+      path: '/classes'
+      fullPath: '/admin/classes'
+      preLoaderRoute: typeof AdminClassesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/subjects': {
+      id: '/admin/subjects'
+      path: '/subjects'
+      fullPath: '/admin/subjects'
+      preLoaderRoute: typeof AdminSubjectsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/universities': {
+      id: '/admin/universities'
+      path: '/universities'
+      fullPath: '/admin/universities'
+      preLoaderRoute: typeof AdminUniversitiesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/users': {
+      id: '/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AdminUsersRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
+
+interface AdminRouteChildren {
+  AdminAcademicYearsRoute: typeof AdminAcademicYearsRoute
+  AdminClassesRoute: typeof AdminClassesRoute
+  AdminSubjectsRoute: typeof AdminSubjectsRoute
+  AdminUniversitiesRoute: typeof AdminUniversitiesRoute
+  AdminUsersRoute: typeof AdminUsersRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminAcademicYearsRoute: AdminAcademicYearsRoute,
+  AdminClassesRoute: AdminClassesRoute,
+  AdminSubjectsRoute: AdminSubjectsRoute,
+  AdminUniversitiesRoute: AdminUniversitiesRoute,
+  AdminUsersRoute: AdminUsersRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccueilRoute: AccueilRoute,
+  AdminRoute: AdminRouteWithChildren,
   ConnexionRoute: ConnexionRoute,
   CoursRoute: CoursRoute,
   DelegueRoute: DelegueRoute,

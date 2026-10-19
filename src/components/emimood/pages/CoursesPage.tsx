@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { ArrowRight, Code2, Database, Kanban } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Heading } from "@/components/emimood/molecules/Heading";
 import { Avatar } from "@/components/emimood/atoms/Avatar";
 import { courses } from "@/components/emimood/data/courses";

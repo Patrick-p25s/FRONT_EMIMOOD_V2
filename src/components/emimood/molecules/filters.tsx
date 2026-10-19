@@ -71,4 +71,3 @@ export function SearchInput({ value, onChange, label = "Rechercher" }: SearchInp
     />
   );
 }
-s;

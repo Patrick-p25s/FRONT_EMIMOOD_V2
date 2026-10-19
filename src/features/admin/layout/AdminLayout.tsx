@@ -1,30 +1,41 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { BookOpen, Building2, CalendarRange, GitBranch, KeyRound, LayoutDashboard, LogOut, Menu, School, Users, X } from "lucide-react";
+import {
+  BookOpen,
+  Building2,
+  CalendarRange,
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  School,
+  Users,
+  X,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeMenu } from "@/components/emimood/molecules/ThemeMenu";
 import { useAuth } from "@/lib/auth";
 import { refreshTokens } from "@/lib/api/client";
 import { cn } from "@/lib/utils";
 import { useActiveUniversity } from "@/features/admin/hooks/useActiveUniversity";
-import { SimpleSelect } from "@/features/admin/components/ui";
+import { SimpleSelect } from "@/components/emimood/molecules/filters";
 
 const nav = [
-  { group: "Vue d’ensemble", items: [{ to: "/admin", label: "Tableau de bord", icon: LayoutDashboard }] },
+  {
+    group: "Vue d’ensemble",
+    items: [{ to: "/admin", label: "Tableau de bord", icon: LayoutDashboard }],
+  },
   {
     group: "Organisation",
     items: [
       { to: "/admin/universities", label: "Universités", icon: Building2 },
       { to: "/admin/academic-years", label: "Années académiques", icon: CalendarRange },
-      { to: "/admin/structure", label: "Structure", icon: GitBranch },
-      { to: "/admin/classes", label: "Classes", icon: School },
+      { to: "/admin/classes", label: "Classes et codes", icon: School },
     ],
   },
   {
     group: "Personnes",
     items: [
       { to: "/admin/users", label: "Utilisateurs", icon: Users },
-      { to: "/admin/invitation-codes", label: "Codes d’invitation", icon: KeyRound },
     ],
   },
   { group: "Pédagogie", items: [{ to: "/admin/subjects", label: "Matières", icon: BookOpen }] },
@@ -74,7 +85,10 @@ export function AdminLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex min-h-screen bg-background text-foreground">
-      <a href="#admin-main" className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-card focus:px-3 focus:py-2">
+      <a
+        href="#admin-main"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-card focus:px-3 focus:py-2"
+      >
         Aller au contenu
       </a>
       <aside
@@ -88,17 +102,28 @@ export function AdminLayout({ children }: { children: ReactNode }) {
           <Link to="/admin" className="text-lg font-extrabold text-foreground no-underline">
             EMI<span className="text-primary">Mood</span>
           </Link>
-          <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Fermer le menu" onClick={() => setOpen(false)}>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="lg:hidden"
+            aria-label="Fermer le menu"
+            onClick={() => setOpen(false)}
+          >
             <X className="size-5" />
           </Button>
         </div>
         <nav className="grid gap-5">
           {nav.map((g) => (
             <div key={g.group}>
-              <p className="mb-1 px-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{g.group}</p>
+              <p className="mb-1 px-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                {g.group}
+              </p>
               <ul className="grid gap-0.5">
                 {g.items.map((it) => {
-                  const active = it.to === "/admin" ? pathname === "/admin" || pathname === "/admin/" : pathname.startsWith(it.to);
+                  const active =
+                    it.to === "/admin"
+                      ? pathname === "/admin" || pathname === "/admin/"
+                      : pathname.startsWith(it.to);
                   return (
                     <li key={it.to}>
                       <Link
@@ -121,16 +146,33 @@ export function AdminLayout({ children }: { children: ReactNode }) {
           ))}
         </nav>
       </aside>
-      {open && <div className="fixed inset-0 z-30 bg-foreground/30 lg:hidden" onClick={() => setOpen(false)} aria-hidden />}
+      {open && (
+        <div
+          className="fixed inset-0 z-30 bg-foreground/30 lg:hidden"
+          onClick={() => setOpen(false)}
+          aria-hidden
+        />
+      )}
 
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-20 flex flex-wrap items-center gap-3 border-b bg-background/95 px-4 py-3 backdrop-blur">
-          <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Ouvrir le menu" onClick={() => setOpen(true)}>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="lg:hidden"
+            aria-label="Ouvrir le menu"
+            onClick={() => setOpen(true)}
+          >
             <Menu className="size-5" />
           </Button>
-          <span className="rounded-full bg-primary px-3 py-1 text-xs font-bold uppercase tracking-wide text-primary-foreground">Administration</span>
+          <span className="rounded-full bg-primary px-3 py-1 text-xs font-bold uppercase tracking-wide text-primary-foreground">
+            Administration
+          </span>
           <div className="flex items-center gap-2">
-            <label htmlFor="active-university" className="hidden text-sm text-muted-foreground sm:inline">
+            <label
+              htmlFor="active-university"
+              className="hidden text-sm text-muted-foreground sm:inline"
+            >
               Université
             </label>
             <SimpleSelect
@@ -151,12 +193,19 @@ export function AdminLayout({ children }: { children: ReactNode }) {
           </div>
         </header>
         {connectionLost && (
-          <div role="status" className="border-b border-destructive/40 bg-destructive/10 px-4 py-2 text-sm text-destructive">
+          <div
+            role="status"
+            className="border-b border-destructive/40 bg-destructive/10 px-4 py-2 text-sm text-destructive"
+          >
             Connexion perdue, nouvelle tentative…
           </div>
         )}
         {warning && (
-          <div role="alertdialog" aria-live="assertive" className="flex flex-wrap items-center gap-3 border-b bg-muted px-4 py-2 text-sm">
+          <div
+            role="alertdialog"
+            aria-live="assertive"
+            className="flex flex-wrap items-center gap-3 border-b bg-muted px-4 py-2 text-sm"
+          >
             Vous serez déconnecté dans une minute pour inactivité.
             <Button size="sm" onClick={() => void stay()}>
               Rester connecté
