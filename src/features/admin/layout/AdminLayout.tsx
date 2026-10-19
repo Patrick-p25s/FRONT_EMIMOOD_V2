@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils";
 import { useActiveUniversity } from "@/features/admin/hooks/useActiveUniversity";
 import { SimpleSelect } from "@/components/emimood/molecules/filters";
 import { ThemeSwitcher } from "@/components/emimood/molecules/ThemSwitcher";
+import { Brand } from "@/components/emimood/atoms/Brand";
 
 const nav = [
   {
@@ -97,9 +98,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
         aria-label="Navigation d’administration"
       >
         <div className="mb-6 flex items-center justify-between px-2">
-          <Link to="/admin" className="text-lg font-extrabold text-foreground no-underline">
-            EMI<span className="text-primary">Mood</span>
-          </Link>
+          <Brand link="/admin" />
           <Button
             variant="ghost"
             size="icon"

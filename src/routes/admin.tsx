@@ -4,11 +4,10 @@ import { NotFoundView } from "@/components/emimood/molecules/NotFoundView";
 import { AdminLayout } from "@/features/admin/layout/AdminLayout";
 import { validateAdminSearch } from "@/features/admin/lib/search";
 import { canAccess, useAuth } from "@/lib/auth";
+import { pageHead } from "@/components/emimood/data";
 
 export const Route = createFileRoute("/admin")({
-  head: () => ({
-    meta: [{ title: "Administration — EMIMood" }, { name: "robots", content: "noindex, nofollow" }],
-  }),
+  head: () => pageHead("Administration", "Gestion global Emimood"),
   validateSearch: validateAdminSearch,
   component: AdminRoute,
 });

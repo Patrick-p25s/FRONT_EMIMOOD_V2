@@ -1,14 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  GraduationCap,
-  BookOpen,
-  MessagesSquare,
-  ClipboardCheck,
-  Building2,
-  ArrowRight,
-} from "lucide-react";
+import { BookOpen, MessagesSquare, ClipboardCheck, Building2, ArrowRight } from "lucide-react";
 import campus from "@/assets/campus-community.jpg";
 import { Button } from "@/components/ui/button";
+import { Brand } from "@/components/emimood/atoms/Brand";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -54,16 +48,11 @@ const features = [
   },
 ];
 
-function   Landing() {
+function Landing() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="mx-auto flex max-w-6xl items-center justify-between px-5 py-5">
-        <span className="flex items-center gap-2 text-xl font-extrabold">
-          <span className="grid size-9 place-items-center rounded-lg bg-primary text-primary-foreground">
-            <GraduationCap size={20} />
-          </span>
-          EMI<em className="not-italic text-primary">Mood</em>
-        </span>
+        <Brand link="/" />
         <Button asChild>
           <Link to="/connexion">Se connecter</Link>
         </Button>
@@ -98,7 +87,7 @@ function   Landing() {
           alt="Étudiants de l’EMIT travaillant ensemble"
           width={1536}
           height={768}
-          className="aspect-[4/3] w-full rounded-2xl object-cover"
+          className="aspect-4/3 w-full rounded-2xl object-cover"
         />
       </section>
       <section className="mx-auto grid max-w-6xl gap-4 px-5 pb-16 sm:grid-cols-2 lg:grid-cols-4">

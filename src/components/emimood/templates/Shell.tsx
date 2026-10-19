@@ -26,6 +26,7 @@ import { roleLabels, useAuth } from "@/lib/auth";
 import { links } from "@/components/emimood/templates/navLinks";
 import { Avatar } from "@/components/emimood/atoms/Avatar";
 import { ThemeMenu } from "@/components/emimood/molecules/ThemeMenu";
+import { Brand } from "../atoms/Brand";
 
 export function Shell({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
@@ -62,15 +63,7 @@ export function Shell({ children }: { children: ReactNode }) {
   return (
     <>
       <aside className="sidebar">
-        <Link to="/accueil" className="brand">
-          <span className="brand-mark">
-            <GraduationCap size={33} strokeWidth={2.3} />
-          </span>
-          <span>
-            EMI<em>Mood</em>
-            <span className="text-primary">.</span>
-          </span>
-        </Link>
+        <Brand link="/accueil" />
         <div className="university">
           <span className="university-icon">
             <GraduationCap size={19} />

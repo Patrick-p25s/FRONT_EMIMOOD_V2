@@ -34,3 +34,10 @@ export function validateAdminSearch(search: Record<string, unknown>): AdminSearc
 
 /** Garde l'université active (?u=) quand on navigue entre les écrans admin. */
 export const keepU = (prev: { u?: string | undefined }) => ({ u: prev.u });
+
+export type AdminPath =
+  | "/admin/universities"
+  | "/admin/academic-years"
+  | "/admin/classes"
+  | "/admin/users"
+  | "/admin/subjects";
