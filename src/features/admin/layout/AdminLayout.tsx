@@ -12,12 +12,12 @@ import {
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ThemeMenu } from "@/components/emimood/molecules/ThemeMenu";
 import { useAuth } from "@/lib/auth";
 import { refreshTokens } from "@/lib/api/client";
 import { cn } from "@/lib/utils";
 import { useActiveUniversity } from "@/features/admin/hooks/useActiveUniversity";
 import { SimpleSelect } from "@/components/emimood/molecules/filters";
+import { ThemeSwitcher } from "@/components/emimood/molecules/ThemSwitcher";
 
 const nav = [
   {
@@ -34,9 +34,7 @@ const nav = [
   },
   {
     group: "Personnes",
-    items: [
-      { to: "/admin/users", label: "Utilisateurs", icon: Users },
-    ],
+    items: [{ to: "/admin/users", label: "Utilisateurs", icon: Users }],
   },
   { group: "Pédagogie", items: [{ to: "/admin/subjects", label: "Matières", icon: BookOpen }] },
 ] as const;
@@ -185,7 +183,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
             />
           </div>
           <div className="ml-auto flex items-center gap-2">
-            <ThemeMenu />
+            <ThemeSwitcher />
             <span className="hidden text-sm text-muted-foreground md:inline">{user?.name}</span>
             <Button variant="outline" size="sm" onClick={() => void logout()}>
               <LogOut className="size-4" /> Déconnexion

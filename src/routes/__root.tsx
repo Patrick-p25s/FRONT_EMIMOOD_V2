@@ -67,13 +67,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "EMIMood — Communauté universitaire EMIT" },
-      { name: "description", content: "La communauté académique et sociale de l’EMIT à Fianarantsoa." },
-      
+      {
+        name: "description",
+        content: "La communauté académique et sociale de l’EMIT à Fianarantsoa.",
+      },
+
       { property: "og:title", content: "EMIMood — Communauté universitaire EMIT" },
-      { property: "og:description", content: "La communauté académique et sociale de l’EMIT à Fianarantsoa." },
+      {
+        property: "og:description",
+        content: "La communauté académique et sociale de l’EMIT à Fianarantsoa.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      
     ],
     links: [
       {
@@ -83,7 +88,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;650;700;750;800&display=swap" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;650;700;750;800&display=swap",
+      },
     ],
   }),
   shellComponent: RootShell,
@@ -132,17 +140,26 @@ function AppFrame() {
   const isPublic = publicPaths.includes(pathname);
   const isAdmin = pathname === "/admin" || pathname.startsWith("/admin/");
   useEffect(() => {
-    if (ready && !user && !isPublic) navigate({ to: "/connexion", search: { next: href }, replace: true });
+    if (ready && !user && !isPublic)
+      navigate({ to: "/connexion", search: { next: href }, replace: true });
   }, [ready, user, isPublic, navigate, href]);
 
   if (isPublic) return <Outlet />;
-  if (!ready || !user) return <FullScreenLoader label={connectionLost ? "Connexion perdue, nouvelle tentative…" : "Chargement…"} />;
+  if (!ready || !user)
+    return (
+      <FullScreenLoader
+        label={connectionLost ? "Connexion perdue, nouvelle tentative…" : "Chargement…"}
+      />
+    );
   // L'espace admin a son propre layout et son propre garde (aucun Shell utilisateur).
   if (isAdmin) return <Outlet />;
   return (
     <Shell>
       {connectionLost && (
-        <div role="status" className="mb-3 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+        <div
+          role="status"
+          className="mb-3 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive"
+        >
           Connexion perdue, nouvelle tentative…
         </div>
       )}
