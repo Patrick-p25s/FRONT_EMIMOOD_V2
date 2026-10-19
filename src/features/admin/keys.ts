@@ -1,8 +1,6 @@
 export type Resource =
   | "universities"
   | "academic-years"
-  | "mentions"
-  | "levels"
   | "classes"
   | "users"
   | "invitation-codes"

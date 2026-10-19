@@ -1,6 +1,8 @@
-import type { Role, Statut } from "@/lib/auth";
+// À SUPPRIMER : Mention, Level
 
-export type { Role, Statut };
+import { Role } from "@/lib/auth";
+import { Statut } from "@/lib/domain";
+
 export type University = {
   id: string;
   name: string;
@@ -12,9 +14,9 @@ export type University = {
   created_at: string;
   updated_at: string;
 };
+
 export type AcademicYear = {
   id: string;
-  university_id: string;
   name: string;
   start_date: string;
   end_date: string;
@@ -22,12 +24,13 @@ export type AcademicYear = {
   created_at: string;
   updated_at: string;
 };
-export type Mention = { id: string; university_id: string; name: string; code: string; description: string | null; created_at: string; updated_at: string };
-export type Level = { id: string; mention_id: string; name: string; code: string; created_at: string; updated_at: string };
+
 export type Classe = {
   id: string;
-  level_id: string;
+  university_id: string;
   academic_year_id: string;
+  mention: string; // texte libre, plus un identifiant
+  level: string; // texte libre, plus un identifiant
   name: string;
   code: string;
   description: string | null;
@@ -36,7 +39,10 @@ export type Classe = {
   created_at: string;
   updated_at: string;
 };
+
+/** Réponse de création et de régénération : le seul moment où le code est renvoyé. */
 export type ClasseWithCode = Classe & { code_invitation: string };
+
 export type AdminUser = {
   id: string;
   university_id: string | null;
@@ -65,6 +71,20 @@ export type InvitationCode = {
   created_by: string;
   created_at: string;
 };
-export type Subject = { id: string; university_id: string; name: string; code: string | null; description: string | null; created_at: string; updated_at: string };
-export type ClassSubject = { id: string; classe_id: string; subject_id: string; semester: number | null; subject: Subject };
+export type Subject = {
+  id: string;
+  university_id: string;
+  name: string;
+  code: string | null;
+  description: string | null;
+  created_at: string;
+  updated_at: string;
+};
+export type ClassSubject = {
+  id: string;
+  classe_id: string;
+  subject_id: string;
+  semester: number | null;
+  subject: Subject;
+};
 export type TeacherAssignment = { id: string; teacher_id: string; class_subject_id: string };
