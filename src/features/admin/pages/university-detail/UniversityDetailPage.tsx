@@ -10,6 +10,9 @@ import type { University } from "../../api/types";
 import { useAdminDetail } from "../../hooks/useAdminList";
 import { useAdminSearch } from "../../hooks/useAdminSearch";
 import { keepU } from "../../lib/search";
+import { OverviewTab } from "./OverViewTab";
+import { TeachersTab } from "./TeachersTab";
+import { CodesTab } from "./CodesTab";
 
 const TABS = [
   { value: "overview", label: "Aperçu" },
@@ -70,9 +73,22 @@ export function UniversityDetailPage({ universityId }: Props) {
         </TabsList>
         {TABS.map((item) => (
           <TabsContent key={item.value} value={item.value} className="mt-6">
-            <p className="rounded-lg border border-dashed p-8 text-center text-sm text-muted-foreground">
-              Onglet « {item.label} » : en construction.
-            </p>
+            <TabsContent value="overview" className="mt-6">
+              {university && <OverviewTab university={university} />}
+            </TabsContent>
+            <TabsContent value="teachers" className="mt-6">
+              <TeachersTab universityId={universityId} />
+            </TabsContent>
+            <TabsContent value="codes" className="mt-6">
+              <CodesTab universityId={universityId} />
+            </TabsContent>
+            {(["classes", "users"] as const).map((value) => (
+              <TabsContent key={value} value={value} className="mt-6">
+                <p className="rounded-lg border border-dashed p-8 text-center text-sm text-muted-foreground">
+                  En construction.
+                </p>
+              </TabsContent>
+            ))}
           </TabsContent>
         ))}
       </Tabs>

@@ -13,13 +13,22 @@ export type CountSpec = {
   params?: Record<string, string>;
   /** Vrai : le chiffre suit l'université active (?u=). */
   scoped?: boolean;
+  paging?: "page" | "skip";
 };
 
-/** On demande 1 seul élément : seul `total` nous intéresse. */
-async function fetchTotal(path: string, params: Record<string, string>) {
-  const data = await api<unknown>(path, { query: { ...params, page: "1", page_size: "1" } });
+// 2. remplacez fetchTotal par
+async function fetchTotal(
+  path: string,
+  params: Record<string, string>,
+  paging: "page" | "skip" = "page",
+) {
+  const window = paging === "skip" ? { skip: "0", limit: "1000" } : { page: "1", page_size: "1" };
+  const data = await api<unknown>(path, { query: { ...params, ...window } });
   return readTotal(data);
 }
+
+// 3. dans useCounts : queryFn: () => fetchTotal(spec.path, params, spec.paging ?? "page"),
+//    dans useUniversityUserCounts : fetchTotal("/users/", { university_id: id }, "skip")
 
 /** Plusieurs compteurs en parallèle, chacun avec son état (chargement, erreur, réessai). */
 export function useCounts(specs: CountSpec[], universityId?: string) {

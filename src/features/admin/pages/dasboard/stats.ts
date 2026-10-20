@@ -38,6 +38,7 @@ export const STATS: StatDef[] = [
   {
     key: "users",
     resource: "users",
+    paging: "skip",
     path: "/users/",
     scoped: true,
     label: "Utilisateurs",
@@ -48,6 +49,7 @@ export const STATS: StatDef[] = [
   {
     key: "students",
     resource: "users",
+    paging: "skip",
     path: "/users/",
     params: { role: "student" },
     scoped: true,
@@ -60,6 +62,7 @@ export const STATS: StatDef[] = [
   {
     key: "teachers",
     resource: "users",
+    paging: "skip",
     path: "/users/",
     params: { role: "teacher" },
     scoped: true,
@@ -84,6 +87,7 @@ export const STATS: StatDef[] = [
   {
     key: "codes",
     resource: "invitation-codes",
+    paging: "skip",
     path: "/invitation-codes/",
     params: { active_only: "true" },
     scoped: true,
@@ -106,6 +110,7 @@ export const STATS: StatDef[] = [
   {
     key: "suspended",
     resource: "users",
+    paging: "skip",
     path: "/users/",
     params: { statut: "suspend" },
     scoped: true,
