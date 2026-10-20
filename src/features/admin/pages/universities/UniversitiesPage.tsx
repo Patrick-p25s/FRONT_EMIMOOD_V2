@@ -136,7 +136,13 @@ export function UniversitiesPage() {
         rows={data?.items}
         loading={isLoading}
         error={error}
-
+        onRowClick={(university) =>
+          void navigate({
+            to: "/admin/universities/$universityId",
+            params: { universityId: university.id },
+            search: keepU(search),
+          })
+        }
         onRetry={() => void refetch()}
         empty={
           <p className="py-10 text-center text-sm text-muted-foreground">

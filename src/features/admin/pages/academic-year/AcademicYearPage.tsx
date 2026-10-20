@@ -48,7 +48,7 @@ export function AcademicYearPage() {
 
   const [target, setTarget] = useState<FormTarget | null>(null);
   const [change, setChange] = useState<StatutChange | null>(null);
-  const { create, update, setCurrent, remove } = useAccademicYearMutations();
+  const { setCurrent, remove } = useAccademicYearMutations();
   const navigate = useNavigate();
   const { data, isLoading, error, refetch } = useAdminList<AcademicYear>(
     "academic-years",
@@ -90,8 +90,9 @@ export function AcademicYearPage() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            {/* <DropdownMenuItem onSelect={() => setTarget({ kind: "edit", year })}> */}
-            <DropdownMenuItem onSelect={() => null}>Modifier</DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => setTarget({ kind: "edit", year })}>
+              Modifier
+            </DropdownMenuItem>
             {/* {TRANSITIONS[university.statut].map((transition) => (
               <DropdownMenuItem
                 key={transition.statut}
@@ -182,23 +183,23 @@ export function AcademicYearPage() {
         </DialogContent>
       </Dialog>
 
-      {/* <ConfirmDialog
+      <ConfirmDialog
         open={change !== null}
         onOpenChange={(open) => !open && setChange(null)}
-        title={change ? `${change.label} « ${change.university.name} » ?` : ""}
+        title={change ? `${change.label} « ${change.academicYear.name} » ?` : ""}
         description="Ce changement s’applique tout de suite à toute l’université."
         confirmLabel={change?.label ?? "Confirmer"}
         destructive={change?.destructive === true}
         onConfirm={async () => {
           if (!change) return;
           try {
-            await setStatut.mutateAsync({ id: change.university.id, statut: change.statut });
+            await setCurrent.mutateAsync(change.academicYear.id);
             setChange(null);
           } catch {
             // le message d'erreur est déjà affiché par la mutation ; la boîte reste ouverte
           }
         }}
-      /> */}
+      />
     </>
   );
 }

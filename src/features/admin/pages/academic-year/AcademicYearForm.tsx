@@ -26,7 +26,6 @@ export function AcademicYearForm({ academicYear, onDone }: AcademicYearFormProps
     },
   });
   const onSubmit = handleSubmit(async (values) => {
-    console.log(values);
     try {
       if (academicYear) {
         await update.mutateAsync({

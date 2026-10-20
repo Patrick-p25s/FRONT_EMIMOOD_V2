@@ -139,6 +139,7 @@ function AppFrame() {
   const navigate = useNavigate();
   const isPublic = publicPaths.includes(pathname);
   const isAdmin = pathname === "/admin" || pathname.startsWith("/admin/");
+  const isTeacher = pathname === "/enseignant" || pathname.startsWith("/enseignant/");
   useEffect(() => {
     if (ready && !user && !isPublic)
       navigate({ to: "/connexion", search: { next: href }, replace: true });
@@ -152,7 +153,7 @@ function AppFrame() {
       />
     );
   // L'espace admin a son propre layout et son propre garde (aucun Shell utilisateur).
-  if (isAdmin) return <Outlet />;
+  if (isAdmin || isTeacher) return <Outlet />;
   return (
     <Shell>
       {connectionLost && (

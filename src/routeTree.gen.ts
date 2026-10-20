@@ -32,6 +32,10 @@ import { Route as AdminClassesRouteImport } from './routes/admin.classes'
 import { Route as AdminSubjectsRouteImport } from './routes/admin.subjects'
 import { Route as AdminUniversitiesRouteImport } from './routes/admin.universities'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
+import { Route as EnseignantIndexRouteImport } from './routes/enseignant.index'
+import { Route as EnseignantAnnoncesRouteImport } from './routes/enseignant.annonces'
+import { Route as EnseignantEvaluationsRouteImport } from './routes/enseignant.evaluations'
+import { Route as EnseignantMatieresRouteImport } from './routes/enseignant.matieres'
 import { Route as AdminUniversitiesIndexRouteImport } from './routes/admin.universities.index'
 import { Route as AdminUniversitiesUniversityIdRouteImport } from './routes/admin.universities.$universityId'
 
@@ -150,6 +154,26 @@ const AdminUsersRoute = AdminUsersRouteImport.update({
   path: '/users',
   getParentRoute: () => AdminRoute,
 } as any)
+const EnseignantIndexRoute = EnseignantIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => EnseignantRoute,
+} as any)
+const EnseignantAnnoncesRoute = EnseignantAnnoncesRouteImport.update({
+  id: '/annonces',
+  path: '/annonces',
+  getParentRoute: () => EnseignantRoute,
+} as any)
+const EnseignantEvaluationsRoute = EnseignantEvaluationsRouteImport.update({
+  id: '/evaluations',
+  path: '/evaluations',
+  getParentRoute: () => EnseignantRoute,
+} as any)
+const EnseignantMatieresRoute = EnseignantMatieresRouteImport.update({
+  id: '/matieres',
+  path: '/matieres',
+  getParentRoute: () => EnseignantRoute,
+} as any)
 const AdminUniversitiesIndexRoute = AdminUniversitiesIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -169,7 +193,7 @@ export interface FileRoutesByFullPath {
   '/connexion': typeof ConnexionRoute
   '/cours': typeof CoursRoute
   '/delegue': typeof DelegueRoute
-  '/enseignant': typeof EnseignantRoute
+  '/enseignant': typeof EnseignantRouteWithChildren
   '/evaluations': typeof EvaluationsRoute
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
@@ -185,7 +209,11 @@ export interface FileRoutesByFullPath {
   '/admin/subjects': typeof AdminSubjectsRoute
   '/admin/universities': typeof AdminUniversitiesRouteWithChildren
   '/admin/users': typeof AdminUsersRoute
+  '/enseignant/annonces': typeof EnseignantAnnoncesRoute
+  '/enseignant/evaluations': typeof EnseignantEvaluationsRoute
+  '/enseignant/matieres': typeof EnseignantMatieresRoute
   '/admin/': typeof AdminIndexRoute
+  '/enseignant/': typeof EnseignantIndexRoute
   '/admin/universities/$universityId': typeof AdminUniversitiesUniversityIdRoute
   '/admin/universities/': typeof AdminUniversitiesIndexRoute
 }
@@ -195,7 +223,6 @@ export interface FileRoutesByTo {
   '/connexion': typeof ConnexionRoute
   '/cours': typeof CoursRoute
   '/delegue': typeof DelegueRoute
-  '/enseignant': typeof EnseignantRoute
   '/evaluations': typeof EvaluationsRoute
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
@@ -210,7 +237,11 @@ export interface FileRoutesByTo {
   '/admin/classes': typeof AdminClassesRoute
   '/admin/subjects': typeof AdminSubjectsRoute
   '/admin/users': typeof AdminUsersRoute
+  '/enseignant/annonces': typeof EnseignantAnnoncesRoute
+  '/enseignant/evaluations': typeof EnseignantEvaluationsRoute
+  '/enseignant/matieres': typeof EnseignantMatieresRoute
   '/admin': typeof AdminIndexRoute
+  '/enseignant': typeof EnseignantIndexRoute
   '/admin/universities/$universityId': typeof AdminUniversitiesUniversityIdRoute
   '/admin/universities': typeof AdminUniversitiesIndexRoute
 }
@@ -222,7 +253,7 @@ export interface FileRoutesById {
   '/connexion': typeof ConnexionRoute
   '/cours': typeof CoursRoute
   '/delegue': typeof DelegueRoute
-  '/enseignant': typeof EnseignantRoute
+  '/enseignant': typeof EnseignantRouteWithChildren
   '/evaluations': typeof EvaluationsRoute
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
@@ -238,7 +269,11 @@ export interface FileRoutesById {
   '/admin/subjects': typeof AdminSubjectsRoute
   '/admin/universities': typeof AdminUniversitiesRouteWithChildren
   '/admin/users': typeof AdminUsersRoute
+  '/enseignant/annonces': typeof EnseignantAnnoncesRoute
+  '/enseignant/evaluations': typeof EnseignantEvaluationsRoute
+  '/enseignant/matieres': typeof EnseignantMatieresRoute
   '/admin/': typeof AdminIndexRoute
+  '/enseignant/': typeof EnseignantIndexRoute
   '/admin/universities/$universityId': typeof AdminUniversitiesUniversityIdRoute
   '/admin/universities/': typeof AdminUniversitiesIndexRoute
 }
@@ -267,7 +302,11 @@ export interface FileRouteTypes {
     | '/admin/subjects'
     | '/admin/universities'
     | '/admin/users'
+    | '/enseignant/annonces'
+    | '/enseignant/evaluations'
+    | '/enseignant/matieres'
     | '/admin/'
+    | '/enseignant/'
     | '/admin/universities/$universityId'
     | '/admin/universities/'
   fileRoutesByTo: FileRoutesByTo
@@ -277,7 +316,6 @@ export interface FileRouteTypes {
     | '/connexion'
     | '/cours'
     | '/delegue'
-    | '/enseignant'
     | '/evaluations'
     | '/messages'
     | '/notifications'
@@ -292,7 +330,11 @@ export interface FileRouteTypes {
     | '/admin/classes'
     | '/admin/subjects'
     | '/admin/users'
+    | '/enseignant/annonces'
+    | '/enseignant/evaluations'
+    | '/enseignant/matieres'
     | '/admin'
+    | '/enseignant'
     | '/admin/universities/$universityId'
     | '/admin/universities'
   id:
@@ -319,7 +361,11 @@ export interface FileRouteTypes {
     | '/admin/subjects'
     | '/admin/universities'
     | '/admin/users'
+    | '/enseignant/annonces'
+    | '/enseignant/evaluations'
+    | '/enseignant/matieres'
     | '/admin/'
+    | '/enseignant/'
     | '/admin/universities/$universityId'
     | '/admin/universities/'
   fileRoutesById: FileRoutesById
@@ -331,7 +377,7 @@ export interface RootRouteChildren {
   ConnexionRoute: typeof ConnexionRoute
   CoursRoute: typeof CoursRoute
   DelegueRoute: typeof DelegueRoute
-  EnseignantRoute: typeof EnseignantRoute
+  EnseignantRoute: typeof EnseignantRouteWithChildren
   EvaluationsRoute: typeof EvaluationsRoute
   MessagesRoute: typeof MessagesRoute
   NotificationsRoute: typeof NotificationsRoute
@@ -507,6 +553,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminUsersRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/enseignant/': {
+      id: '/enseignant/'
+      path: '/'
+      fullPath: '/enseignant/'
+      preLoaderRoute: typeof EnseignantIndexRouteImport
+      parentRoute: typeof EnseignantRoute
+    }
+    '/enseignant/annonces': {
+      id: '/enseignant/annonces'
+      path: '/annonces'
+      fullPath: '/enseignant/annonces'
+      preLoaderRoute: typeof EnseignantAnnoncesRouteImport
+      parentRoute: typeof EnseignantRoute
+    }
+    '/enseignant/evaluations': {
+      id: '/enseignant/evaluations'
+      path: '/evaluations'
+      fullPath: '/enseignant/evaluations'
+      preLoaderRoute: typeof EnseignantEvaluationsRouteImport
+      parentRoute: typeof EnseignantRoute
+    }
+    '/enseignant/matieres': {
+      id: '/enseignant/matieres'
+      path: '/matieres'
+      fullPath: '/enseignant/matieres'
+      preLoaderRoute: typeof EnseignantMatieresRouteImport
+      parentRoute: typeof EnseignantRoute
+    }
     '/admin/universities/': {
       id: '/admin/universities/'
       path: '/'
@@ -557,6 +631,24 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
+interface EnseignantRouteChildren {
+  EnseignantAnnoncesRoute: typeof EnseignantAnnoncesRoute
+  EnseignantEvaluationsRoute: typeof EnseignantEvaluationsRoute
+  EnseignantMatieresRoute: typeof EnseignantMatieresRoute
+  EnseignantIndexRoute: typeof EnseignantIndexRoute
+}
+
+const EnseignantRouteChildren: EnseignantRouteChildren = {
+  EnseignantAnnoncesRoute: EnseignantAnnoncesRoute,
+  EnseignantEvaluationsRoute: EnseignantEvaluationsRoute,
+  EnseignantMatieresRoute: EnseignantMatieresRoute,
+  EnseignantIndexRoute: EnseignantIndexRoute,
+}
+
+const EnseignantRouteWithChildren = EnseignantRoute._addFileChildren(
+  EnseignantRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccueilRoute: AccueilRoute,
@@ -564,7 +656,7 @@ const rootRouteChildren: RootRouteChildren = {
   ConnexionRoute: ConnexionRoute,
   CoursRoute: CoursRoute,
   DelegueRoute: DelegueRoute,
-  EnseignantRoute: EnseignantRoute,
+  EnseignantRoute: EnseignantRouteWithChildren,
   EvaluationsRoute: EvaluationsRoute,
   MessagesRoute: MessagesRoute,
   NotificationsRoute: NotificationsRoute,
