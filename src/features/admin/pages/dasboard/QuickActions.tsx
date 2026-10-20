@@ -1,6 +1,5 @@
-// pages/dashboard/QuickActions.tsx
-import { keepU } from "@/features/admin/lib/search";
-import { Link, type LinkProps } from "@tanstack/react-router";
+// QuickActions.tsx
+import { Link } from "@tanstack/react-router";
 import {
   BookOpen,
   Building2,
@@ -9,9 +8,11 @@ import {
   KeyRound,
   type LucideIcon,
 } from "lucide-react";
-import { Panel } from "./Panel";
-import { IconBox } from "../atoms/IconBox";
-const actions: { to: LinkProps["to"]; label: string; icon: LucideIcon }[] = [
+import { IconBox } from "@/components/emimood/atoms/IconBox";
+import { Panel } from "@/components/emimood/molecules/Panel";
+import { keepU, type AdminPath } from "../../lib/search";
+
+const actions: { to: AdminPath; label: string; icon: LucideIcon }[] = [
   { to: "/admin/universities", label: "Créer une université", icon: Building2 },
   { to: "/admin/academic-years", label: "Créer une année académique", icon: CalendarRange },
   { to: "/admin/classes", label: "Créer une classe et son code", icon: KeyRound },

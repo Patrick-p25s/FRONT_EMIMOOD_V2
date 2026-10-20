@@ -1,13 +1,13 @@
-// components/molecules/Panel.tsx
+// molecules/Panel.tsx
 import { useId, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 type PanelProps = {
   title: string;
-  description?: string;
+  description?: string | undefined;
   action?: ReactNode;
   children: ReactNode;
-  className?: string;
+  className?: string | undefined;
 };
 
 export function Panel({ title, description, action, children, className }: PanelProps) {

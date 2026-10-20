@@ -1,6 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { ComingSoon } from "@/features/admin/components/ComingSoon";
+// src/routes/admin.universities.tsx (nouveau : simple passage)
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/admin/universities")({
-  component: () => <ComingSoon title="Universités" />,
-});
+export const Route = createFileRoute("/admin/universities")({ component: Outlet });
