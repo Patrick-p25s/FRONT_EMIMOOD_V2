@@ -30,26 +30,10 @@ import { useUniversityMutations } from "../../hooks/useUniversityMutations";
 import { UniversityForm } from "./UniversityForm";
 import { useNavigate } from "@tanstack/react-router";
 import { keepU } from "../../lib/search";
+import { STATUT_OPTIONS, TRANSITIONS } from "../../lib/statut";
 
 type FormTarget = { kind: "create" } | { kind: "edit"; university: University };
 type StatutChange = { university: University; statut: Statut; label: string; destructive: boolean };
-
-const STATUT_OPTIONS = (["active", "suspend", "inactive"] as const).map((value) => ({
-  value,
-  label: statutLabel[value],
-}));
-/** Changements de statut proposés selon le statut actuel. */
-const TRANSITIONS: Record<Statut, { statut: Statut; label: string; destructive: boolean }[]> = {
-  active: [
-    { statut: "suspend", label: "Suspendre", destructive: false },
-    { statut: "inactive", label: "Désactiver", destructive: true },
-  ],
-  suspend: [
-    { statut: "active", label: "Réactiver", destructive: false },
-    { statut: "inactive", label: "Désactiver", destructive: true },
-  ],
-  inactive: [{ statut: "active", label: "Réactiver", destructive: false }],
-};
 
 export function UniversitiesPage() {
   const [search, setSearch] = useAdminSearch();
@@ -152,13 +136,7 @@ export function UniversitiesPage() {
         rows={data?.items}
         loading={isLoading}
         error={error}
-        onRowClick={(university) =>
-          void navigate({
-            to: "/admin/universities/$universityId",
-            params: { universityId: university.id },
-            search: keepU(search),
-          })
-        }
+
         onRetry={() => void refetch()}
         empty={
           <p className="py-10 text-center text-sm text-muted-foreground">
