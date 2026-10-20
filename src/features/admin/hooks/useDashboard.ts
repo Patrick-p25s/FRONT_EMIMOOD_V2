@@ -11,19 +11,37 @@ export type CountSpec = {
   /** Chemin exact de l'API, avec le slash final. */
   path: string;
   params?: Record<string, string>;
+
   /** Vrai : le chiffre suit l'université active (?u=). */
   scoped?: boolean;
   paging?: "page" | "skip";
 };
 
-// 2. remplacez fetchTotal par
+/** Compte en parcourant l'API par lots de 100 (limite maximale de l'API). */
+async function countBySkip(path: string, params: Record<string, string>) {
+  // Si l'API renvoie { items, total }, un seul élément suffit.
+  const probe = await api<unknown>(path, { query: { ...params, skip: "0", limit: "1" } });
+  if (!Array.isArray(probe)) return readTotal(probe);
+
+  // Sinon, c'est un tableau : on compte lot par lot (plafond de sécurité : 10 000).
+  let total = 0;
+  for (let skip = 0; skip < 10_000; skip += 100) {
+    const batch = readItems<unknown>(
+      await api<unknown>(path, { query: { ...params, skip: String(skip), limit: "100" } }),
+    );
+    total += batch.length;
+    if (batch.length < 100) break;
+  }
+  return total;
+}
+
 async function fetchTotal(
   path: string,
   params: Record<string, string>,
   paging: "page" | "skip" = "page",
 ) {
-  const window = paging === "skip" ? { skip: "0", limit: "1000" } : { page: "1", page_size: "1" };
-  const data = await api<unknown>(path, { query: { ...params, ...window } });
+  if (paging === "skip") return countBySkip(path, params);
+  const data = await api<unknown>(path, { query: { ...params, page: "1", page_size: "1" } });
   return readTotal(data);
 }
 

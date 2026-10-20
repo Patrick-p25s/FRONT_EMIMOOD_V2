@@ -17,10 +17,8 @@ export function useInvitationCodes(universityId: string, activeOnly: boolean) {
       readItems<InvitationCode>(
         await api<unknown>("/invitation-codes/", {
           query: {
-            university_id: universityId,
-            active_only: String(activeOnly),
             skip: "0",
-            limit: "200",
+            limit: "100",
           },
         }),
       ),

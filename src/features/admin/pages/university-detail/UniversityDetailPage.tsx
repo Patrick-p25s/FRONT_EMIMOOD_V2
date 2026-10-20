@@ -13,6 +13,7 @@ import { keepU } from "../../lib/search";
 import { OverviewTab } from "./OverViewTab";
 import { TeachersTab } from "./TeachersTab";
 import { CodesTab } from "./CodesTab";
+import { ClassesTab } from "./ClassesTab";
 
 const TABS = [
   { value: "overview", label: "Aperçu" },
@@ -82,13 +83,14 @@ export function UniversityDetailPage({ universityId }: Props) {
             <TabsContent value="codes" className="mt-6">
               <CodesTab universityId={universityId} />
             </TabsContent>
-            {(["classes", "users"] as const).map((value) => (
-              <TabsContent key={value} value={value} className="mt-6">
-                <p className="rounded-lg border border-dashed p-8 text-center text-sm text-muted-foreground">
-                  En construction.
-                </p>
-              </TabsContent>
-            ))}
+            <TabsContent value="classes" className="mt-6">
+              <ClassesTab universityId={universityId} />
+            </TabsContent>
+            <TabsContent value="users" className="mt-6">
+              <p className="rounded-lg border border-dashed p-8 text-center text-sm text-muted-foreground">
+                En construction.
+              </p>
+            </TabsContent>
           </TabsContent>
         ))}
       </Tabs>

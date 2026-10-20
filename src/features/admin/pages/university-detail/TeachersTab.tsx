@@ -39,7 +39,7 @@ export function TeachersTab({ universityId }: { universityId: string }) {
             role: "teacher",
             ...(search.q ? { q: search.q } : {}),
             skip: "0",
-            limit: "200",
+            limit: "100",
           },
         }),
       ),
