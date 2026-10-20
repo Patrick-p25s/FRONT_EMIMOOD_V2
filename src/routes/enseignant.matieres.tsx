@@ -1,6 +1,5 @@
+// src/routes/enseignant.matieres.tsx
 import { createFileRoute } from "@tanstack/react-router";
-import { PageHeader } from "@/components/emimood/molecules/PageHeader";
+import { MySubjectsPage } from "@/features/enseignant/pages/subjects";
 
-export const Route = createFileRoute("/enseignant/matieres")({
-  component: () => <PageHeader title="Mes matières" description="Écran en construction." />,
-});
+export const Route = createFileRoute("/enseignant/matieres")({ component: MySubjectsPage });
