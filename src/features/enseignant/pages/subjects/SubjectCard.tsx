@@ -10,7 +10,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { MyAssignment, MySubject } from "../../api/types";
-
+import { Link } from "@tanstack/react-router";
+import { cn } from "@/lib/utils";
 export type SubjectActions = {
   onEdit: () => void;
   onAddClasses: () => void;
@@ -23,7 +24,7 @@ type SubjectCardProps = { item: MySubject; actions?: SubjectActions | undefined 
 export function SubjectCard({ item, actions }: SubjectCardProps) {
   const { subject, classes } = item;
   return (
-    <article className="flex min-h-[168px] flex-col gap-3 rounded-xl border bg-card p-5 shadow-[var(--shadow)] transition-colors hover:border-primary/40">
+    <article className="flex min-h-42 flex-col gap-3 rounded-xl border bg-card p-5 shadow-[var(--shadow)] transition-colors hover:border-primary/40">
       <div className="flex items-start justify-between gap-3">
         <IconBox icon={NotebookText} tone="success" />
         <div className="flex items-center gap-1">
@@ -53,7 +54,17 @@ export function SubjectCard({ item, actions }: SubjectCardProps) {
       </div>
 
       <div className="min-w-0">
-        <h2 className="truncate text-base font-bold">{subject.name}</h2>
+        {classes.length === 1 && classes[0] ? (
+          <Link
+            to="/enseignant/matieres/$classSubjectId"
+            params={{ classSubjectId: classes[0].class_subject_id }}
+            className="block no-underline hover:text-primary cursor-pointers"
+          >
+            <h2 className="truncate text-base font-bold">{subject.name}</h2>
+          </Link>
+        ) : (
+          <h2 className="truncate text-base font-bold">{subject.name}</h2>
+        )}
         {subject.description && (
           <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{subject.description}</p>
         )}
@@ -67,11 +78,20 @@ export function SubjectCard({ item, actions }: SubjectCardProps) {
             {classes.map((assignment) => (
               <li
                 key={assignment.id}
-                className="inline-flex items-center gap-1 rounded-full bg-muted py-1 pr-1 pl-2.5 text-xs"
+                className={cn(
+                  "inline-flex items-center gap-1 rounded-full bg-muted py-1 pl-2.5 text-xs transition-colors hover:bg-primary/10 hover:text-primary",
+                  actions ? "pr-1" : "pr-2.5",
+                )}
               >
-                {assignment.classe_name}
-                {assignment.semester !== null ? ` · S${assignment.semester}` : ""}
-                {actions ? (
+                <Link
+                  to="/enseignant/matieres/$classSubjectId"
+                  params={{ classSubjectId: assignment.class_subject_id }}
+                  className="no-underline cursor-pointer"
+                >
+                  {assignment.classe_name}
+                  {assignment.semester !== null ? ` · S${assignment.semester}` : ""}
+                </Link>
+                {actions && (
                   <button
                     type="button"
                     aria-label={`Retirer ${assignment.classe_name}`}
@@ -80,8 +100,6 @@ export function SubjectCard({ item, actions }: SubjectCardProps) {
                   >
                     <X className="size-3" aria-hidden />
                   </button>
-                ) : (
-                  <span className="pr-1.5" />
                 )}
               </li>
             ))}

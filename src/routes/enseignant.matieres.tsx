@@ -1,5 +1,3 @@
-// src/routes/enseignant.matieres.tsx
-import { createFileRoute } from "@tanstack/react-router";
-import { MySubjectsPage } from "@/features/enseignant/pages/subjects";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/enseignant/matieres")({ component: MySubjectsPage });
+export const Route = createFileRoute("/enseignant/matieres")({ component: Outlet });
