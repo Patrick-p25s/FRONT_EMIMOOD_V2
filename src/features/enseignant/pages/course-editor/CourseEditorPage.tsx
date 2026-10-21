@@ -1,4 +1,3 @@
-// pages/course-editor/CourseEditorPage.tsx
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft, Plus } from "lucide-react";
@@ -9,10 +8,11 @@ import { ConfirmDialog } from "@/components/emimood/organisms/dialogs";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { Chapter, CourseResource } from "../../api/types";
+import type { Chapter, ChapterDocument, CourseResource } from "../../api/types";
 import {
   useChapterMutations,
   useCourseMutations,
+  useDocumentMutations, // NOUVEAU
   useResourceMutations,
 } from "../../hooks/useCourseMutations";
 import { useChapters, useCourse } from "../../hooks/useCourses";
@@ -20,12 +20,18 @@ import { COURSE_STATUS } from "../../lib/courseStatus";
 import { CourseForm } from "../subject-detail/CourseForm";
 import { ChapterCard } from "./ChapterCard";
 import { ChapterForm } from "./ChapterForm";
+import { DocumentForm } from "./DocumentForm"; // NOUVEAU
 import { ResourceForm } from "./ResourceForm";
 
 type ChapterDialog = { kind: "create" } | { kind: "edit"; chapter: Chapter } | null;
 type ResourceDialog =
   | { kind: "create"; chapter: Chapter }
   | { kind: "edit"; chapter: Chapter; resource: CourseResource }
+  | null;
+// NOUVEAU
+type DocumentDialog =
+  | { kind: "create"; chapter: Chapter }
+  | { kind: "edit"; chapter: Chapter; document: ChapterDocument }
   | null;
 
 export function CourseEditorPage({ courseId }: { courseId: string }) {
@@ -34,11 +40,14 @@ export function CourseEditorPage({ courseId }: { courseId: string }) {
   const { setStatus } = useCourseMutations();
   const chapterMutations = useChapterMutations();
   const resourceMutations = useResourceMutations();
+  const documentMutations = useDocumentMutations(); // NOUVEAU
 
   const [chapterDialog, setChapterDialog] = useState<ChapterDialog>(null);
   const [resourceDialog, setResourceDialog] = useState<ResourceDialog>(null);
+  const [documentDialog, setDocumentDialog] = useState<DocumentDialog>(null); // NOUVEAU
   const [deletingChapter, setDeletingChapter] = useState<Chapter | null>(null);
   const [deletingResource, setDeletingResource] = useState<CourseResource | null>(null);
+  const [deletingDocument, setDeletingDocument] = useState<ChapterDocument | null>(null); // NOUVEAU
 
   if (course.error)
     return <ErrorState error={course.error} onRetry={() => void course.refetch()} />;
@@ -146,6 +155,11 @@ export function CourseEditorPage({ courseId }: { courseId: string }) {
                     setResourceDialog({ kind: "edit", chapter, resource })
                   }
                   onDeleteResource={setDeletingResource}
+                  onAddDocument={() => setDocumentDialog({ kind: "create", chapter })} // NOUVEAU
+                  onEditDocument={(document) =>
+                    setDocumentDialog({ kind: "edit", chapter, document })
+                  } // NOUVEAU
+                  onDeleteDocument={setDeletingDocument} // NOUVEAU
                 />
               ))}
             </ol>
@@ -153,6 +167,7 @@ export function CourseEditorPage({ courseId }: { courseId: string }) {
         </section>
       </div>
 
+      {/* Dialogues : chapitre */}
       <Dialog
         open={chapterDialog !== null}
         onOpenChange={(open) => !open && setChapterDialog(null)}
@@ -174,6 +189,7 @@ export function CourseEditorPage({ courseId }: { courseId: string }) {
         </DialogContent>
       </Dialog>
 
+      {/* Dialogues : lien */}
       <Dialog
         open={resourceDialog !== null}
         onOpenChange={(open) => !open && setResourceDialog(null)}
@@ -181,7 +197,7 @@ export function CourseEditorPage({ courseId }: { courseId: string }) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              {resourceDialog?.kind === "edit" ? "Modifier la ressource" : "Nouvelle ressource"}
+              {resourceDialog?.kind === "edit" ? "Modifier le lien" : "Nouveau lien"}
             </DialogTitle>
           </DialogHeader>
           {resourceDialog && (
@@ -199,6 +215,33 @@ export function CourseEditorPage({ courseId }: { courseId: string }) {
         </DialogContent>
       </Dialog>
 
+      {/* NOUVEAU : dialogue document téléversé */}
+      <Dialog
+        open={documentDialog !== null}
+        onOpenChange={(open) => !open && setDocumentDialog(null)}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {documentDialog?.kind === "edit" ? "Modifier le document" : "Téléverser un document"}
+            </DialogTitle>
+          </DialogHeader>
+          {documentDialog && (
+            <DocumentForm
+              key={
+                documentDialog.kind === "edit"
+                  ? documentDialog.document.id
+                  : `new-${documentDialog.chapter.id}`
+              }
+              chapterId={documentDialog.chapter.id}
+              document={documentDialog.kind === "edit" ? documentDialog.document : undefined}
+              onDone={() => setDocumentDialog(null)}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Confirmations de suppression */}
       <ConfirmDialog
         open={deletingChapter !== null}
         onOpenChange={(open) => !open && setDeletingChapter(null)}
@@ -221,7 +264,7 @@ export function CourseEditorPage({ courseId }: { courseId: string }) {
         open={deletingResource !== null}
         onOpenChange={(open) => !open && setDeletingResource(null)}
         title={deletingResource ? `Supprimer « ${deletingResource.title} » ?` : ""}
-        description="La ressource disparaît du chapitre."
+        description="Le lien disparaît du chapitre."
         confirmLabel="Supprimer"
         destructive
         onConfirm={async () => {
@@ -229,6 +272,25 @@ export function CourseEditorPage({ courseId }: { courseId: string }) {
           try {
             await resourceMutations.remove.mutateAsync(deletingResource.id);
             setDeletingResource(null);
+          } catch {
+            // message déjà affiché par la mutation
+          }
+        }}
+      />
+
+      {/* NOUVEAU */}
+      <ConfirmDialog
+        open={deletingDocument !== null}
+        onOpenChange={(open) => !open && setDeletingDocument(null)}
+        title={deletingDocument ? `Supprimer « ${deletingDocument.title} » ?` : ""}
+        description="Le fichier est supprimé du chapitre."
+        confirmLabel="Supprimer"
+        destructive
+        onConfirm={async () => {
+          if (!deletingDocument) return;
+          try {
+            await documentMutations.remove.mutateAsync(deletingDocument.id);
+            setDeletingDocument(null);
           } catch {
             // message déjà affiché par la mutation
           }

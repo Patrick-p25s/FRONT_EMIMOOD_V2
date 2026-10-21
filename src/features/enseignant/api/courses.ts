@@ -1,7 +1,14 @@
 // api/courses.ts
-import { api, del, patch, post } from "./http";
+import { api, del, patch, post, postForm } from "./http";
 import { readItems } from "../lib/payload";
-import type { Chapter, Course, CourseResource, CourseStatus, ResourceType } from "./types";
+import type {
+  Chapter,
+  ChapterDocument,
+  Course,
+  CourseResource,
+  CourseStatus,
+  ResourceType,
+} from "./types";
 
 export type CreateCourseInput = { class_subject_id: string; title: string; description?: string };
 export type UpdateCourseInput = { title?: string; description?: string | null };
@@ -10,8 +17,14 @@ export type CreateChapterInput = {
   title: string;
   description?: string;
   position?: number;
+  content?: string[];
 };
-export type UpdateChapterInput = { title?: string; description?: string | null; position?: number };
+export type UpdateChapterInput = {
+  title?: string;
+  description?: string | null;
+  position?: number;
+  content?: string[];
+};
 export type CreateResourceInput = {
   chapter_id: string;
   title: string;
@@ -56,4 +69,13 @@ export const resourcesApi = {
   update: (id: string, input: UpdateResourceInput) =>
     patch<CourseResource>(`/resources/${id}`, input),
   remove: (id: string) => del(`/resources/${id}`),
+};
+
+export const documentsApi = {
+  list: async (chapterId: string) =>
+    readItems<ChapterDocument>(await api<unknown>(`/chapters/${chapterId}/documents`)),
+  upload: (form: FormData) => postForm<ChapterDocument>("/chapter-documents/create", form),
+  update: (id: string, input: { title?: string; description?: string | null }) =>
+    patch<ChapterDocument>(`/chapter-documents/${id}`, input),
+  remove: (id: string) => del(`/chapter-documents/${id}`),
 };

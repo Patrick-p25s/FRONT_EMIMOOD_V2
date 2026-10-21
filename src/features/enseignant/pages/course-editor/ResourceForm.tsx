@@ -1,4 +1,3 @@
-// pages/course-editor/ResourceForm.tsx
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Field, FormError } from "@/components/emimood/molecules/form";
@@ -6,17 +5,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { applyServerErrors } from "@/lib/errors";
-import type { CourseResource } from "../../api/types";
+import type { CourseResource, ResourceType } from "../../api/types";
 import { useResourceMutations } from "../../hooks/useCourseMutations";
 import { resourceSchema, type ResourceFormValues } from "../../lib/courseSchemas";
 
 const SELECT = "h-9 w-full rounded-md border bg-background px-3 text-sm";
-const TYPES = [
-  { value: "document", label: "Document" },
-  { value: "video", label: "Vidéo" },
+
+// NOUVEAU : « ressource » ne sert plus qu'aux liens
+const LINK_TYPES: { value: ResourceType; label: string }[] = [
   { value: "link", label: "Lien" },
+  { value: "video", label: "Vidéo" },
   { value: "other", label: "Autre" },
-] as const;
+];
 
 type ResourceFormProps = {
   chapterId: string;
@@ -26,6 +26,12 @@ type ResourceFormProps = {
 
 export function ResourceForm({ chapterId, resource, onDone }: ResourceFormProps) {
   const { create, update } = useResourceMutations();
+  // NOUVEAU : une ancienne ressource déjà typée « document » garde son type visible à la modification
+  const types: { value: ResourceType; label: string }[] =
+    resource?.resource_type === "document"
+      ? [...LINK_TYPES, { value: "document", label: "Document en ligne" }]
+      : LINK_TYPES;
+
   const {
     register,
     handleSubmit,
@@ -35,7 +41,7 @@ export function ResourceForm({ chapterId, resource, onDone }: ResourceFormProps)
     resolver: zodResolver(resourceSchema),
     defaultValues: {
       title: resource?.title ?? "",
-      resource_type: resource?.resource_type ?? "document",
+      resource_type: resource?.resource_type ?? "link", // NOUVEAU : « link » par défaut
       url: resource?.url ?? "",
       description: resource?.description ?? "",
     },
@@ -71,6 +77,7 @@ export function ResourceForm({ chapterId, resource, onDone }: ResourceFormProps)
   return (
     <form onSubmit={onSubmit} noValidate className="grid gap-4">
       <FormError message={errors.root?.message} />
+
       <Field id="res-title" label="Titre" error={errors.title?.message}>
         <Input
           id="res-title"
@@ -79,10 +86,11 @@ export function ResourceForm({ chapterId, resource, onDone }: ResourceFormProps)
           {...register("title")}
         />
       </Field>
+
       <div className="grid gap-4 sm:grid-cols-[10rem_1fr]">
         <Field id="res-type" label="Type" error={errors.resource_type?.message}>
           <select id="res-type" className={SELECT} {...register("resource_type")}>
-            {TYPES.map((type) => (
+            {types.map((type) => (
               <option key={type.value} value={type.value}>
                 {type.label}
               </option>
@@ -105,6 +113,7 @@ export function ResourceForm({ chapterId, resource, onDone }: ResourceFormProps)
           />
         </Field>
       </div>
+
       <Field
         id="res-description"
         label="Description"
@@ -118,6 +127,7 @@ export function ResourceForm({ chapterId, resource, onDone }: ResourceFormProps)
           {...register("description")}
         />
       </Field>
+
       <div className="flex justify-end gap-2">
         <Button type="button" variant="outline" onClick={onDone}>
           Annuler

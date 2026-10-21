@@ -57,7 +57,7 @@ export function MySubjectsPage() {
       ) : isLoading ? (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {Array.from({ length: 3 }, (_, index) => (
-            <Skeleton key={index} className="h-[168px] w-full rounded-xl" />
+            <Skeleton key={index} className="h-42 w-full rounded-xl" />
           ))}
         </div>
       ) : subjects.length === 0 ? (

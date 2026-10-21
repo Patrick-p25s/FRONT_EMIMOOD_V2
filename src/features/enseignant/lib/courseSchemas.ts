@@ -1,11 +1,16 @@
-// lib/courseSchemas.ts
 import { z } from "zod";
 
 export const courseSchema = z.object({
   title: z.string().trim().min(2, "Au moins 2 caractères").max(200, "200 caractères maximum"),
   description: z.string().trim().max(5000, "5000 caractères maximum"),
 });
-export const chapterSchema = courseSchema;
+
+// Une liste de petits textes : chaque entrée est un objet { value } (exigé par useFieldArray)
+export const chapterSchema = courseSchema.extend({
+  content: z
+    .array(z.object({ value: z.string().max(2000, "2000 caractères maximum") }))
+    .max(100, "100 textes maximum"),
+});
 
 export const resourceSchema = z.object({
   title: z.string().trim().min(1, "Obligatoire").max(200, "200 caractères maximum"),
@@ -18,5 +23,13 @@ export const resourceSchema = z.object({
   description: z.string().trim().max(5000, "5000 caractères maximum"),
 });
 
+// NOUVEAU : règles du formulaire de document téléversé
+export const documentSchema = z.object({
+  title: z.string().trim().min(1, "Obligatoire").max(200, "200 caractères maximum"),
+  description: z.string().trim().max(5000, "5000 caractères maximum"),
+});
+
 export type CourseFormValues = z.infer<typeof courseSchema>;
+export type ChapterFormValues = z.infer<typeof chapterSchema>; // NOUVEAU
 export type ResourceFormValues = z.infer<typeof resourceSchema>;
+export type DocumentFormValues = z.infer<typeof documentSchema>; // NOUVEAU

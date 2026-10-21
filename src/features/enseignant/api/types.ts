@@ -1,4 +1,5 @@
 // features/enseignant/api/types.ts : tels que décrits dans votre document
+export type ChapterText = { id: string; content: string };
 export type MyAssignment = {
   id: string;
   class_subject_id: string;
@@ -40,6 +41,7 @@ export type Chapter = {
   title: string;
   description: string | null;
   position: number;
+  content?: ChapterText[] | undefined;
   created_at: string;
   updated_at: string;
 };
@@ -51,6 +53,21 @@ export type CourseResource = {
   title: string;
   description: string | null;
   resource_type: ResourceType;
+  url: string;
+  position: number;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ChapterDocument = {
+  id: string;
+  chapter_id: string;
+  created_by: string;
+  title: string;
+  description: string | null;
+  file_name: string;
+  file_type: string | null;
+  file_size: number | null;
   url: string;
   position: number;
   created_at: string;

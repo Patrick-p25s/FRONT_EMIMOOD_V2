@@ -24,7 +24,7 @@ type SubjectCardProps = { item: MySubject; actions?: SubjectActions | undefined 
 export function SubjectCard({ item, actions }: SubjectCardProps) {
   const { subject, classes } = item;
   return (
-    <article className="flex min-h-42 flex-col gap-3 rounded-xl border bg-card p-5 shadow-[var(--shadow)] transition-colors hover:border-primary/40">
+    <article className="flex min-h-42 flex-col gap-3 rounded-xl border bg-card p-5 shadow-(--shadow) transition-colors hover:border-primary/40">
       <div className="flex items-start justify-between gap-3">
         <IconBox icon={NotebookText} tone="success" />
         <div className="flex items-center gap-1">

@@ -96,7 +96,7 @@ export function SubjectDetailPage({ classSubjectId }: { classSubjectId: string }
                   return (
                     <li
                       key={course.id}
-                      className="flex items-center gap-3 rounded-xl border bg-card p-4 shadow-[var(--shadow)] transition-colors hover:border-primary/40"
+                      className="flex items-center gap-3 rounded-xl border bg-card p-4 shadow-(--shadow) transition-colors hover:border-primary/40"
                     >
                       <Link
                         to="/enseignant/cours/$courseId"
