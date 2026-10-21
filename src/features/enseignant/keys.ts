@@ -12,4 +12,10 @@ export const teacherKeys = {
   resources: (chapterId: string) => ["teacher", "resources", chapterId] as const,
   documentAll: ["teacher", "documents"] as const,
   documents: (chapterId: string) => ["teacher", "documents", chapterId] as const,
+  assessments: ["teacher", "assessments"] as const,
+  assessmentsOf: (classSubjectId: string) =>
+    ["teacher", "assessments", "of", classSubjectId] as const,
+  assessment: (id: string) => ["teacher", "assessments", "detail", id] as const,
+  questionsAll: ["teacher", "questions"] as const,
+  questions: (assessmentId: string) => ["teacher", "questions", assessmentId] as const,
 };

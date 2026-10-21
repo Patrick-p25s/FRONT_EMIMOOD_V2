@@ -23,8 +23,15 @@ import { useCourses } from "../../hooks/useCourses";
 import { useMySubjects } from "../../hooks/useMySubjects";
 import { COURSE_STATUS } from "../../lib/courseStatus";
 import { CourseForm } from "./CourseForm";
+import { AssessmentsTab } from "../assessments/AssessmentsTab";
 
-export function SubjectDetailPage({ classSubjectId }: { classSubjectId: string }) {
+export function SubjectDetailPage({
+  classSubjectId,
+  initialTab,
+}: {
+  classSubjectId: string;
+  initialTab: "courses" | "assessments";
+}) {
   const navigate = useNavigate();
   const subjects = useMySubjects();
   const courses = useCourses(classSubjectId);
@@ -72,7 +79,7 @@ export function SubjectDetailPage({ classSubjectId }: { classSubjectId: string }
       )}
 
       {found && (
-        <Tabs defaultValue="courses">
+        <Tabs defaultValue={initialTab}>
           <TabsList>
             <TabsTrigger value="courses">Cours</TabsTrigger>
             <TabsTrigger value="assessments">Évaluations</TabsTrigger>
@@ -128,9 +135,7 @@ export function SubjectDetailPage({ classSubjectId }: { classSubjectId: string }
           </TabsContent>
 
           <TabsContent value="assessments" className="mt-6">
-            <p className="rounded-lg border border-dashed p-8 text-center text-sm text-muted-foreground">
-              Les évaluations arrivent à l’étape suivante.
-            </p>
+            <AssessmentsTab classSubjectId={classSubjectId} />
           </TabsContent>
         </Tabs>
       )}

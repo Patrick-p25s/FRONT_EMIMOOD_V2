@@ -73,3 +73,36 @@ export type ChapterDocument = {
   created_at: string;
   updated_at: string;
 };
+export type AssessmentType = "quiz" | "exam" | "assignment";
+export type AssessmentStatus = "draft" | "published" | "archived";
+export type Assessment = {
+  id: string;
+  class_subject_id: string;
+  created_by: string;
+  title: string;
+  description: string | null;
+  assessment_type: AssessmentType;
+  status: AssessmentStatus;
+  start_at: string | null;
+  end_at: string | null;
+  duration_minutes: number | null;
+  max_attempts: number;
+  show_correction: boolean;
+  created_at: string;
+  updated_at: string;
+  /** Calculée par le serveur : draft, upcoming, open, closed, archived. */
+  phase: string;
+};
+
+export type QuestionType =
+  "single_choice" | "multiple_choice" | "true_false" | "short_answer" | "open_answer";
+export type Choice = { id: string; content: string; is_correct: boolean; position: number };
+export type Question = {
+  id: string;
+  assessment_id: string;
+  content: string;
+  question_type: QuestionType;
+  points: number;
+  position: number;
+  choices: Choice[];
+};
