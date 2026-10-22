@@ -162,3 +162,53 @@ export type AssessmentResults = {
   lowest: number | null;
   students: StudentResultRow[];
 };
+
+// api/types.ts
+export type PublicationType = "resource" | "experience" | "project" | "announcement" | "event";
+export type PublicationVisibility = "class" | "university";
+export type PublicationStatus = "published" | "hidden";
+export type AuthorRole = "student" | "teacher" | "moderator" | "super_admin";
+
+export type Page<T> = { items: T[]; total: number; page: number; page_size: number; pages: number };
+
+export type AuthorBrief = { id: string; name: string; role: AuthorRole; avatar_url: string | null };
+export type PublicationDocument = {
+  id: string;
+  kind: "file" | "link";
+  url: string | null;
+  download_path: string | null;
+  file_name: string | null;
+  file_type: string | null;
+  file_size: number | null;
+  subject_id: string | null;
+};
+export type Publication = {
+  id: string;
+  university_id: string;
+  classe_id: string | null;
+  publication_type: PublicationType;
+  visibility: PublicationVisibility;
+  status: PublicationStatus;
+  title: string | null;
+  content: string;
+  event_at: string | null;
+  event_location: string | null;
+  created_at: string;
+  updated_at: string;
+  author: AuthorBrief;
+  document: PublicationDocument | null;
+  likes_count: number;
+  comments_count: number;
+  liked_by_me: boolean;
+  is_mine: boolean;
+};
+export type PublicationComment = {
+  id: string;
+  publication_id: string;
+  parent_id: string | null;
+  author: AuthorBrief;
+  content: string;
+  created_at: string;
+  is_mine: boolean;
+};
+export type LikeResult = { liked: boolean; likes_count: number };

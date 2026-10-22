@@ -25,3 +25,12 @@ export const teacherKeys = {
   resultsAll: ["teacher", "results"] as const,
   results: (assessmentId: string) => ["teacher", "results", assessmentId] as const,
 };
+// keys.ts
+import type { FeedFilters } from "./api/publications";
+
+export const pubKeys = {
+  all: ["publications"] as const,
+  feed: (f: FeedFilters) =>
+    ["publications", "feed", f.type ?? "all", f.classeId ?? "all", f.authorId ?? "all"] as const,
+  comments: (id: string) => ["publications", "comments", id] as const,
+};
