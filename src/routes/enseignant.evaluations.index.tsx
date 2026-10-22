@@ -1,7 +1,5 @@
+// src/routes/enseignant.evaluations.index.tsx
 import { createFileRoute } from "@tanstack/react-router";
-import { PageHeader } from "@/components/emimood/molecules/PageHeader";
-import { GradingPage } from "@/features/enseignant/pages/grading";
+import { EvaluationsPage } from "@/features/enseignant/pages/overview";
 
-export const Route = createFileRoute("/enseignant/evaluations/")({
-  component: GradingPage,
-});
+export const Route = createFileRoute("/enseignant/evaluations/")({ component: EvaluationsPage });
