@@ -17,6 +17,7 @@ import { validateQuestion } from "../../lib/questionRules";
 import { AssessmentForm } from "../assessments/AssessmentForm";
 import { QuestionCard } from "./QuestionCard";
 import { QuestionForm } from "./QuestionForm";
+import { ResultsPanel } from "../assessment-results/ResultatsPanel";
 
 const MAX_QUESTIONS = 100;
 
@@ -166,6 +167,8 @@ export function AssessmentEditorPage({ assessmentId }: { assessmentId: string })
             modifiés. Vous pouvez seulement l’archiver.
           </p>
         )}
+
+        {!draft && <ResultsPanel assessmentId={assessmentId} />}
 
         <Panel title="Paramètres">
           <AssessmentForm key={current.updated_at} assessment={current} onSaved={() => undefined} />

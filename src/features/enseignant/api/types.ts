@@ -106,3 +106,59 @@ export type Question = {
   position: number;
   choices: Choice[];
 };
+
+/** Valeurs exactes non confirmées : on les traite comme du texte, avec un libellé de secours. */
+export type AttemptStatus = string;
+
+export type ChoiceReview = { id: string; content: string; is_correct: boolean; position: number };
+export type AnswerDetail = {
+  question_id: string;
+  content: string;
+  question_type: QuestionType;
+  points: number;
+  choices: ChoiceReview[];
+  selected_choice_ids: string[];
+  answer_text: string | null;
+  points_awarded: number | null;
+  feedback: string | null;
+};
+export type AttemptRow = {
+  id: string;
+  student_id: string;
+  student_name: string;
+  attempt_number: number;
+  status: AttemptStatus;
+  started_at: string;
+  submitted_at: string | null;
+  score: number | null;
+};
+export type AttemptReview = {
+  attempt_id: string;
+  assessment_id: string;
+  attempt_number: number;
+  status: AttemptStatus;
+  submitted_at: string | null;
+  score: number | null;
+  max_score: number;
+  details: AnswerDetail[] | null;
+  student_id: string;
+  student_name: string;
+};
+export type StudentResultRow = {
+  student_id: string;
+  student_name: string;
+  attempts: number;
+  best_score: number | null;
+  pending: number;
+};
+export type AssessmentResults = {
+  assessment_id: string;
+  max_score: number;
+  students_count: number;
+  graded_count: number;
+  pending_attempts: number;
+  average: number | null;
+  highest: number | null;
+  lowest: number | null;
+  students: StudentResultRow[];
+};

@@ -18,4 +18,10 @@ export const teacherKeys = {
   assessment: (id: string) => ["teacher", "assessments", "detail", id] as const,
   questionsAll: ["teacher", "questions"] as const,
   questions: (assessmentId: string) => ["teacher", "questions", assessmentId] as const,
+  attemptsAll: ["teacher", "attempts"] as const,
+  attempts: (assessmentId: string, status?: string) =>
+    ["teacher", "attempts", "of", assessmentId, status ?? "all"] as const,
+  attemptReview: (id: string) => ["teacher", "attempts", "review", id] as const,
+  resultsAll: ["teacher", "results"] as const,
+  results: (assessmentId: string) => ["teacher", "results", assessmentId] as const,
 };
