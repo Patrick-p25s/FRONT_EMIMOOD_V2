@@ -11,6 +11,8 @@ import { usePublicationMutations } from "../hooks/usePublicationMutations";
 import { fromLocalInput, toLocalInput } from "../lib/dates";
 import { PUB_TYPES } from "../lib/meta";
 import { publicationSchema, type PublicationFormValues } from "../lib/schema";
+import { useState } from "react";
+import { MAX_FILE_BYTES, MAX_FILE_MB } from "@/lib/files";
 
 const SELECT = "h-9 w-full rounded-md border bg-background px-3 text-sm";
 const FIELDS = [
@@ -36,8 +38,10 @@ type PublicationFormProps = {
 };
 
 export function PublicationForm({ classes, subjects, publication, onDone }: PublicationFormProps) {
-  const { create, update } = usePublicationMutations();
+  const { create, update, createWithFile } = usePublicationMutations();
   const editing = !!publication;
+  const [file, setFile] = useState<File | null>(null);
+  const [fileError, setFileError] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -77,6 +81,20 @@ export function PublicationForm({ classes, subjects, publication, onDone }: Publ
                 }
               : {}),
           },
+        });
+      } else if (file && values.publication_type === "resource") {
+        // Avec un fichier, le serveur exige un titre.
+        if (!values.title) {
+          setError("title", { message: "Le titre est obligatoire avec un fichier" });
+          return;
+        }
+        await createWithFile.mutateAsync({
+          file,
+          title: values.title,
+          content: values.content,
+          visibility: values.visibility,
+          ...(values.visibility === "class" ? { classe_id: values.classe_id } : {}),
+          ...(values.subject_id ? { subject_id: values.subject_id } : {}),
         });
       } else {
         await create.mutateAsync({
@@ -187,6 +205,7 @@ export function PublicationForm({ classes, subjects, publication, onDone }: Publ
             hint="Facultatif : page, vidéo, document en ligne…"
           >
             <Input
+              disabled={!!file}
               id="pub-link"
               inputMode="url"
               placeholder="https://"
@@ -212,6 +231,31 @@ export function PublicationForm({ classes, subjects, publication, onDone }: Publ
             </Field>
           )}
         </>
+      )}
+
+      {type === "resource" && (
+        <Field
+          id="pub-file"
+          label="Fichier"
+          hint={`Facultatif, à la place du lien. ${MAX_FILE_MB} Mo maximum.`}
+          error={fileError ?? undefined}
+        >
+          <Input
+            id="pub-file"
+            type="file"
+            onChange={(event) => {
+              const picked = event.target.files?.[0] ?? null;
+              if (picked && picked.size > MAX_FILE_BYTES) {
+                event.target.value = "";
+                setFile(null);
+                setFileError(`Fichier trop lourd (${MAX_FILE_MB} Mo maximum)`);
+                return;
+              }
+              setFileError(null);
+              setFile(picked);
+            }}
+          />
+        </Field>
       )}
 
       <div className="flex justify-end gap-2">

@@ -39,7 +39,12 @@ export function usePublicationMutations() {
     (v: { id: string; status: PublicationStatus }) => publicationsApi.setStatus(v.id, v.status),
     "Statut mis à jour",
   );
-  return { create, update, remove, setStatus };
+  const createWithFile = useRefreshingMutation(
+    (input: Parameters<typeof publicationsApi.createWithFile>[0]) =>
+      publicationsApi.createWithFile(input),
+    "Ressource publiée",
+  );
+  return { create, createWithFile, update, remove, setStatus };
 }
 
 /** Like : réponse immédiate dans la carte, pas de rechargement du fil. */

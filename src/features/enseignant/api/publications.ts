@@ -1,6 +1,6 @@
 // api/publications.ts
 // NB : ces helpers viennent de l'espace enseignant ; à déplacer dans src/lib/api quand l'admin s'en servira.
-import { api, del, patch, post } from "@/features/enseignant/api/http";
+import { api, del, patch, post, postForm } from "@/features/enseignant/api/http";
 import type {
   LikeResult,
   Page,
@@ -46,18 +46,44 @@ export const publicationsApi = {
         ...(filters.authorId ? { author_id: filters.authorId } : {}),
       },
     }),
+
   create: (input: CreatePublicationInput) => post<Publication>("/publications/create", input),
+
   update: (id: string, input: UpdatePublicationInput) =>
     patch<Publication>(`/publications/${id}`, input),
+
   remove: (id: string) => del(`/publications/${id}`),
+
   setStatus: (id: string, status: PublicationStatus) =>
     patch<Publication>(`/publications/${id}/status`, { status }),
+
   like: (id: string) => api<LikeResult>(`/publications/${id}/like`, { method: "PUT" }),
+
   unlike: (id: string) => api<LikeResult>(`/publications/${id}/like`, { method: "DELETE" }),
+
   comments: (id: string) =>
     api<Page<PublicationComment>>(`/publications/${id}/comments`, {
       query: { page: "1", page_size: "100" },
     }),
+
   addComment: (id: string, content: string) =>
     post<PublicationComment>(`/publications/${id}/comments`, { content }),
+
+  createWithFile: (input: {
+    file: File;
+    title: string;
+    content: string;
+    visibility: PublicationVisibility;
+    classe_id?: string;
+    subject_id?: string;
+  }) => {
+    const form = new FormData();
+    form.append("file", input.file);
+    form.append("title", input.title);
+    form.append("content", input.content);
+    form.append("visibility", input.visibility);
+    if (input.classe_id) form.append("classe_id", input.classe_id);
+    if (input.subject_id) form.append("subject_id", input.subject_id);
+    return postForm<Publication>("/publications/create-resource-file", form);
+  },
 };

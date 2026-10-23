@@ -10,6 +10,7 @@ import {
   Paperclip,
   Pencil,
   Trash2,
+  Download,
 } from "lucide-react";
 import { StatusPill } from "@/components/emimood/atoms/StatusPill";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,10 @@ import type { Publication } from "../api/types";
 import { useLikeMutation, usePublicationMutations } from "../hooks/usePublicationMutations";
 import { PUB_TYPES, ROLE_LABEL } from "../lib/meta";
 import { CommentsSection } from "./CommentsSection";
+import { toast } from "sonner";
+import { errorMessage } from "@/lib/errors";
+import { downloadFile } from "@/lib/api/download";
+import { formatBytes } from "@/lib/files";
 
 type PublicationCardProps = { publication: Publication; onEdit: () => void; onDelete: () => void };
 
@@ -33,10 +38,19 @@ export function PublicationCard({ publication, onEdit, onDelete }: PublicationCa
   });
   const [commentsCount, setCommentsCount] = useState(publication.comments_count);
   const [commentsOpen, setCommentsOpen] = useState(false);
-
+  const [downloading, setDownloading] = useState(false);
   const hidden = publication.status === "hidden";
   const document = publication.document;
 
+  const download = async () => {
+    if (!document) return;
+    setDownloading(true);
+    try {
+      await downloadFile(`/documents/${document.id}/download`, document.file_name ?? "document");
+    } catch (error) {
+      toast.error(errorMessage(error));
+    }
+  };
   const toggleLike = () => {
     const previous = like;
     setLike({ liked: !previous.liked, count: previous.count + (previous.liked ? -1 : 1) });
@@ -51,7 +65,7 @@ export function PublicationCard({ publication, onEdit, onDelete }: PublicationCa
 
   return (
     <article
-      className={cn("rounded-xl border bg-card p-4 shadow-[var(--shadow)]", hidden && "opacity-70")}
+      className={cn("rounded-xl border bg-card p-4 shadow-(--shadow)", hidden && "opacity-70")}
     >
       <header className="flex items-start gap-3">
         <span
@@ -99,9 +113,19 @@ export function PublicationCard({ publication, onEdit, onDelete }: PublicationCa
           </a>
         )}
         {document?.kind === "file" && (
-          <p className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
-            <Paperclip className="size-4" aria-hidden /> {document.file_name ?? "Fichier joint"}
-          </p>
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-fit"
+            disabled={downloading}
+            onClick={() => void download()}
+          >
+            <Download className="size-4" aria-hidden />
+            {downloading ? "Téléchargement…" : (document.file_name ?? "Télécharger")}
+            {document.file_size ? (
+              <span className="text-muted-foreground">· {formatBytes(document.file_size)}</span>
+            ) : null}
+          </Button>
         )}
       </div>
 

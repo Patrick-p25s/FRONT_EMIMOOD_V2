@@ -1,6 +1,9 @@
 import { RT_KEY, accessExpiresIn, tokenStore } from "@/lib/api/tokenStore";
 
-export const API_URL = ((import.meta.env["VITE_API_URL"] as string | undefined) ?? "").replace(/\/$/, "");
+export const API_URL = ((import.meta.env["VITE_API_URL"] as string | undefined) ?? "").replace(
+  /\/$/,
+  "",
+);
 const GENERIC = "Une erreur est survenue, réessayez";
 
 export class ApiError extends Error {
@@ -15,14 +18,24 @@ export class ApiError extends Error {
   }
 }
 
-export type SessionEnd = { kind: "expired" } | { kind: "logout" } | { kind: "blocked"; message: string };
+export type SessionEnd =
+  { kind: "expired" } | { kind: "logout" } | { kind: "blocked"; message: string };
 type Listener<T> = (v: T) => void;
 const endListeners = new Set<Listener<SessionEnd>>();
 const connListeners = new Set<Listener<boolean>>();
 const refreshListeners = new Set<Listener<void>>();
-export const onSessionEnd = (l: Listener<SessionEnd>) => (endListeners.add(l), () => endListeners.delete(l));
-export const onConnection = (l: Listener<boolean>) => (connListeners.add(l), () => connListeners.delete(l));
-export const onRefreshed = (l: Listener<void>) => (refreshListeners.add(l), () => refreshListeners.delete(l));
+export const onSessionEnd = (l: Listener<SessionEnd>) => (
+  endListeners.add(l),
+  () => endListeners.delete(l)
+);
+export const onConnection = (l: Listener<boolean>) => (
+  connListeners.add(l),
+  () => connListeners.delete(l)
+);
+export const onRefreshed = (l: Listener<void>) => (
+  refreshListeners.add(l),
+  () => refreshListeners.delete(l)
+);
 
 // ---------- Onglets multiples ----------
 type Msg = { type: "access"; token: string } | { type: "logout" };
@@ -43,7 +56,8 @@ export function initCrossTab() {
   }
   // Repli : suppression du refresh token par un autre onglet
   window.addEventListener("storage", (e) => {
-    if (e.key === RT_KEY && e.newValue === null && tokenStore.getAccess()) localEnd({ kind: "logout" });
+    if (e.key === RT_KEY && e.newValue === null && tokenStore.getAccess())
+      localEnd({ kind: "logout" });
   });
 }
 
@@ -86,7 +100,9 @@ async function rawRefresh(): Promise<boolean> {
 let inflight: Promise<boolean> | null = null;
 
 /** staleToken : le jeton qui a échoué. Si un autre appel l'a déjà remplacé, on ne rafraîchit pas. */
-export function refreshTokens(staleToken: string | null = tokenStore.getAccess()): Promise<boolean> {
+export function refreshTokens(
+  staleToken: string | null = tokenStore.getAccess(),
+): Promise<boolean> {
   if (inflight) return inflight;
   inflight = (async () => {
     const run = async (): Promise<boolean> => {
@@ -118,7 +134,12 @@ export function refreshTokens(staleToken: string | null = tokenStore.getAccess()
 
 // ---------- Client HTTP unique ----------
 type Query = Record<string, string | number | boolean | null | undefined>;
-type Opts = { method?: "GET" | "POST" | "PATCH" | "PUT" | "DELETE"; body?: unknown; query?: Query; auth?: boolean };
+type Opts = {
+  method?: "GET" | "POST" | "PATCH" | "PUT" | "DELETE";
+  body?: unknown;
+  query?: Query;
+  auth?: boolean;
+};
 
 function buildUrl(path: string, query?: Query) {
   const qs = new URLSearchParams();
@@ -149,28 +170,34 @@ async function toError(res: Response, path: string): Promise<ApiError> {
     /* corps vide */
   }
   const err = new ApiError(res.status, detail, fieldErrors);
-  if (res.status === 403 && (path === "/users/me" || /^Votre (compte|université|classe)/.test(detail))) {
+  if (
+    res.status === 403 &&
+    (path === "/users/me" || /^Votre (compte|université|classe)/.test(detail))
+  ) {
     endSession({ kind: "blocked", message: detail });
   }
   return err;
 }
-
-export async function api<T>(path: string, opts: Opts = {}): Promise<T> {
+/** Requête authentifiée (rafraîchissement du jeton inclus). Renvoie la réponse brute. */
+async function request(path: string, opts: Opts): Promise<Response> {
   const { method = "GET", body, query, auth = true } = opts;
   if (!API_URL) throw new ApiError(0, "L’adresse de l’API (VITE_API_URL) n’est pas configurée.");
   if (auth && tokenStore.getAccess() && accessExpiresIn() < 60) await refreshTokens();
 
+  // FormData : le navigateur fixe lui-même le Content-Type (avec la frontière multipart).
+  const isForm = body instanceof FormData;
+
   const send = async () => {
     const token = auth ? tokenStore.getAccess() : null;
     const headers: Record<string, string> = {};
-    if (body !== undefined) headers["Content-Type"] = "application/json";
+    if (body !== undefined && !isForm) headers["Content-Type"] = "application/json";
     if (token) headers["Authorization"] = `Bearer ${token}`;
     try {
       const res = await fetch(buildUrl(path, query), {
         method,
         headers,
         credentials: "omit",
-        body: body === undefined ? null : JSON.stringify(body),
+        body: body === undefined ? null : isForm ? body : JSON.stringify(body),
       });
       return { res, token };
     } catch {
@@ -189,7 +216,17 @@ export async function api<T>(path: string, opts: Opts = {}): Promise<T> {
     }
   }
   if (!res.ok) throw await toError(res, path);
+  return res;
+}
+
+export async function api<T>(path: string, opts: Opts = {}): Promise<T> {
+  const res = await request(path, opts);
   if (res.status === 204) return undefined as T;
   const text = await res.text();
   return (text ? JSON.parse(text) : undefined) as T;
+}
+
+/** Télécharge un fichier protégé (le jeton est joint) et le renvoie en Blob. */
+export async function apiBlob(path: string): Promise<Blob> {
+  return (await request(path, {})).blob();
 }
