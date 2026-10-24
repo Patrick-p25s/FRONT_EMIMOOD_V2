@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { applyServerErrors } from "@/lib/errors";
-import type { Publication } from "../api/types";
+import type { Publication, PublicationType } from "../api/types";
 import { usePublicationMutations } from "../hooks/usePublicationMutations";
 import { fromLocalInput, toLocalInput } from "../lib/dates";
 import { PUB_TYPES } from "../lib/meta";
@@ -34,10 +34,18 @@ type PublicationFormProps = {
   classes: ClassOption[];
   subjects: SubjectOption[];
   publication?: Publication | undefined;
+  initialType?: PublicationType | undefined;
   onDone: () => void;
 };
 
-export function PublicationForm({ classes, subjects, publication, onDone }: PublicationFormProps) {
+// signature
+export function PublicationForm({
+  classes,
+  subjects,
+  publication,
+  initialType,
+  onDone,
+}: PublicationFormProps) {
   const { create, update, createWithFile } = usePublicationMutations();
   const editing = !!publication;
   const [file, setFile] = useState<File | null>(null);
@@ -51,7 +59,7 @@ export function PublicationForm({ classes, subjects, publication, onDone }: Publ
   } = useForm<PublicationFormValues>({
     resolver: zodResolver(publicationSchema),
     defaultValues: {
-      publication_type: publication?.publication_type ?? "announcement",
+      publication_type: publication?.publication_type ?? initialType ?? "announcement",
       visibility: publication?.visibility ?? (classes.length > 0 ? "class" : "university"),
       classe_id: publication?.classe_id ?? classes[0]?.id ?? "",
       subject_id: "",
