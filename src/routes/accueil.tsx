@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { HomePage } from "@/components/emimood/pages";
 import { pageHead } from "@/components/emimood/data";
+import { HomePage } from "@/features/etudiant/pages/home/HomePage";
 export const Route = createFileRoute("/accueil")({
   head: () =>
     pageHead(
