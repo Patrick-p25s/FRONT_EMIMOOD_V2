@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { ArrowUpRight, Bookmark, CalendarDays, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Heading } from "@/components/emimood/molecules/Heading";
 import { opportunities } from "@/components/emimood/data/opportunities";
 

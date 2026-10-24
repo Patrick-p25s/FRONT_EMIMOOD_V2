@@ -2,7 +2,13 @@ import { useState } from "react";
 import { FileText, Globe, Image, Link2, Plus, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Avatar } from "@/components/emimood/atoms/Avatar";
 import { initialPosts } from "@/components/emimood/data/posts";
 import { Post } from "@/components/emimood/organisms/Post";

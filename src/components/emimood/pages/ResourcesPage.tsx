@@ -2,7 +2,13 @@ import { useState } from "react";
 import { Bookmark, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Heading } from "@/components/emimood/molecules/Heading";
 import { resources } from "@/components/emimood/data/resources";
 import { DocumentViewer } from "@/components/emimood/organisms/DocumentViewer";
