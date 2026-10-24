@@ -40,6 +40,8 @@ import { Route as EnseignantEvaluationsRouteImport } from './routes/enseignant.e
 import { Route as EnseignantMatieresRouteImport } from './routes/enseignant.matieres'
 import { Route as EvaluationsIndexRouteImport } from './routes/evaluations.index'
 import { Route as MembresUserIdRouteImport } from './routes/membres.$userId'
+import { Route as MessagesIndexRouteImport } from './routes/messages.index'
+import { Route as MessagesConversationIdRouteImport } from './routes/messages.$conversationId'
 import { Route as SubjectsIndexRouteImport } from './routes/subjects.index'
 import { Route as SubjectsClassSubjectIdRouteImport } from './routes/subjects.$classSubjectId'
 import { Route as AdminUniversitiesIndexRouteImport } from './routes/admin.universities.index'
@@ -209,6 +211,16 @@ const MembresUserIdRoute = MembresUserIdRouteImport.update({
   path: '/membres/$userId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MessagesIndexRoute = MessagesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MessagesRoute,
+} as any)
+const MessagesConversationIdRoute = MessagesConversationIdRouteImport.update({
+  id: '/$conversationId',
+  path: '/$conversationId',
+  getParentRoute: () => MessagesRoute,
+} as any)
 const SubjectsIndexRoute = SubjectsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -292,7 +304,7 @@ export interface FileRoutesByFullPath {
   '/delegue': typeof DelegueRoute
   '/enseignant': typeof EnseignantRouteWithChildren
   '/evaluations': typeof EvaluationsRouteWithChildren
-  '/messages': typeof MessagesRoute
+  '/messages': typeof MessagesRouteWithChildren
   '/notifications': typeof NotificationsRoute
   '/opportunites': typeof OpportunitesRoute
   '/parametres': typeof ParametresRoute
@@ -312,10 +324,12 @@ export interface FileRoutesByFullPath {
   '/enseignant/evaluations': typeof EnseignantEvaluationsRouteWithChildren
   '/enseignant/matieres': typeof EnseignantMatieresRouteWithChildren
   '/membres/$userId': typeof MembresUserIdRoute
+  '/messages/$conversationId': typeof MessagesConversationIdRoute
   '/subjects/$classSubjectId': typeof SubjectsClassSubjectIdRouteWithChildren
   '/admin/': typeof AdminIndexRoute
   '/enseignant/': typeof EnseignantIndexRoute
   '/evaluations/': typeof EvaluationsIndexRoute
+  '/messages/': typeof MessagesIndexRoute
   '/subjects/': typeof SubjectsIndexRoute
   '/admin/universities/$universityId': typeof AdminUniversitiesUniversityIdRoute
   '/enseignant/cours/$courseId': typeof EnseignantCoursCourseIdRoute
@@ -335,7 +349,6 @@ export interface FileRoutesByTo {
   '/connexion': typeof ConnexionRoute
   '/cours': typeof CoursRoute
   '/delegue': typeof DelegueRoute
-  '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
   '/opportunites': typeof OpportunitesRoute
   '/parametres': typeof ParametresRoute
@@ -351,9 +364,11 @@ export interface FileRoutesByTo {
   '/admin/users': typeof AdminUsersRoute
   '/enseignant/annonces': typeof EnseignantAnnoncesRoute
   '/membres/$userId': typeof MembresUserIdRoute
+  '/messages/$conversationId': typeof MessagesConversationIdRoute
   '/admin': typeof AdminIndexRoute
   '/enseignant': typeof EnseignantIndexRoute
   '/evaluations': typeof EvaluationsIndexRoute
+  '/messages': typeof MessagesIndexRoute
   '/subjects': typeof SubjectsIndexRoute
   '/admin/universities/$universityId': typeof AdminUniversitiesUniversityIdRoute
   '/enseignant/cours/$courseId': typeof EnseignantCoursCourseIdRoute
@@ -377,7 +392,7 @@ export interface FileRoutesById {
   '/delegue': typeof DelegueRoute
   '/enseignant': typeof EnseignantRouteWithChildren
   '/evaluations': typeof EvaluationsRouteWithChildren
-  '/messages': typeof MessagesRoute
+  '/messages': typeof MessagesRouteWithChildren
   '/notifications': typeof NotificationsRoute
   '/opportunites': typeof OpportunitesRoute
   '/parametres': typeof ParametresRoute
@@ -397,10 +412,12 @@ export interface FileRoutesById {
   '/enseignant/evaluations': typeof EnseignantEvaluationsRouteWithChildren
   '/enseignant/matieres': typeof EnseignantMatieresRouteWithChildren
   '/membres/$userId': typeof MembresUserIdRoute
+  '/messages/$conversationId': typeof MessagesConversationIdRoute
   '/subjects/$classSubjectId': typeof SubjectsClassSubjectIdRouteWithChildren
   '/admin/': typeof AdminIndexRoute
   '/enseignant/': typeof EnseignantIndexRoute
   '/evaluations/': typeof EvaluationsIndexRoute
+  '/messages/': typeof MessagesIndexRoute
   '/subjects/': typeof SubjectsIndexRoute
   '/admin/universities/$universityId': typeof AdminUniversitiesUniversityIdRoute
   '/enseignant/cours/$courseId': typeof EnseignantCoursCourseIdRoute
@@ -445,10 +462,12 @@ export interface FileRouteTypes {
     | '/enseignant/evaluations'
     | '/enseignant/matieres'
     | '/membres/$userId'
+    | '/messages/$conversationId'
     | '/subjects/$classSubjectId'
     | '/admin/'
     | '/enseignant/'
     | '/evaluations/'
+    | '/messages/'
     | '/subjects/'
     | '/admin/universities/$universityId'
     | '/enseignant/cours/$courseId'
@@ -468,7 +487,6 @@ export interface FileRouteTypes {
     | '/connexion'
     | '/cours'
     | '/delegue'
-    | '/messages'
     | '/notifications'
     | '/opportunites'
     | '/parametres'
@@ -484,9 +502,11 @@ export interface FileRouteTypes {
     | '/admin/users'
     | '/enseignant/annonces'
     | '/membres/$userId'
+    | '/messages/$conversationId'
     | '/admin'
     | '/enseignant'
     | '/evaluations'
+    | '/messages'
     | '/subjects'
     | '/admin/universities/$universityId'
     | '/enseignant/cours/$courseId'
@@ -529,10 +549,12 @@ export interface FileRouteTypes {
     | '/enseignant/evaluations'
     | '/enseignant/matieres'
     | '/membres/$userId'
+    | '/messages/$conversationId'
     | '/subjects/$classSubjectId'
     | '/admin/'
     | '/enseignant/'
     | '/evaluations/'
+    | '/messages/'
     | '/subjects/'
     | '/admin/universities/$universityId'
     | '/enseignant/cours/$courseId'
@@ -556,7 +578,7 @@ export interface RootRouteChildren {
   DelegueRoute: typeof DelegueRoute
   EnseignantRoute: typeof EnseignantRouteWithChildren
   EvaluationsRoute: typeof EvaluationsRouteWithChildren
-  MessagesRoute: typeof MessagesRoute
+  MessagesRoute: typeof MessagesRouteWithChildren
   NotificationsRoute: typeof NotificationsRoute
   OpportunitesRoute: typeof OpportunitesRoute
   ParametresRoute: typeof ParametresRoute
@@ -789,6 +811,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MembresUserIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/messages/': {
+      id: '/messages/'
+      path: '/'
+      fullPath: '/messages/'
+      preLoaderRoute: typeof MessagesIndexRouteImport
+      parentRoute: typeof MessagesRoute
+    }
+    '/messages/$conversationId': {
+      id: '/messages/$conversationId'
+      path: '/$conversationId'
+      fullPath: '/messages/$conversationId'
+      preLoaderRoute: typeof MessagesConversationIdRouteImport
+      parentRoute: typeof MessagesRoute
+    }
     '/subjects/': {
       id: '/subjects/'
       path: '/'
@@ -981,6 +1017,20 @@ const EvaluationsRouteWithChildren = EvaluationsRoute._addFileChildren(
   EvaluationsRouteChildren,
 )
 
+interface MessagesRouteChildren {
+  MessagesConversationIdRoute: typeof MessagesConversationIdRoute
+  MessagesIndexRoute: typeof MessagesIndexRoute
+}
+
+const MessagesRouteChildren: MessagesRouteChildren = {
+  MessagesConversationIdRoute: MessagesConversationIdRoute,
+  MessagesIndexRoute: MessagesIndexRoute,
+}
+
+const MessagesRouteWithChildren = MessagesRoute._addFileChildren(
+  MessagesRouteChildren,
+)
+
 interface SubjectsClassSubjectIdRouteChildren {
   SubjectsClassSubjectIdIndexRoute: typeof SubjectsClassSubjectIdIndexRoute
   SubjectsClassSubjectIdChaptersChapterIdRoute: typeof SubjectsClassSubjectIdChaptersChapterIdRoute
@@ -1021,7 +1071,7 @@ const rootRouteChildren: RootRouteChildren = {
   DelegueRoute: DelegueRoute,
   EnseignantRoute: EnseignantRouteWithChildren,
   EvaluationsRoute: EvaluationsRouteWithChildren,
-  MessagesRoute: MessagesRoute,
+  MessagesRoute: MessagesRouteWithChildren,
   NotificationsRoute: NotificationsRoute,
   OpportunitesRoute: OpportunitesRoute,
   ParametresRoute: ParametresRoute,
