@@ -17,3 +17,18 @@ export function parseResponse<S extends z.ZodType>(schema: S, data: unknown): z.
   if (!result.success) throw new ApiError(502, "Réponse inattendue du serveur, réessayez");
   return result.data;
 }
+
+/** Valide ce que l'on s'apprête à ENVOYER. */
+export function parseRequest<S extends z.ZodType>(schema: S, data: unknown): z.infer<S> {
+  const result = schema.safeParse(data);
+  if (!result.success) throw new ApiError(422, "Données invalides : vérifiez vos réponses");
+  return result.data;
+}
+
+/** Une liste peut arriver nue ou dans { items }. */
+export const pageItems = (raw: unknown): unknown[] =>
+  Array.isArray(raw)
+    ? raw
+    : Array.isArray((raw as { items?: unknown } | null)?.items)
+      ? (raw as { items: unknown[] }).items
+      : [];

@@ -2,7 +2,13 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Heading } from "@/components/emimood/molecules/Heading";
 import { QuizRunner } from "@/components/emimood/organisms/QuizRunner";
 import { quizzes } from "@/components/emimood/data/quizzes";

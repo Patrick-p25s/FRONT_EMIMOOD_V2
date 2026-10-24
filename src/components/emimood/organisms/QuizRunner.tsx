@@ -51,7 +51,7 @@ export function QuizRunner({ quiz, onClose }: { quiz: Quiz; onClose: (score?: nu
                       checked={chosen}
                       disabled={submitted}
                       onChange={() => setAnswers({ ...answers, [i]: j })}
-                      className="accent-[var(--primary)]"
+                      className="accent-(--primary)"
                     />
                     <span className="flex-1">{o}</span>
                     {correct && <CheckCircle2 size={18} className="text-success" />}
