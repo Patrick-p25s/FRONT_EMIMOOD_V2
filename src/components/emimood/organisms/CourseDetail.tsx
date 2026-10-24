@@ -26,7 +26,7 @@ export function CourseDetail({ courseId, onBack }: { courseId: number; onBack: (
               {done.includes(i) ? (
                 <CheckCircle2 size={18} className="text-success shrink-0" />
               ) : (
-                <span className="small w-[18px]">{i + 1}</span>
+                <span className="small w-4.5">{i + 1}</span>
               )}
               <span className="text-sm font-medium">{c.title}</span>
             </button>

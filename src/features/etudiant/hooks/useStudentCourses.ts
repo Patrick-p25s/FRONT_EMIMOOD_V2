@@ -1,0 +1,28 @@
+// hooks/useStudentCourses.ts
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { studentApi } from "../api/student";
+import { studentKeys } from "../keys";
+import { retryPolicy } from "../lib/messages";
+
+export const useStudentSubjects = (semester: number | undefined) =>
+  useQuery({
+    queryKey: studentKeys.subjects(semester),
+    queryFn: () => studentApi.mine(semester),
+    placeholderData: keepPreviousData,
+    retry: retryPolicy,
+  });
+
+export const useStudy = (classSubjectId: string) =>
+  useQuery({
+    queryKey: studentKeys.study(classSubjectId),
+    queryFn: () => studentApi.study(classSubjectId),
+    retry: retryPolicy,
+  });
+
+export const useChapterResources = (chapterId: string | undefined) =>
+  useQuery({
+    queryKey: studentKeys.resources(chapterId ?? ""),
+    queryFn: () => studentApi.resources(chapterId ?? ""),
+    enabled: !!chapterId,
+    retry: retryPolicy,
+  });

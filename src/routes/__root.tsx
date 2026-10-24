@@ -130,7 +130,7 @@ function RootComponent() {
   );
 }
 
-const publicPaths = ["/", "/connexion"];
+const publicPaths = ["/", "/connexion", "/register"];
 
 function AppFrame() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });

@@ -3,25 +3,14 @@ import { BookOpen, MessagesSquare, ClipboardCheck, Building2, ArrowRight } from 
 import campus from "@/assets/campus-community.jpg";
 import { Button } from "@/components/ui/button";
 import { Brand } from "@/components/emimood/atoms/Brand";
+import { pageHead } from "@/components/emimood/data";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "EMIMood — La communauté universitaire de l’EMIT" },
-      {
-        name: "description",
-        content:
-          "Cours, évaluations, ressources et échanges pour les étudiants et enseignants de l’EMIT Fianarantsoa.",
-      },
-      { property: "og:title", content: "EMIMood — La communauté universitaire de l’EMIT" },
-      {
-        property: "og:description",
-        content: "Cours, évaluations, ressources et échanges pour l’EMIT Fianarantsoa.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () =>
+    pageHead(
+      "Acceuil ",
+      "Cours, évaluations, ressources et échanges pour les étudiants et enseignants de l’EMIT Fianarantsoa.",
+    ),
   component: Landing,
 });
 

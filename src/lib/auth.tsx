@@ -2,12 +2,29 @@ import { createContext, useContext, useEffect, useRef, useState, type ReactNode 
 import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { API_URL, ApiError, api, endSession, initCrossTab, onConnection, onRefreshed, onSessionEnd, refreshTokens } from "@/lib/api/client";
+import {
+  API_URL,
+  ApiError,
+  api,
+  endSession,
+  initCrossTab,
+  onConnection,
+  onRefreshed,
+  onSessionEnd,
+  refreshTokens,
+} from "@/lib/api/client";
 import { accessExpiresIn, tokenStore } from "@/lib/api/tokenStore";
 
 export type Role = "student" | "teacher" | "moderator" | "super_admin";
 export type Statut = "active" | "suspend" | "inactive";
-export type SessionUser = { id: string; name: string; email: string; role: Role; statut: Statut; university_id: string | null };
+export type SessionUser = {
+  id: string;
+  name: string;
+  email: string;
+  role: Role;
+  statut: Statut;
+  university_id: string | null;
+};
 export type MeResponse = {
   id: string;
   university_id: string | null;
@@ -24,6 +41,14 @@ export type MeResponse = {
   created_at: string;
   updated_at: string;
 };
+export type RegisterPayload = {
+  first_name: string;
+  last_name: string;
+  phone_number: string;
+  email: string;
+  password: string;
+  invitation_code: string;
+};
 
 export const roleLabels: Record<Role, string> = {
   student: "Étudiant",
@@ -31,7 +56,11 @@ export const roleLabels: Record<Role, string> = {
   moderator: "Modérateur",
   super_admin: "Super administrateur",
 };
-export const statutLabels: Record<Statut, string> = { active: "Actif", suspend: "Suspendu", inactive: "Désactivé" };
+export const statutLabels: Record<Statut, string> = {
+  active: "Actif",
+  suspend: "Suspendu",
+  inactive: "Désactivé",
+};
 export const roleHome: Record<Role, "/accueil" | "/enseignant" | "/admin"> = {
   student: "/accueil",
   teacher: "/enseignant",
@@ -45,6 +74,7 @@ type Ctx = {
   ready: boolean;
   connectionLost: boolean;
   login: (email: string, password: string, demoRole: Role) => Promise<SessionUser>;
+  register: (payload: RegisterPayload) => Promise<SessionUser>;
   logout: () => Promise<void>;
   changePassword: (current: string, next: string) => Promise<void>;
 };
@@ -77,7 +107,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(null);
       queryClient.clear();
       if (reason.kind === "expired") {
-        navigate({ to: "/connexion", search: { reason: "session_expired", next: pathRef.current }, replace: true });
+        navigate({
+          to: "/connexion",
+          search: { reason: "session_expired", next: pathRef.current },
+          replace: true,
+        });
       } else if (reason.kind === "blocked") {
         toast.error(reason.message);
         navigate({ to: "/connexion", replace: true });
@@ -94,12 +128,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!prev) return;
       api<MeResponse>("/users/me")
         .then((me) => {
-          if (me.role !== prev.role || me.statut !== "active") endSession({ kind: "blocked", message: "Votre compte a changé, reconnectez-vous." });
+          if (me.role !== prev.role || me.statut !== "active")
+            endSession({ kind: "blocked", message: "Votre compte a changé, reconnectez-vous." });
         })
         .catch(() => undefined);
     });
     const onVisible = () => {
-      if (document.visibilityState === "visible" && userRef.current && !isDemo && accessExpiresIn() < 60) void refreshTokens();
+      if (
+        document.visibilityState === "visible" &&
+        userRef.current &&
+        !isDemo &&
+        accessExpiresIn() < 60
+      )
+        void refreshTokens();
     };
     document.addEventListener("visibilitychange", onVisible);
 
@@ -131,7 +172,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         moderator: "Modérateur EMIT",
         super_admin: "Administrateur EMIT",
       };
-      const u: SessionUser = { id: "demo", name: names[demoRole], email, role: demoRole, statut: "active", university_id: null };
+      const u: SessionUser = {
+        id: "demo",
+        name: names[demoRole],
+        email,
+        role: demoRole,
+        statut: "active",
+        university_id: null,
+      };
       setUser(u);
       return u;
     }
@@ -153,23 +201,46 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return u;
   }
 
+  async function register(payload: RegisterPayload) {
+    if (isDemo) return login(payload.email, payload.password, "student");
+    const tokens = await api<{ accessToken: string; refreshToken: string }>("/auth/register", {
+      method: "POST",
+      body: payload,
+      auth: false,
+    });
+    tokenStore.setRefresh(tokens.refreshToken);
+    tokenStore.setAccess(tokens.accessToken);
+    const u = toUser(await api<MeResponse>("/users/me"));
+    setUser(u);
+    return u;
+  }
+
   async function logout() {
     const rt = tokenStore.getRefresh();
     if (rt && !isDemo) {
-      await api("/auth/logout", { method: "POST", body: { refreshToken: rt }, auth: false }).catch(() => undefined);
+      await api("/auth/logout", { method: "POST", body: { refreshToken: rt }, auth: false }).catch(
+        () => undefined,
+      );
     }
     endSession({ kind: "logout" });
     setUser(null);
   }
 
   async function changePassword(current: string, next: string) {
-    await api("/auth/change-password", { method: "POST", body: { current_password: current, new_password: next } });
+    await api("/auth/change-password", {
+      method: "POST",
+      body: { current_password: current, new_password: next },
+    });
     toast.success("Mot de passe modifié. Reconnectez-vous sur tous vos appareils.");
     endSession({ kind: "logout" });
   }
 
   return (
-    <AuthContext.Provider value={{ user, ready, connectionLost, login, logout, changePassword }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider
+      value={{ user, ready, connectionLost, login, register, logout, changePassword }}
+    >
+      {children}
+    </AuthContext.Provider>
   );
 }
 
