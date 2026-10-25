@@ -38,6 +38,7 @@ import { Route as EnseignantIndexRouteImport } from './routes/enseignant.index'
 import { Route as EnseignantAnnoncesRouteImport } from './routes/enseignant.annonces'
 import { Route as EnseignantEvaluationsRouteImport } from './routes/enseignant.evaluations'
 import { Route as EnseignantMatieresRouteImport } from './routes/enseignant.matieres'
+import { Route as EnseignantMessagesRouteImport } from './routes/enseignant.messages'
 import { Route as EvaluationsIndexRouteImport } from './routes/evaluations.index'
 import { Route as MembresUserIdRouteImport } from './routes/membres.$userId'
 import { Route as MessagesIndexRouteImport } from './routes/messages.index'
@@ -51,6 +52,8 @@ import { Route as EnseignantEvaluationsIndexRouteImport } from './routes/enseign
 import { Route as EnseignantEvaluationsAssessmentIdRouteImport } from './routes/enseignant.evaluations.$assessmentId'
 import { Route as EnseignantMatieresIndexRouteImport } from './routes/enseignant.matieres.index'
 import { Route as EnseignantMatieresClassSubjectIdRouteImport } from './routes/enseignant.matieres.$classSubjectId'
+import { Route as EnseignantMessagesIndexRouteImport } from './routes/enseignant.messages.index'
+import { Route as EnseignantMessagesConversationIdRouteImport } from './routes/enseignant.messages.$conversationId'
 import { Route as EvaluationsAttemptAttemptIdRouteImport } from './routes/evaluations.attempt.$attemptId'
 import { Route as EvaluationsResultAttemptIdRouteImport } from './routes/evaluations.result.$attemptId'
 import { Route as SubjectsClassSubjectIdIndexRouteImport } from './routes/subjects.$classSubjectId.index'
@@ -201,6 +204,11 @@ const EnseignantMatieresRoute = EnseignantMatieresRouteImport.update({
   path: '/matieres',
   getParentRoute: () => EnseignantRoute,
 } as any)
+const EnseignantMessagesRoute = EnseignantMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => EnseignantRoute,
+} as any)
 const EvaluationsIndexRoute = EvaluationsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -270,6 +278,17 @@ const EnseignantMatieresClassSubjectIdRoute =
     path: '/$classSubjectId',
     getParentRoute: () => EnseignantMatieresRoute,
   } as any)
+const EnseignantMessagesIndexRoute = EnseignantMessagesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => EnseignantMessagesRoute,
+} as any)
+const EnseignantMessagesConversationIdRoute =
+  EnseignantMessagesConversationIdRouteImport.update({
+    id: '/$conversationId',
+    path: '/$conversationId',
+    getParentRoute: () => EnseignantMessagesRoute,
+  } as any)
 const EvaluationsAttemptAttemptIdRoute =
   EvaluationsAttemptAttemptIdRouteImport.update({
     id: '/attempt/$attemptId',
@@ -323,6 +342,7 @@ export interface FileRoutesByFullPath {
   '/enseignant/annonces': typeof EnseignantAnnoncesRoute
   '/enseignant/evaluations': typeof EnseignantEvaluationsRouteWithChildren
   '/enseignant/matieres': typeof EnseignantMatieresRouteWithChildren
+  '/enseignant/messages': typeof EnseignantMessagesRouteWithChildren
   '/membres/$userId': typeof MembresUserIdRoute
   '/messages/$conversationId': typeof MessagesConversationIdRoute
   '/subjects/$classSubjectId': typeof SubjectsClassSubjectIdRouteWithChildren
@@ -335,11 +355,13 @@ export interface FileRoutesByFullPath {
   '/enseignant/cours/$courseId': typeof EnseignantCoursCourseIdRoute
   '/enseignant/evaluations/$assessmentId': typeof EnseignantEvaluationsAssessmentIdRoute
   '/enseignant/matieres/$classSubjectId': typeof EnseignantMatieresClassSubjectIdRoute
+  '/enseignant/messages/$conversationId': typeof EnseignantMessagesConversationIdRoute
   '/evaluations/attempt/$attemptId': typeof EvaluationsAttemptAttemptIdRoute
   '/evaluations/result/$attemptId': typeof EvaluationsResultAttemptIdRoute
   '/admin/universities/': typeof AdminUniversitiesIndexRoute
   '/enseignant/evaluations/': typeof EnseignantEvaluationsIndexRoute
   '/enseignant/matieres/': typeof EnseignantMatieresIndexRoute
+  '/enseignant/messages/': typeof EnseignantMessagesIndexRoute
   '/subjects/$classSubjectId/': typeof SubjectsClassSubjectIdIndexRoute
   '/subjects/$classSubjectId/chapters/$chapterId': typeof SubjectsClassSubjectIdChaptersChapterIdRoute
 }
@@ -374,11 +396,13 @@ export interface FileRoutesByTo {
   '/enseignant/cours/$courseId': typeof EnseignantCoursCourseIdRoute
   '/enseignant/evaluations/$assessmentId': typeof EnseignantEvaluationsAssessmentIdRoute
   '/enseignant/matieres/$classSubjectId': typeof EnseignantMatieresClassSubjectIdRoute
+  '/enseignant/messages/$conversationId': typeof EnseignantMessagesConversationIdRoute
   '/evaluations/attempt/$attemptId': typeof EvaluationsAttemptAttemptIdRoute
   '/evaluations/result/$attemptId': typeof EvaluationsResultAttemptIdRoute
   '/admin/universities': typeof AdminUniversitiesIndexRoute
   '/enseignant/evaluations': typeof EnseignantEvaluationsIndexRoute
   '/enseignant/matieres': typeof EnseignantMatieresIndexRoute
+  '/enseignant/messages': typeof EnseignantMessagesIndexRoute
   '/subjects/$classSubjectId': typeof SubjectsClassSubjectIdIndexRoute
   '/subjects/$classSubjectId/chapters/$chapterId': typeof SubjectsClassSubjectIdChaptersChapterIdRoute
 }
@@ -411,6 +435,7 @@ export interface FileRoutesById {
   '/enseignant/annonces': typeof EnseignantAnnoncesRoute
   '/enseignant/evaluations': typeof EnseignantEvaluationsRouteWithChildren
   '/enseignant/matieres': typeof EnseignantMatieresRouteWithChildren
+  '/enseignant/messages': typeof EnseignantMessagesRouteWithChildren
   '/membres/$userId': typeof MembresUserIdRoute
   '/messages/$conversationId': typeof MessagesConversationIdRoute
   '/subjects/$classSubjectId': typeof SubjectsClassSubjectIdRouteWithChildren
@@ -423,11 +448,13 @@ export interface FileRoutesById {
   '/enseignant/cours/$courseId': typeof EnseignantCoursCourseIdRoute
   '/enseignant/evaluations/$assessmentId': typeof EnseignantEvaluationsAssessmentIdRoute
   '/enseignant/matieres/$classSubjectId': typeof EnseignantMatieresClassSubjectIdRoute
+  '/enseignant/messages/$conversationId': typeof EnseignantMessagesConversationIdRoute
   '/evaluations/attempt/$attemptId': typeof EvaluationsAttemptAttemptIdRoute
   '/evaluations/result/$attemptId': typeof EvaluationsResultAttemptIdRoute
   '/admin/universities/': typeof AdminUniversitiesIndexRoute
   '/enseignant/evaluations/': typeof EnseignantEvaluationsIndexRoute
   '/enseignant/matieres/': typeof EnseignantMatieresIndexRoute
+  '/enseignant/messages/': typeof EnseignantMessagesIndexRoute
   '/subjects/$classSubjectId/': typeof SubjectsClassSubjectIdIndexRoute
   '/subjects/$classSubjectId/chapters/$chapterId': typeof SubjectsClassSubjectIdChaptersChapterIdRoute
 }
@@ -461,6 +488,7 @@ export interface FileRouteTypes {
     | '/enseignant/annonces'
     | '/enseignant/evaluations'
     | '/enseignant/matieres'
+    | '/enseignant/messages'
     | '/membres/$userId'
     | '/messages/$conversationId'
     | '/subjects/$classSubjectId'
@@ -473,11 +501,13 @@ export interface FileRouteTypes {
     | '/enseignant/cours/$courseId'
     | '/enseignant/evaluations/$assessmentId'
     | '/enseignant/matieres/$classSubjectId'
+    | '/enseignant/messages/$conversationId'
     | '/evaluations/attempt/$attemptId'
     | '/evaluations/result/$attemptId'
     | '/admin/universities/'
     | '/enseignant/evaluations/'
     | '/enseignant/matieres/'
+    | '/enseignant/messages/'
     | '/subjects/$classSubjectId/'
     | '/subjects/$classSubjectId/chapters/$chapterId'
   fileRoutesByTo: FileRoutesByTo
@@ -512,11 +542,13 @@ export interface FileRouteTypes {
     | '/enseignant/cours/$courseId'
     | '/enseignant/evaluations/$assessmentId'
     | '/enseignant/matieres/$classSubjectId'
+    | '/enseignant/messages/$conversationId'
     | '/evaluations/attempt/$attemptId'
     | '/evaluations/result/$attemptId'
     | '/admin/universities'
     | '/enseignant/evaluations'
     | '/enseignant/matieres'
+    | '/enseignant/messages'
     | '/subjects/$classSubjectId'
     | '/subjects/$classSubjectId/chapters/$chapterId'
   id:
@@ -548,6 +580,7 @@ export interface FileRouteTypes {
     | '/enseignant/annonces'
     | '/enseignant/evaluations'
     | '/enseignant/matieres'
+    | '/enseignant/messages'
     | '/membres/$userId'
     | '/messages/$conversationId'
     | '/subjects/$classSubjectId'
@@ -560,11 +593,13 @@ export interface FileRouteTypes {
     | '/enseignant/cours/$courseId'
     | '/enseignant/evaluations/$assessmentId'
     | '/enseignant/matieres/$classSubjectId'
+    | '/enseignant/messages/$conversationId'
     | '/evaluations/attempt/$attemptId'
     | '/evaluations/result/$attemptId'
     | '/admin/universities/'
     | '/enseignant/evaluations/'
     | '/enseignant/matieres/'
+    | '/enseignant/messages/'
     | '/subjects/$classSubjectId/'
     | '/subjects/$classSubjectId/chapters/$chapterId'
   fileRoutesById: FileRoutesById
@@ -797,6 +832,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EnseignantMatieresRouteImport
       parentRoute: typeof EnseignantRoute
     }
+    '/enseignant/messages': {
+      id: '/enseignant/messages'
+      path: '/messages'
+      fullPath: '/enseignant/messages'
+      preLoaderRoute: typeof EnseignantMessagesRouteImport
+      parentRoute: typeof EnseignantRoute
+    }
     '/evaluations/': {
       id: '/evaluations/'
       path: '/'
@@ -887,6 +929,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/enseignant/matieres/$classSubjectId'
       preLoaderRoute: typeof EnseignantMatieresClassSubjectIdRouteImport
       parentRoute: typeof EnseignantMatieresRoute
+    }
+    '/enseignant/messages/': {
+      id: '/enseignant/messages/'
+      path: '/'
+      fullPath: '/enseignant/messages/'
+      preLoaderRoute: typeof EnseignantMessagesIndexRouteImport
+      parentRoute: typeof EnseignantMessagesRoute
+    }
+    '/enseignant/messages/$conversationId': {
+      id: '/enseignant/messages/$conversationId'
+      path: '/$conversationId'
+      fullPath: '/enseignant/messages/$conversationId'
+      preLoaderRoute: typeof EnseignantMessagesConversationIdRouteImport
+      parentRoute: typeof EnseignantMessagesRoute
     }
     '/evaluations/attempt/$attemptId': {
       id: '/evaluations/attempt/$attemptId'
@@ -981,10 +1037,24 @@ const EnseignantMatieresRouteChildren: EnseignantMatieresRouteChildren = {
 const EnseignantMatieresRouteWithChildren =
   EnseignantMatieresRoute._addFileChildren(EnseignantMatieresRouteChildren)
 
+interface EnseignantMessagesRouteChildren {
+  EnseignantMessagesConversationIdRoute: typeof EnseignantMessagesConversationIdRoute
+  EnseignantMessagesIndexRoute: typeof EnseignantMessagesIndexRoute
+}
+
+const EnseignantMessagesRouteChildren: EnseignantMessagesRouteChildren = {
+  EnseignantMessagesConversationIdRoute: EnseignantMessagesConversationIdRoute,
+  EnseignantMessagesIndexRoute: EnseignantMessagesIndexRoute,
+}
+
+const EnseignantMessagesRouteWithChildren =
+  EnseignantMessagesRoute._addFileChildren(EnseignantMessagesRouteChildren)
+
 interface EnseignantRouteChildren {
   EnseignantAnnoncesRoute: typeof EnseignantAnnoncesRoute
   EnseignantEvaluationsRoute: typeof EnseignantEvaluationsRouteWithChildren
   EnseignantMatieresRoute: typeof EnseignantMatieresRouteWithChildren
+  EnseignantMessagesRoute: typeof EnseignantMessagesRouteWithChildren
   EnseignantIndexRoute: typeof EnseignantIndexRoute
   EnseignantCoursCourseIdRoute: typeof EnseignantCoursCourseIdRoute
 }
@@ -993,6 +1063,7 @@ const EnseignantRouteChildren: EnseignantRouteChildren = {
   EnseignantAnnoncesRoute: EnseignantAnnoncesRoute,
   EnseignantEvaluationsRoute: EnseignantEvaluationsRouteWithChildren,
   EnseignantMatieresRoute: EnseignantMatieresRouteWithChildren,
+  EnseignantMessagesRoute: EnseignantMessagesRouteWithChildren,
   EnseignantIndexRoute: EnseignantIndexRoute,
   EnseignantCoursCourseIdRoute: EnseignantCoursCourseIdRoute,
 }

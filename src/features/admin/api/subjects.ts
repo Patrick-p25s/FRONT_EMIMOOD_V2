@@ -1,13 +1,20 @@
 // api/subjects.ts : catalogue des matières
 import { readItems } from "../lib/payload";
 import { api, del, patch, post } from "./http";
-import type { Subject } from "./types";
+import type { Subject, TeacherAssignment } from "./types";
 
 export type CreateSubjectInput = {
   university_id: string;
   name: string;
   code?: string;
   description?: string;
+};
+export type CreateMySubjectInput = {
+  name: string;
+  description?: string;
+  code?: string;
+  semester?: number;
+  classe_ids: string[];
 };
 export type UpdateSubjectInput = { name?: string; description?: string | null };
 

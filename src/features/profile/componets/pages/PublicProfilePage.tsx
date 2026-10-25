@@ -8,9 +8,11 @@ import { usePublicProfile } from "../../hoooks/useProfile";
 import { isNotFound } from "@/lib/api/message";
 import { ProfileView } from "../ProfileView";
 import { StartChatButton } from "@/features/messaging/components/StartChatButton";
+import { useAuth } from "@/lib/auth";
 export function PublicProfilePage({ userId }: { userId: string }) {
   const profile = usePublicProfile(userId);
   const navigate = useNavigate();
+  const { user } = useAuth();
   if (profile.error) {
     return (
       <div className="page">
@@ -45,7 +47,11 @@ export function PublicProfilePage({ userId }: { userId: string }) {
           <StartChatButton
             userId={profile.data.id}
             onOpen={(id) =>
-              void navigate({ to: "/messages/$conversationId", params: { conversationId: id } })
+              void navigate(
+                user?.role === "teacher"
+                  ? { to: "/enseignant/messages/$conversationId", params: { conversationId: id } }
+                  : { to: "/messages/$conversationId", params: { conversationId: id } },
+              )
             }
           />
         )

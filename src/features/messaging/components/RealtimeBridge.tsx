@@ -8,7 +8,7 @@ import {
   stopRealtime,
   subscribeRealtime,
 } from "@/lib/realtime/socket";
-import { handleRealtimeEvent } from "../lib/realtimeHandlers";
+import { handleRealtimeEvent } from "../lib/realtimeHanldlers";
 
 export function RealtimeBridge() {
   const client = useQueryClient();

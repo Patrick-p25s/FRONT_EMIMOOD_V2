@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import type { Person } from "../api/schemas";
 import { useDebounced, usePeopleSearch } from "../hooks/useMessaging";
 import { UserAvatar } from "@/features/profile/componets/UserAvatar";
+import { messageOf } from "@/lib/api/message";
 
 type PeoplePickerProps = {
   selected: Person[];
@@ -56,9 +57,7 @@ export function PeoplePicker({ selected, onToggle, multiple, excludeIds = [] }: 
         ) : search.isLoading ? (
           <Skeleton className="h-10 w-full" />
         ) : search.error ? (
-          <li className="small p-2 text-destructive">
-            La recherche est indisponible pour le moment.
-          </li>
+          <li className="small p-2 text-destructive">{messageOf(search.error)}</li>
         ) : results.length === 0 ? (
           <li className="small p-2">Aucun résultat.</li>
         ) : (

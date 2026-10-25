@@ -4,17 +4,33 @@ import { z } from "zod";
 const id = z.string().uuid();
 const iso = z.string();
 
+// remplace personSchema et peopleSearchSchema
+const rawPersonSchema = z.object({
+  id: id.optional(),
+  user_id: id.optional(),
+  name: z.string(),
+  role: z.string().optional(),
+  avatar_url: z.string().nullish(),
+});
+
+export const personSchema = rawPersonSchema.transform((p, ctx) => {
+  const personId = p.id ?? p.user_id;
+  if (!personId) {
+    ctx.addIssue({ code: "custom", message: "Identifiant manquant" });
+    return z.NEVER;
+  }
+  return { id: personId, name: p.name, role: p.role, avatar_url: p.avatar_url };
+});
+
+export const peopleSearchSchema = z
+  .union([z.array(personSchema), z.object({ items: z.array(personSchema) })])
+  .transform((value) => (Array.isArray(value) ? value : value.items));
+
 export const userBriefSchema = z.object({
   id,
   name: z.string(),
   role: z.string(),
   avatar_url: z.string().nullable(),
-});
-export const personSchema = z.object({
-  id,
-  name: z.string(),
-  role: z.string().optional(),
-  avatar_url: z.string().nullish(),
 });
 
 export const lastMessageSchema = z.object({
@@ -69,7 +85,6 @@ export const unreadSchema = z.object({
   unread_messages: z.number().int(),
   unread_conversations: z.number().int(),
 });
-export const peopleSearchSchema = z.object({ people: z.object({ items: z.array(personSchema) }) });
 
 // Ce que l'on envoie : les limites du serveur.
 export const sendSchema = z.object({
@@ -81,6 +96,7 @@ export const groupSchema = z.object({
   name: z.string().trim().min(2).max(100),
   member_ids: z.array(id).min(1).max(49),
 });
+
 export const renameSchema = z.object({ name: z.string().trim().min(2).max(100) });
 export const membersSchema = z.object({ user_ids: z.array(id).min(1).max(49) });
 export const privateSchema = z.object({ user_id: id });

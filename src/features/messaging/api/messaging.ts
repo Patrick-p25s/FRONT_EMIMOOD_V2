@@ -96,12 +96,10 @@ export const messagingApi = {
   },
 
   searchPeople: async (query: string) =>
-    (
-      await parseResponse(
-        peopleSearchSchema,
-        await api<unknown>("/search", {
-          query: { q: parseRequest(searchQuerySchema, query), limit: 8 },
-        }),
-      )
-    ).people.items,
+    parseResponse(
+      peopleSearchSchema,
+      await api<unknown>("/search/people", {
+        query: { q: parseRequest(searchQuerySchema, query) },
+      }),
+    ),
 };
