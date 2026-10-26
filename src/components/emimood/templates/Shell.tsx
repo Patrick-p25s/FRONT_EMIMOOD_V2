@@ -27,10 +27,11 @@ import { links } from "@/components/emimood/templates/navLinks";
 import { ThemeMenu } from "@/components/emimood/molecules/ThemeMenu";
 import { RealtimeBridge } from "@/features/messaging/components/RealtimeBridge";
 import { Brand } from "../atoms/Brand";
-import { useMyProfile } from "@/features/profile/hoooks/useProfile";
+import { useAccount, useMyProfile } from "@/features/profile/hoooks/useProfile";
 import { MessagesNavBadge } from "@/features/messaging/components/MessageNavBadge";
 import { UserAvatar } from "@/features/profile/componets/UserAvatar";
 import { NotificationBadge } from "@/features/notification/components/NotificationBadge";
+import { useMyUniversity } from "@/features/university/useMyUniversity";
 
 export function Shell({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
@@ -38,7 +39,10 @@ export function Shell({ children }: { children: ReactNode }) {
   const role = user?.role;
   const avatarUrl = useMyProfile().data?.avatar_url ?? null;
   const canMessage = role !== undefined && role !== "super_admin"; // le super admin n'a pas de messagerie (403)
-
+  const isDelegate = useAccount().data?.is_delegate === true;
+  const university = useMyUniversity(user?.university_id).data;
+  const logo =
+    university?.logo_url && /^https?:\/\//.test(university.logo_url) ? university.logo_url : null;
   const manage = [
     {
       to: "/enseignant",
@@ -47,7 +51,12 @@ export function Shell({ children }: { children: ReactNode }) {
       show: role === "teacher",
     },
     { to: "/admin", label: "Super administration", icon: Building2, show: role === "super_admin" },
-    { to: "/delegue", label: "Espace délégué", icon: ShieldCheck, show: role === "student" },
+    {
+      to: "/delegue",
+      label: "Espace délégué",
+      icon: ShieldCheck,
+      show: role === "student" && isDelegate,
+    },
   ].filter((m) => m.show) as {
     to: "/enseignant" | "/admin" | "/delegue";
     label: string;
@@ -68,10 +77,16 @@ export function Shell({ children }: { children: ReactNode }) {
         <Brand link="/accueil" />
         <div className="university">
           <span className="university-icon">
-            <GraduationCap size={19} />
+            {logo ? (
+              <img src={logo} alt="" className="size-full rounded-[inherit] object-cover" />
+            ) : (
+              <GraduationCap size={19} />
+            )}
           </span>
-          <div>
-            <strong className="text-xs">EMIT Fianarantsoa</strong>
+          <div className="min-w-0">
+            <strong className="block truncate text-xs">
+              {university?.name ?? "Mon université"}
+            </strong>
             <p className="small">Notre communauté</p>
           </div>
           <ChevronDown size={13} />

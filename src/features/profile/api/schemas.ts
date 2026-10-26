@@ -16,6 +16,7 @@ export const accountSchema = z.object({
   role: z.string(),
   statut: z.string(),
   is_verified: z.boolean(),
+  is_delegate: z.boolean().optional(),
 });
 
 export const profileSchema = z.object({
