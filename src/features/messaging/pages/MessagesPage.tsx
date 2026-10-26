@@ -13,7 +13,9 @@ export function MessagesPage({ conversationId }: { conversationId?: string | und
 
   return (
     <div className="page">
-      <Heading title="Messages" subtitle="La collaboration commence par une conversation." />
+      <div className={cn(conversationId && "max-md:hidden")}>
+        <Heading title="Messages" subtitle="La collaboration commence par une conversation." />
+      </div>
       <div className="chat-layout">
         {/* Sur mobile : la liste OU la conversation. */}
         <aside className={cn("chat-people", conversationId && "max-md:hidden")}>
