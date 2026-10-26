@@ -24,14 +24,21 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { roleLabels, useAuth } from "@/lib/auth";
 import { links } from "@/components/emimood/templates/navLinks";
-import { Avatar } from "@/components/emimood/atoms/Avatar";
 import { ThemeMenu } from "@/components/emimood/molecules/ThemeMenu";
+import { RealtimeBridge } from "@/features/messaging/components/RealtimeBridge";
 import { Brand } from "../atoms/Brand";
+import { useMyProfile } from "@/features/profile/hoooks/useProfile";
+import { MessagesNavBadge } from "@/features/messaging/components/MessageNavBadge";
+import { UserAvatar } from "@/features/profile/componets/UserAvatar";
+import { NotificationBadge } from "@/features/notification/components/NotificationBadge";
 
 export function Shell({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const role = user?.role;
+  const avatarUrl = useMyProfile().data?.avatar_url ?? null;
+  const canMessage = role !== undefined && role !== "super_admin"; // le super admin n'a pas de messagerie (403)
+
   const manage = [
     {
       to: "/enseignant",
@@ -39,29 +46,24 @@ export function Shell({ children }: { children: ReactNode }) {
       icon: GraduationCap,
       show: role === "teacher",
     },
-    {
-      to: "/admin",
-      label: "Super administration",
-      icon: Building2,
-      show: role === "super_admin",
-    },
+    { to: "/admin", label: "Super administration", icon: Building2, show: role === "super_admin" },
     { to: "/delegue", label: "Espace délégué", icon: ShieldCheck, show: role === "student" },
   ].filter((m) => m.show) as {
     to: "/enseignant" | "/admin" | "/delegue";
     label: string;
     icon: typeof Home;
   }[];
-  const initials = (user?.name ?? "?")
-    .split(" ")
-    .map((w) => w[0])
-    .slice(0, 2)
-    .join("");
+
+  const communityLinks = links.slice(7).filter((item) => canMessage || item.to !== "/messages");
+
   const signOut = () => {
     void logout();
     navigate({ to: "/connexion", replace: true });
   };
+
   return (
     <>
+      {canMessage && <RealtimeBridge />}
       <aside className="sidebar">
         <Brand link="/accueil" />
         <div className="university">
@@ -74,9 +76,9 @@ export function Shell({ children }: { children: ReactNode }) {
           </div>
           <ChevronDown size={13} />
         </div>
-        <div className="overflow-y-scroll">
+        <div className="overflow-y-auto">
           <p className="nav-label">Mon espace</p>
-          <nav>
+          <nav aria-label="Mon espace">
             {links.slice(0, 7).map((item) => (
               <Link
                 key={item.to}
@@ -87,13 +89,12 @@ export function Shell({ children }: { children: ReactNode }) {
               >
                 <item.icon />
                 {item.label}
-                {item.to === "/evaluations" && <span className="nav-badge">2</span>}
               </Link>
             ))}
           </nav>
           <p className="nav-label mt-7">Communauté</p>
-          <nav>
-            {links.slice(7).map((item) => (
+          <nav aria-label="Communauté">
+            {communityLinks.map((item) => (
               <Link
                 key={item.to}
                 to={item.to}
@@ -102,24 +103,28 @@ export function Shell({ children }: { children: ReactNode }) {
               >
                 <item.icon />
                 {item.label}
-                {item.to === "/messages" && <span className="nav-badge">3</span>}
+                {item.to === "/messages" && <MessagesNavBadge />}
               </Link>
             ))}
           </nav>
-          <p className="nav-label mt-7">Gestion</p>
-          <nav>
-            {manage.map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
-                activeProps={{ className: "active" }}
-                className="nav-item"
-              >
-                <item.icon />
-                {item.label}
-              </Link>
-            ))}
-          </nav>
+          {manage.length > 0 && (
+            <>
+              <p className="nav-label mt-7">Gestion</p>
+              <nav aria-label="Gestion">
+                {manage.map((item) => (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    activeProps={{ className: "active" }}
+                    className="nav-item"
+                  >
+                    <item.icon />
+                    {item.label}
+                  </Link>
+                ))}
+              </nav>
+            </>
+          )}
         </div>
         <div className="sidebar-bottom">
           <Link to="/parametres" activeProps={{ className: "active" }} className="nav-item">
@@ -127,44 +132,51 @@ export function Shell({ children }: { children: ReactNode }) {
             Paramètres
           </Link>
           <Link to="/profil" className="account text-foreground no-underline">
-            <Avatar initials={initials} />
-            <div>
-              <strong className="text-xs">{user?.name}</strong>
+            <UserAvatar name={user?.name ?? "?"} url={avatarUrl} />
+            <div className="min-w-0">
+              <strong className="block truncate text-xs">{user?.name}</strong>
               <p className="small">{role ? roleLabels[role] : ""}</p>
             </div>
             <ChevronDown size={13} />
           </Link>
         </div>
       </aside>
+
       <main className="app-main">
         <header className="topbar">
           <form
             className="search-box"
+            role="search"
             onSubmit={(e) => {
               e.preventDefault();
-              const value = new FormData(e.currentTarget).get("q");
-              navigate({ to: "/recherche", search: { q: String(value ?? "") } });
+              const value = String(new FormData(e.currentTarget).get("q") ?? "").trim();
+              if (value.length >= 2) navigate({ to: "/recherche", search: { q: value } });
             }}
           >
             <Search size={18} />
             <input
               name="q"
+              minLength={2}
+              maxLength={100}
+              autoComplete="off"
               placeholder="Rechercher un cours, une ressource, une personne…"
               aria-label="Recherche globale"
             />
           </form>
           <div className="header-actions">
-            <Link className="icon-link" to="/messages" aria-label="Messages">
-              <MessageSquare size={19} />
-            </Link>
+            {canMessage && (
+              <Link className="icon-link" to="/messages" aria-label="Messages">
+                <MessageSquare size={19} />
+              </Link>
+            )}
             <Link className="icon-link" to="/notifications" aria-label="Notifications">
               <Bell size={19} />
-              <span className="notification-dot" />
+              <NotificationBadge />
             </Link>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="px-1" aria-label="Menu du profil">
-                  <Avatar initials={initials} />
+                  <UserAvatar name={user?.name ?? "?"} url={avatarUrl} />
                   <ChevronDown size={13} />
                 </Button>
               </DropdownMenuTrigger>
@@ -180,7 +192,7 @@ export function Shell({ children }: { children: ReactNode }) {
                     <Settings /> Paramètres
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
+                {manage.length > 0 && <DropdownMenuSeparator />}
                 {manage.map((item) => (
                   <DropdownMenuItem asChild key={item.to}>
                     <Link to={item.to}>
@@ -200,24 +212,28 @@ export function Shell({ children }: { children: ReactNode }) {
         </header>
         {children}
       </main>
-      <nav className="mobile-nav">
+
+      <nav className="mobile-nav" aria-label="Navigation mobile">
         {[
           links[0],
           links[1],
           links[3],
-          links[7],
+          ...(canMessage ? [links[7]] : []),
           { to: "/profil", label: "Profil", icon: UserRound },
-        ].map((item) => (
-          <Link
-            key={item.to}
-            to={item.to}
-            activeOptions={{ exact: true }}
-            activeProps={{ className: "active" }}
-          >
-            <item.icon />
-            {item.label}
-          </Link>
-        ))}
+        ].map((item) =>
+          item ? (
+            <Link
+              key={item.to}
+              to={item.to}
+              activeOptions={{ exact: true }}
+              activeProps={{ className: "active" }}
+            >
+              <item.icon />
+              {item.label}
+              {item.to === "/messages" && <MessagesNavBadge />}
+            </Link>
+          ) : null,
+        )}
       </nav>
     </>
   );

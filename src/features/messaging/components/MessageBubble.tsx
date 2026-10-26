@@ -70,7 +70,7 @@ export function MessageBubble({ message, showSender, canModerate, onReply }: Mes
             </div>
           </div>
         ) : (
-          <p className="whitespace-pre-wrap break-words">{message.content}</p>
+          <p className="whitespace-pre-wrap wrap-break-word">{message.content}</p>
         )}
 
         <p className="small mt-1">

@@ -1,4 +1,3 @@
-// components/Composer.tsx : saisie, réponse, « écrit… »
 import { useRef, useState } from "react";
 import { Send, X } from "lucide-react";
 import { Button } from "@/components/ui/button";

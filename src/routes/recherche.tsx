@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { SearchPage } from "@/components/emimood/pages";
 import { pageHead } from "@/components/emimood/data";
+import { SearchPage } from "@/features/search/SearchPage";
 export const Route = createFileRoute("/recherche")({
   validateSearch: (search: Record<string, unknown>) => ({
     q: typeof search["q"] === "string" ? search["q"] : "",
