@@ -11,7 +11,7 @@ import type {
   PublicationVisibility,
   SaveResult,
   SignalResult,
-} from "./types";
+} from "../../enseignant/api/types";
 import { METHODS } from "http";
 
 export type FeedFilters = {

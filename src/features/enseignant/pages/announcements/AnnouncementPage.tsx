@@ -1,5 +1,5 @@
 // features/enseignant/pages/announcements/AnnouncementsPage.tsx
-import { PublicationsPage } from "@/features/enseignant/components/PublicationPage";
+import { PublicationsPage } from "@/features/publication/components/PublicationPage";
 import { useMySubjects } from "../../hooks/useMySubjects";
 
 export function AnnouncementsPage() {

@@ -1,7 +1,7 @@
 // hooks/usePublications.ts
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { publicationsApi, type FeedFilters } from "../api/publications";
-import { pubKeys } from "../keys";
+import { pubKeys } from "../../enseignant/keys";
 
 export const usePublicationFeed = (filters: FeedFilters) =>
   useInfiniteQuery({

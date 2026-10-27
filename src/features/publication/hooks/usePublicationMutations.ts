@@ -6,9 +6,9 @@ import {
   type CreatePublicationInput,
   type UpdatePublicationInput,
 } from "../api/publications";
-import type { PublicationStatus } from "../api/types";
-import { pubKeys } from "../keys";
-import { errorMessage } from "../lib/errorMessage";
+import type { PublicationStatus } from "../../enseignant/api/types";
+import { pubKeys } from "../../enseignant/keys";
+import { errorMessage } from "../../enseignant/lib/errorMessage";
 
 function useRefreshingMutation<TVars, TData>(fn: (vars: TVars) => Promise<TData>, success: string) {
   const client = useQueryClient();

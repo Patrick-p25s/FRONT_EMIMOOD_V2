@@ -20,9 +20,9 @@ import { useCampusTargets } from "../../hooks/useCampusTargets";
 import { useStudentSubjects } from "../../hooks/useStudentCourses";
 import { typeLabel } from "../../lib/assessments";
 import { useStudentAssessments } from "../../hooks/useStudentAttempts";
-import { usePublicationFeed } from "@/features/enseignant/hooks/usePublications";
+import { usePublicationFeed } from "@/features/publication/hooks/usePublications";
 import { dayTile, inDays, timeOf, todayLabel } from "@/lib/dates";
-import { CampusFeed } from "@/features/enseignant/components/CampusFeed";
+import { CampusFeed } from "@/features/publication/components/CampusFeed";
 
 type AgendaItem = {
   key: string;

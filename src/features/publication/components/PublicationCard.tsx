@@ -16,19 +16,19 @@ import { StatusPill } from "@/components/emimood/atoms/StatusPill";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { fmtDateTime } from "@/lib/format";
-import type { Publication } from "../api/types";
-import {
-  useLikeMutation,
-  usePublicationMutations,
-  useSaveMutation,
-  useSignalMutation,
-} from "../hooks/usePublicationMutations";
-import { PUB_TYPES, ROLE_LABEL } from "../lib/meta";
 import { CommentsSection } from "./CommentsSection";
 import { toast } from "sonner";
 import { errorMessage } from "@/lib/errors";
 import { downloadFile } from "@/lib/api/download";
 import { formatBytes } from "@/lib/files";
+import { Publication } from "@/features/enseignant/api/types";
+import { PUB_TYPES, ROLE_LABEL } from "@/features/enseignant/lib/meta";
+import {
+  useLikeMutation,
+  usePublicationMutations,
+  useSaveMutation,
+  useSignalMutation,
+} from "@/features/publication/hooks/usePublicationMutations";
 
 type PublicationCardProps = { publication: Publication; onEdit: () => void; onDelete: () => void };
 

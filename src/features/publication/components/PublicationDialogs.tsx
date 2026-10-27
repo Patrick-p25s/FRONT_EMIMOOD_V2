@@ -1,9 +1,10 @@
 // features/publications/components/PublicationDialogs.tsx
 import { ConfirmDialog } from "@/components/emimood/organisms/dialogs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import type { Publication, PublicationType } from "../api/types";
-import { usePublicationMutations } from "../hooks/usePublicationMutations";
+
 import { PublicationForm, type ClassOption, type SubjectOption } from "./PublicationForm";
+import type { Publication, PublicationType } from "@/features/enseignant/api/types";
+import { usePublicationMutations } from "@/features/publication/hooks/usePublicationMutations";
 
 export type PublicationDialog =
   | { kind: "create"; type?: PublicationType | undefined }

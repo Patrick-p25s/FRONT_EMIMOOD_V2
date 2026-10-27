@@ -8,12 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/lib/auth";
-import type { Publication, PublicationType } from "../api/types";
-import { usePublicationMutations } from "../hooks/usePublicationMutations";
-import { usePublicationFeed } from "../hooks/usePublications";
-import { PUB_TYPES } from "../lib/meta";
-import { PublicationCard } from "./PublicationCard";
+
 import { PublicationForm, type ClassOption, type SubjectOption } from "./PublicationForm";
+import { Post } from "@/components/emimood/organisms/Post copy";
+import type { Publication, PublicationType } from "@/features/enseignant/api/types";
+import { usePublicationMutations } from "@/features/publication/hooks/usePublicationMutations";
+import { usePublicationFeed } from "@/features/publication/hooks/usePublications";
+import { PUB_TYPES } from "@/features/enseignant/lib/meta";
 
 type Dialogs = { kind: "create" } | { kind: "edit"; publication: Publication } | null;
 
@@ -92,9 +93,9 @@ export function PublicationsPage({
       ) : (
         <div className="grid gap-3">
           {items.map((publication) => (
-            <PublicationCard
+            <Post
               key={publication.id}
-              publication={publication}
+              post={publication}
               onEdit={() => setDialog({ kind: "edit", publication })}
               onDelete={() => setDeleting(publication)}
             />

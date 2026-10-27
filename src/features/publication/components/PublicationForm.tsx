@@ -6,13 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { applyServerErrors } from "@/lib/errors";
-import type { Publication, PublicationType } from "../api/types";
-import { usePublicationMutations } from "../hooks/usePublicationMutations";
-import { fromLocalInput, toLocalInput } from "../lib/dates";
-import { PUB_TYPES } from "../lib/meta";
-import { publicationSchema, type PublicationFormValues } from "../lib/schema";
+
 import { useState } from "react";
 import { MAX_FILE_BYTES, MAX_FILE_MB } from "@/lib/files";
+import type { Publication, PublicationType } from "@/features/enseignant/api/types";
+import { usePublicationMutations } from "@/features/publication/hooks/usePublicationMutations";
+import { PublicationFormValues, publicationSchema } from "@/features/enseignant/lib/schema";
+import { fromLocalInput, toLocalInput } from "@/features/enseignant/lib/dates";
+import { PUB_TYPES } from "@/features/enseignant/lib/meta";
 
 const SELECT = "h-9 w-full rounded-md border bg-background px-3 text-sm";
 const FIELDS = [

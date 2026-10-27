@@ -176,6 +176,9 @@ export type PublicationDocument = {
   id: string;
   kind: "file" | "link";
   url: string | null;
+  title: string;
+  is_official: boolean;
+  description: string | null;
   download_path: string | null;
   file_name: string | null;
   file_type: string | null;

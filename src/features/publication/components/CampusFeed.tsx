@@ -6,12 +6,13 @@ import { ErrorState } from "@/components/emimood/molecules/states";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/lib/auth";
-import type { Publication, PublicationType } from "../api/types";
-import { usePublicationFeed } from "../hooks/usePublications";
-import { PublicationCard } from "./PublicationCard";
+
 import { PublicationDialogs, type PublicationDialog } from "./PublicationDialogs";
 import type { ClassOption, SubjectOption } from "./PublicationForm";
 import { initials } from "@/lib/format";
+import { type Publication, type PublicationType } from "@/features/enseignant/api/types";
+import { usePublicationFeed } from "@/features/publication/hooks/usePublications";
+import { Post } from "./Post";
 
 const TABS: { label: string; type: PublicationType | undefined }[] = [
   { label: "Pour vous", type: undefined },
@@ -98,9 +99,9 @@ export function CampusFeed({ classes, subjects, compact = false }: CampusFeedPro
       ) : (
         <>
           {visible.map((publication) => (
-            <PublicationCard
+            <Post
               key={publication.id}
-              publication={publication}
+              post={publication}
               onEdit={() => setDialog({ kind: "edit", publication })}
               onDelete={() => setDeleting(publication)}
             />
