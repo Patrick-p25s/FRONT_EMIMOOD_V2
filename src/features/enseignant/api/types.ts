@@ -198,6 +198,10 @@ export type Publication = {
   author: AuthorBrief;
   document: PublicationDocument | null;
   likes_count: number;
+  saves_count: number;
+  saved_by_me: boolean;
+  signals_count: number;
+  signaled_by_me: boolean;
   comments_count: number;
   liked_by_me: boolean;
   is_mine: boolean;
@@ -212,3 +216,5 @@ export type PublicationComment = {
   is_mine: boolean;
 };
 export type LikeResult = { liked: boolean; likes_count: number };
+export type SaveResult = { saved: boolean; saves_count: number };
+export type SignalResult = { signaled: boolean; signals_count: number };

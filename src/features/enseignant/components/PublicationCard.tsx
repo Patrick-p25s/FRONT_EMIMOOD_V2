@@ -17,7 +17,12 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { fmtDateTime } from "@/lib/format";
 import type { Publication } from "../api/types";
-import { useLikeMutation, usePublicationMutations } from "../hooks/usePublicationMutations";
+import {
+  useLikeMutation,
+  usePublicationMutations,
+  useSaveMutation,
+  useSignalMutation,
+} from "../hooks/usePublicationMutations";
 import { PUB_TYPES, ROLE_LABEL } from "../lib/meta";
 import { CommentsSection } from "./CommentsSection";
 import { toast } from "sonner";
@@ -31,10 +36,21 @@ export function PublicationCard({ publication, onEdit, onDelete }: PublicationCa
   const meta = PUB_TYPES[publication.publication_type];
   const { setStatus } = usePublicationMutations();
   const likeMutation = useLikeMutation();
-
+  const saveMutation = useSaveMutation();
+  const signalMutation = useSignalMutation();
   const [like, setLike] = useState({
     liked: publication.liked_by_me,
     count: publication.likes_count,
+  });
+
+  const [save, setSave] = useState({
+    saved: publication.liked_by_me,
+    count: publication.saves_count,
+  });
+
+  const [signal, setSignal] = useState({
+    signaled: publication.signaled_by_me,
+    count: publication.signals_count,
   });
   const [commentsCount, setCommentsCount] = useState(publication.comments_count);
   const [commentsOpen, setCommentsOpen] = useState(false);

@@ -9,7 +9,10 @@ import type {
   PublicationStatus,
   PublicationType,
   PublicationVisibility,
+  SaveResult,
+  SignalResult,
 } from "./types";
+import { METHODS } from "http";
 
 export type FeedFilters = {
   type?: PublicationType | undefined;
@@ -61,6 +64,9 @@ export const publicationsApi = {
 
   unlike: (id: string) => api<LikeResult>(`/publications/${id}/like`, { method: "DELETE" }),
 
+  save: (id: string) => api<SaveResult>(`/publications/${id}/save`, { method: "PUT" }),
+  unsave: (id: string) => api<SaveResult>(`/publications/${id}/save`, { method: "DELETE" }),
+  signal: (id: string) => api<SignalResult>(`/publications/${id}/signal`, { method: "PUT" }),
   comments: (id: string) =>
     api<Page<PublicationComment>>(`/publications/${id}/comments`, {
       query: { page: "1", page_size: "100" },

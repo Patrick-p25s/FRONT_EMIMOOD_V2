@@ -3,7 +3,12 @@ import { Link } from "@tanstack/react-router";
 import { Bookmark, FileText, Flag, Heart, MessageCircle, MoreHorizontal, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Avatar } from "@/components/emimood/atoms/Avatar";
 import { initialPosts } from "@/components/emimood/data/posts";
 

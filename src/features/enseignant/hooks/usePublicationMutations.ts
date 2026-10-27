@@ -63,3 +63,17 @@ export function useAddComment(publicationId: string) {
     onError: (error) => toast.error(errorMessage(error)),
   });
 }
+
+export const useSaveMutation = () =>
+  useMutation({
+    mutationFn: (v: { id: string; saved: boolean }) =>
+      v.saved ? publicationsApi.unsave(v.id) : publicationsApi.save(v.id),
+    onError: (error) => toast.error(errorMessage(error)),
+  });
+
+export const useSignalMutation = () =>
+  useMutation({
+    mutationFn: (id: string) => publicationsApi.signal(id),
+    onSuccess: () => toast.success("Signalement envoyéé"),
+    onError: (error) => toast.error(errorMessage(error)),
+  });
