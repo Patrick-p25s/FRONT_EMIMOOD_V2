@@ -1,4 +1,3 @@
-// pages/subjects/SubjectsPage.tsx
 import { useState } from "react";
 import { Heading } from "@/components/emimood/molecules/Heading";
 import { EmptyState, ErrorState } from "@/components/emimood/molecules/states";

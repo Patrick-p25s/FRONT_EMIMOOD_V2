@@ -87,13 +87,13 @@ export function HomePage() {
     icon: LucideIcon;
     value: string;
     label: string;
-    to: "/subjects" | "/evaluations";
+    to: "/cours" | "/evaluations";
   }[] = [
     {
       icon: BookOpen,
       value: subjectsQuery.data ? String(cards.length) : "—",
       label: "Matières",
-      to: "/subjects",
+      to: "/cours",
     },
     {
       icon: ClipboardCheck,
@@ -105,7 +105,7 @@ export function HomePage() {
       icon: TrendingUp,
       value: average === null ? "—" : `${average}%`,
       label: "Progression moyenne",
-      to: "/subjects",
+      to: "/cours",
     },
   ];
 

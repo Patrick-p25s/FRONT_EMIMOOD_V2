@@ -20,7 +20,7 @@ export function FinishScreen({
           ? `Vous avez terminé tous les chapitres de « ${subjectName} ».`
           : `Il vous reste des chapitres non terminés dans « ${subjectName} » : vous pouvez y revenir à tout moment.`}
       </p>
-      <Link to="/subjects" className={cn(buttonVariants(), "mx-auto mt-4 w-fit no-underline")}>
+      <Link to="/cours" className={cn(buttonVariants(), "mx-auto mt-4 w-fit no-underline")}>
         Retour aux matières
       </Link>
     </article>

@@ -1,4 +1,3 @@
-// hooks/useSubjectMutations.ts
 import {
   subjectsApi,
   type AddClassesInput,

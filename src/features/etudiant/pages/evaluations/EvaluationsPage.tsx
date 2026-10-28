@@ -170,7 +170,7 @@ export function EvaluationsPage() {
           </p>
           {info && (
             <Link
-              to="/subjects/$classSubjectId"
+              to="/cours/$classSubjectId"
               params={{ classSubjectId: info.class_subject_id }}
               className="text-success flex items-center gap-2"
             >

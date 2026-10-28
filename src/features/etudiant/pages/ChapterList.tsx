@@ -37,7 +37,7 @@ export function ChapterList({ classSubjectId, chapters, activeId, onSelect }: Ch
               <p className="small px-1 pb-1 pt-3 font-semibold">{chapter.course_title}</p>
             )}
             <Link
-              to="/subjects/$classSubjectId/chapters/$chapterId"
+              to="/cours/$classSubjectId/chapters/$chapterId"
               params={{ classSubjectId, chapterId: chapter.id }}
               aria-current={chapter.id === activeId ? "page" : undefined}
               className={cn(

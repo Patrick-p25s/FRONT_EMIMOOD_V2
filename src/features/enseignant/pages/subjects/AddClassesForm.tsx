@@ -1,4 +1,3 @@
-// pages/subjects/AddClassesForm.tsx : classes pas encore liées à la matière
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import type { MySubject } from "../../api/types";

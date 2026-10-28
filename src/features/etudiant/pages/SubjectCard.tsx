@@ -1,4 +1,3 @@
-// pages/subjects/SubjectCard.tsx
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { Avatar } from "@/components/emimood/atoms/Avatar";
@@ -54,7 +53,7 @@ export function SubjectCard({ subject }: { subject: SubjectCardData }) {
             <span>{percent}% parcouru</span>
           </div>
           <Link
-            to="/subjects/$classSubjectId"
+            to="/cours/$classSubjectId"
             params={{ classSubjectId: subject.class_subject_id }}
             className={cn(buttonVariants({ variant: "outline" }), "mt-5 w-full no-underline")}
           >

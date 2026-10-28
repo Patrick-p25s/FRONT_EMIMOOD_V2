@@ -55,7 +55,7 @@ export function SearchPage({ q }: { q: string }) {
           <h2 className="mb-4 text-lg font-semibold">Cours · {totals.courses}</h2>
           <div className="document-list mb-6">
             {courses.map((c) => (
-              <Link key={c.id} to="/subjects" className="document-row text-foreground no-underline">
+              <Link key={c.id} to="/cours" className="document-row text-foreground no-underline">
                 <BookIcon />
                 <div>
                   <h2>{c.title}</h2>

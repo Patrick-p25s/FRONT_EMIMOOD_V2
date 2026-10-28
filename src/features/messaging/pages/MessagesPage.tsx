@@ -16,9 +16,14 @@ export function MessagesPage({ conversationId }: { conversationId?: string | und
       <div className={cn(conversationId && "max-md:hidden")}>
         <Heading title="Messages" subtitle="La collaboration commence par une conversation." />
       </div>
-      <div className="chat-layout">
+      <div className={cn("chat-layout", conversationId && "chat-layout--thread-open")}>
         {/* Sur mobile : la liste OU la conversation. */}
-        <aside className={cn("chat-people", conversationId && "max-md:hidden")}>
+        <aside
+          className={cn(
+            "chat-people",
+            conversationId && "chat-people--mobile-hidden max-md:hidden",
+          )}
+        >
           <ConversationList
             activeId={conversationId}
             onNewChat={() => setNewChat(true)}

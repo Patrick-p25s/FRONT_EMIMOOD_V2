@@ -1,4 +1,3 @@
-// pages/subjects/subjectSchema.ts
 import { z } from "zod";
 
 export const subjectSchema = z.object({

@@ -16,7 +16,7 @@ import { ResourceList } from "./RessourceList";
 type StudyPageProps = { classSubjectId: string; chapterId?: string | undefined };
 
 const BackLink = () => (
-  <Link to="/subjects" className={cn(buttonVariants({ variant: "ghost" }), "mb-3 no-underline")}>
+  <Link to="/cours" className={cn(buttonVariants({ variant: "ghost" }), "mb-3 no-underline")}>
     <ArrowLeft /> Toutes les matières
   </Link>
 );
@@ -37,7 +37,7 @@ export function StudyPage({ classSubjectId, chapterId }: StudyPageProps) {
 
   const goTo = (id: string) =>
     void navigate({
-      to: "/subjects/$classSubjectId/chapters/$chapterId",
+      to: "/cours/$classSubjectId/chapters/$chapterId",
       params: { classSubjectId, chapterId: id },
     });
 

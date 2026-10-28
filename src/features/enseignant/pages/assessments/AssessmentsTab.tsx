@@ -52,7 +52,7 @@ export function AssessmentsTab({ classSubjectId }: { classSubjectId: string }) {
                 <Link
                   to="/enseignant/evaluations/$assessmentId"
                   params={{ assessmentId: assessment.id }}
-                  className="flex items-center gap-3 rounded-xl border bg-card p-4 no-underline shadow-[var(--shadow)] transition-colors hover:border-primary/40"
+                  className="flex items-center gap-3 rounded-xl border bg-card p-4 no-underline shadow-(--shadow) transition-colors hover:border-primary/40"
                 >
                   <IconBox icon={ClipboardCheck} tone="info" />
                   <div className="min-w-0 flex-1">

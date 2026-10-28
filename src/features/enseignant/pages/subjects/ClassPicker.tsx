@@ -1,4 +1,3 @@
-// pages/subjects/ClassPicker.tsx : classes à cocher, groupées par année académique
 import { ErrorState } from "@/components/emimood/molecules/states";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { ClassChoice } from "../../api/types";

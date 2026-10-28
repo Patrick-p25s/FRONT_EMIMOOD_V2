@@ -83,7 +83,16 @@ export function ConversationList({ activeId, onNewChat, onNewGroup }: Conversati
 
   return (
     <>
-      <div className="mb-2 flex gap-2">
+      <div className="chat-list-header">
+        <div>
+          <p className="chat-list-kicker">Boîte de réception</p>
+          <p className="chat-list-count">
+            {items.length} conversation{items.length > 1 ? "s" : ""}
+          </p>
+        </div>
+      </div>
+
+      <div className="chat-list-actions">
         <Button size="sm" className="flex-1" onClick={onNewChat}>
           <MessageSquarePlus /> Nouveau
         </Button>
@@ -95,24 +104,26 @@ export function ConversationList({ activeId, onNewChat, onNewGroup }: Conversati
       {conversations.error ? (
         <ErrorState error={conversations.error} onRetry={() => void conversations.refetch()} />
       ) : conversations.isLoading ? (
-        <div className="grid gap-2">
+        <div className="chat-conversation-list grid gap-1.5">
           {[0, 1, 2].map((key) => (
             <Skeleton key={key} className="h-14 w-full" />
           ))}
         </div>
       ) : items.length === 0 ? (
-        <p className="small p-3">
+        <p className="chat-empty-state small">
           Aucune conversation pour le moment. Démarrez-en une avec « Nouveau », ou ouvrez le profil
           d’un membre.
         </p>
       ) : (
-        items.map((conversation) => (
-          <ConversationItem
-            key={conversation.id}
-            conversation={conversation}
-            active={conversation.id === activeId}
-          />
-        ))
+        <div className="chat-conversation-list">
+          {items.map((conversation) => (
+            <ConversationItem
+              key={conversation.id}
+              conversation={conversation}
+              active={conversation.id === activeId}
+            />
+          ))}
+        </div>
       )}
     </>
   );

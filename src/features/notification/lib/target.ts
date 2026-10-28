@@ -2,7 +2,7 @@
 import type { AppNotification } from "../api/schemas";
 
 export type NotificationTarget =
-  "/subjects" | "/evaluations" | "/publications" | "/messages" | "/enseignant/evaluations";
+  "/cours" | "/evaluations" | "/publications" | "/messages" | "/enseignant/evaluations";
 
 /** Adaptez les préfixes aux valeurs réelles de `type` renvoyées par votre API. */
 export function notificationTarget(
@@ -15,7 +15,7 @@ export function notificationTarget(
     return teacher ? "/enseignant/evaluations" : "/evaluations";
   if (teacher) return undefined;
   if (type.startsWith("chapter") || type.startsWith("course") || type.startsWith("subject"))
-    return "/subjects";
+    return "/cours";
   if (type.startsWith("publication") || type.startsWith("comment") || type.startsWith("like"))
     return "/publications";
   if (type.startsWith("message")) return "/messages";

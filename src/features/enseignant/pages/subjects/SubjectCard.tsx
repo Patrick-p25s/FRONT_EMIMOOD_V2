@@ -1,4 +1,3 @@
-// pages/subjects/SubjectCard.tsx
 import { MoreHorizontal, NotebookText, X } from "lucide-react";
 import { IconBox } from "@/components/emimood/atoms/IconBox";
 import { StatusPill } from "@/components/emimood/atoms/StatusPill";
