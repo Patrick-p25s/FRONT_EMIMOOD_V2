@@ -13,7 +13,6 @@ export function SubjectCard({ subject }: { subject: SubjectCardData }) {
   const empty = subject.chapters_count === 0;
   const [first, ...others] = subject.teachers;
   const percent = Math.round(subject.progress_percent);
-  console.log(subject);
   return (
     <article className={cn("item-card", empty && "opacity-60")}>
       <div className="flex items-center justify-between">
