@@ -1,10 +1,13 @@
-// pages/study/ResourceList.tsx
+import { useState } from "react";
 import { ExternalLink, FileText, Link2, PlayCircle, type LucideIcon } from "lucide-react";
-import { EmptyState } from "@/components/emimood/molecules/states";
 import { Skeleton } from "@/components/ui/skeleton";
 import { CourseResource } from "../api/schemas";
+import { useChapterDocuments, useToggleSave } from "@/features/resource/hooks/useResources";
 import { useChapterResources } from "../hooks/useStudentCourses";
+import { ResourceDoc } from "@/features/resource/api/schemas";
+import { ResourceRow } from "@/features/resource/components/ResourceRows";
 import { toSafeLink } from "../lib/links";
+import { ResourcePreviewDialog } from "@/features/resource/components/ResourcePreviewDialog";
 
 const ICONS: Record<CourseResource["resource_type"], LucideIcon> = {
   document: FileText,
@@ -14,23 +17,38 @@ const ICONS: Record<CourseResource["resource_type"], LucideIcon> = {
 };
 
 export function ResourceList({ chapterId }: { chapterId: string }) {
-  const query = useChapterResources(chapterId);
+  const documents = useChapterDocuments(chapterId); // fichiers (et liens déposés comme documents)
+  const links = useChapterResources(chapterId); // liens, vidéos (avec position)
+  const toggleSave = useToggleSave();
+  const [selected, setSelected] = useState<ResourceDoc | null>(null);
 
-  if (query.isLoading) return <Skeleton className="mt-4 h-16 w-full" />;
-  if (query.error)
+  if (documents.isLoading || links.isLoading) return <Skeleton className="mt-4 h-16 w-full" />;
+  if (documents.error && links.error)
     return (
       <p className="small mt-4">
-        Les documents de ce chapitre ne sont pas disponibles pour le moment.
+        Les supports de ce chapitre ne sont pas disponibles pour le moment.
       </p>
     );
 
-  const resources = [...(query.data ?? [])].sort((a, b) => a.position - b.position);
-  if (resources.length === 0) return <p className="small mt-4">Aucun document pour ce chapitre.</p>;
+  const files = documents.data ?? [];
+  const extras = [...(links.data ?? [])].sort((a, b) => a.position - b.position);
+  if (files.length === 0 && extras.length === 0)
+    return <p className="small mt-4">Aucun support pour ce chapitre.</p>;
 
   return (
     <div className="document-list mt-4">
-      <h3>Documents</h3>
-      {resources.map((resource) => {
+      <h3>Supports de cours</h3>
+
+      {files.map((doc) => (
+        <ResourceRow
+          key={doc.id}
+          doc={doc}
+          onOpen={setSelected}
+          onToggleSave={(item) => toggleSave.mutate({ id: item.id, saved: item.saved })}
+        />
+      ))}
+
+      {extras.map((resource) => {
         const Icon = ICONS[resource.resource_type];
         const link = toSafeLink(resource.url);
         const body = (
@@ -45,7 +63,6 @@ export function ResourceList({ chapterId }: { chapterId: string }) {
             <span className="small shrink-0">{link ? link.host : "Lien invalide"}</span>
           </>
         );
-        // Une adresse qui n'est pas en http(s) n'est jamais rendue cliquable.
         return link ? (
           <a
             key={resource.id}
@@ -63,6 +80,11 @@ export function ResourceList({ chapterId }: { chapterId: string }) {
           </div>
         );
       })}
+
+      {(documents.error || links.error) && (
+        <p className="small">Une partie des supports n’a pas pu être chargée.</p>
+      )}
+      <ResourcePreviewDialog doc={selected} onClose={() => setSelected(null)} />
     </div>
   );
 }

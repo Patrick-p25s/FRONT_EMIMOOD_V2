@@ -1,117 +1,99 @@
-// pages/universities/UniversitiesPage.tsx
-import { useCallback, useState } from "react";
-import { MoreHorizontal, Plus } from "lucide-react";
-import { Logo } from "@/components/emimood/atoms/Logo";
+// features/admin/pages/users/UsersPage.tsx
+import { useCallback } from "react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { MoreHorizontal, UserRound } from "lucide-react";
 import { SearchInput, SimpleSelect } from "@/components/emimood/molecules/filters";
 import { PageHeader } from "@/components/emimood/molecules/PageHeader";
 import { StatusBadge } from "@/components/emimood/molecules/StatusBadge";
-import { ConfirmDialog } from "@/components/emimood/organisms/dialogs";
 import { DataTable, type Column } from "@/components/emimood/organisms/DataTable";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { statutLabel, type Statut } from "@/lib/domain";
+import { roleLabel } from "@/features/profile/lib/labels";
 import { fmtDate } from "@/lib/format";
-import type { AdminUser, University } from "../../api/types";
+import type { AdminUser } from "../../api/types";
 import { useAdminList } from "../../hooks/useAdminList";
 import { useAdminSearch, useDebouncedQ } from "../../hooks/useAdminSearch";
-import { useUniversityMutations } from "../../hooks/useUniversityMutations";
-import { useNavigate } from "@tanstack/react-router";
-import { keepU } from "../../lib/search";
-import { STATUT_OPTIONS, TRANSITIONS } from "../../lib/statut";
+import { STATUT_OPTIONS } from "../../lib/statut";
+import { UserAvatar } from "@/features/profile/componets/UserAvatar";
 
-type FormTarget = { kind: "create" } | { kind: "edit"; university: University };
-type StatutChange = { university: University; statut: Statut; label: string; destructive: boolean };
+type UsersPageProps = {
+  role: string; // "student", "teacher"… : fixé par la route
+  title: string;
+  description: string;
+  singular: string; // « étudiant » (libellés de recherche et d'actions)
+};
 
-export function UniversitiesPage() {
+const fullName = (user: AdminUser) => `${user.first_name} ${user.last_name}`.trim();
+
+export function UsersPage({ role, title, description, singular }: UsersPageProps) {
+  const navigate = useNavigate();
   const [search, setSearch] = useAdminSearch();
   const onQ = useCallback((value: string) => setSearch({ q: value }), [setSearch]);
   const [q, setQ] = useDebouncedQ(search.q, onQ);
 
-  const [target, setTarget] = useState<FormTarget | null>(null);
-  const [change, setChange] = useState<StatutChange | null>(null);
-  const { setStatut } = useUniversityMutations();
-  const navigate = useNavigate();
   const { data, isLoading, error, refetch } = useAdminList<AdminUser>("users", "/users/", {
     page: search.page ?? 1,
     page_size: search.page_size ?? 20,
     q: search.q,
     statut: search.statut,
+    role,
   });
 
-  const columns: Column<University>[] = [
+  const openProfile = (user: AdminUser) =>
+    void navigate({ to: "/membres/$userId", params: { userId: user.id } });
+
+  const columns: Column<AdminUser>[] = [
     {
-      header: "Université",
-      cell: (university) => (
-        <div onClick={(event) => event.stopPropagation()}>
-          <DropdownMenu>
-            <div className="flex items-center gap-3">
-              <Logo url={university.logo_url} name={university.name} />
-              <div className="min-w-0">
-                <p className="truncate font-medium">{university.name}</p>
-                <p className="text-xs text-muted-foreground">{university.code}</p>
-              </div>
-            </div>
-          </DropdownMenu>
+      header: "Identité",
+      cell: (user) => (
+        <div className="flex items-center gap-3">
+          <UserAvatar name={fullName(user)} url={user.avatar_url ?? null} />
+          <div className="min-w-0">
+            <p className="truncate font-medium">{fullName(user)}</p>
+            <p className="truncate text-xs text-muted-foreground">{user.email}</p>
+          </div>
         </div>
       ),
     },
-    { header: "Statut", cell: (university) => <StatusBadge statut={university.statut} /> },
-    { header: "Créée le", cell: (university) => fmtDate(university.created_at) },
+    { header: "Statut", cell: (user) => <StatusBadge statut={user.statut} /> },
+    { header: "Inscrit le", cell: (user) => fmtDate(user.created_at) },
     {
       header: "Actions",
       className: "w-16 text-right",
-      cell: (university) => (
+      cell: (user) => (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" aria-label={`Actions pour ${university.name}`}>
+            <Button variant="ghost" size="icon" aria-label={`Actions pour ${fullName(user)}`}>
               <MoreHorizontal className="size-4" aria-hidden />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onSelect={() => setTarget({ kind: "edit", university })}>
-              Modifier
+            <DropdownMenuItem asChild>
+              <Link to="/membres/$userId" params={{ userId: user.id }}>
+                <UserRound /> Voir le profil
+              </Link>
             </DropdownMenuItem>
-            {TRANSITIONS[university.statut].map((transition) => (
-              <DropdownMenuItem
-                key={transition.statut}
-                onSelect={() => setChange({ university, ...transition })}
-              >
-                {transition.label}
-              </DropdownMenuItem>
-            ))}
           </DropdownMenuContent>
         </DropdownMenu>
       ),
     },
   ];
 
+  // Filet de sécurité : si le serveur ignorait le paramètre `role`, on n'affiche que le bon rôle.
+  const rows = data?.items.filter((user) => user.role === role);
+
   return (
     <>
-      <PageHeader
-        title="Universités"
-        description="Créez et gérez les universités de la plateforme."
-        actions={
-          <Button onClick={() => setTarget({ kind: "create" })}>
-            <Plus className="size-4" aria-hidden /> Nouvelle université
-          </Button>
-        }
-      />
+      <PageHeader title={title} description={description} />
 
       <div className="mb-4 flex flex-wrap items-center gap-3">
         <div className="w-full sm:w-72">
-          <SearchInput value={q} onChange={setQ} label="Rechercher une université" />
+          <SearchInput value={q} onChange={setQ} label={`Rechercher un ${singular}`} />
         </div>
         <div className="w-full sm:w-48">
           <SimpleSelect
@@ -126,22 +108,16 @@ export function UniversitiesPage() {
       </div>
 
       <DataTable
-        caption="Liste des universités"
+        caption={`Liste des ${singular}s`}
         columns={columns}
-        rows={data?.items}
+        rows={rows}
         loading={isLoading}
         error={error}
-        onRowClick={(university) =>
-          void navigate({
-            to: "/admin/universities/$universityId",
-            params: { universityId: university.id },
-            search: keepU(search),
-          })
-        }
+        onRowClick={openProfile}
         onRetry={() => void refetch()}
         empty={
           <p className="py-10 text-center text-sm text-muted-foreground">
-            Aucune université ne correspond.
+            Aucun {singular} ne correspond.
           </p>
         }
         pagination={
@@ -156,46 +132,6 @@ export function UniversitiesPage() {
               }
             : undefined
         }
-      />
-
-      <Dialog open={target !== null} onOpenChange={(open) => !open && setTarget(null)}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>
-              {target?.kind === "edit" ? "Modifier l’université" : "Nouvelle université"}
-            </DialogTitle>
-            <DialogDescription>
-              {target?.kind === "edit"
-                ? "Mettez à jour les informations."
-                : "Renseignez les informations de base."}
-            </DialogDescription>
-          </DialogHeader>
-          {target && (
-            <UniversityForm
-              key={target.kind === "edit" ? target.university.id : "new"}
-              university={target.kind === "edit" ? target.university : undefined}
-              onDone={() => setTarget(null)}
-            />
-          )}
-        </DialogContent>
-      </Dialog>
-
-      <ConfirmDialog
-        open={change !== null}
-        onOpenChange={(open) => !open && setChange(null)}
-        title={change ? `${change.label} « ${change.university.name} » ?` : ""}
-        description="Ce changement s’applique tout de suite à toute l’université."
-        confirmLabel={change?.label ?? "Confirmer"}
-        destructive={change?.destructive === true}
-        onConfirm={async () => {
-          if (!change) return;
-          try {
-            await setStatut.mutateAsync({ id: change.university.id, statut: change.statut });
-            setChange(null);
-          } catch {
-            // le message d'erreur est déjà affiché par la mutation ; la boîte reste ouverte
-          }
-        }}
       />
     </>
   );
