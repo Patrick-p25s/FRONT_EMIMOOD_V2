@@ -8,17 +8,15 @@ import { ConfirmDialog } from "@/components/emimood/organisms/dialogs";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { Chapter, CourseResource } from "../../api/types";
-import {
-  useChapterMutations,
-  useCourseMutations,
-  useResourceMutations,
-} from "../../hooks/useCourseMutations";
+import type { Chapter } from "../../api/types";
+import { useChapterMutations, useCourseMutations } from "../../hooks/useCourseMutations";
 import { useChapters, useCourse } from "../../hooks/useCourses";
 import { COURSE_STATUS } from "../../lib/courseStatus";
 import { CourseForm } from "../subject-detail/CourseForm";
 import { ChapterCard } from "./ChapterCard";
 import { ChapterForm } from "./ChapterForm";
+import { CourseResource } from "@/features/course-ressources/api/schemas";
+import { useCourseResourceMutations } from "@/features/course-ressources/hooks/useCourseRessources";
 
 type ChapterDialog = { kind: "create" } | { kind: "edit"; chapter: Chapter } | null;
 
@@ -27,7 +25,7 @@ export function CourseEditorPage({ courseId }: { courseId: string }) {
   const chapters = useChapters(courseId);
   const { setStatus } = useCourseMutations();
   const chapterMutations = useChapterMutations();
-  const resourceMutations = useResourceMutations();
+  const resourceMutations = useCourseResourceMutations();
 
   const [chapterDialog, setChapterDialog] = useState<ChapterDialog>(null);
   const [deletingChapter, setDeletingChapter] = useState<Chapter | null>(null);

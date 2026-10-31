@@ -2,12 +2,7 @@
 import { z } from "zod";
 import { api } from "@/lib/api/client";
 import { parseResponse, safeId } from "@/lib/api/validate";
-import {
-  chapterProgressSchema,
-  courseResourceSchema,
-  mySubjectsSchema,
-  studySchema,
-} from "./schemas";
+import { chapterProgressSchema, mySubjectsSchema, studySchema } from "./schemas";
 
 const semesterSchema = z.number().int().min(1).max(12).optional();
 
@@ -26,13 +21,6 @@ export const studentApi = {
       studySchema,
       await api<unknown>(`/class-subjects/${safeId(classSubjectId)}/study`),
     ),
-
-  resources: async (chapterId: string) =>
-    parseResponse(
-      courseResourceSchema.array(),
-      await api<unknown>(`/chapters/${safeId(chapterId)}/resources`),
-    ),
-
   complete: async (chapterId: string) =>
     parseResponse(
       chapterProgressSchema,

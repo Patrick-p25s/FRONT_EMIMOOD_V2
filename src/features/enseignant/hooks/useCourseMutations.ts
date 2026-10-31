@@ -2,13 +2,10 @@
 import {
   chaptersApi,
   coursesApi,
-  resourcesApi,
   type CreateChapterInput,
   type CreateCourseInput,
-  type CreateResourceInput,
   type UpdateChapterInput,
   type UpdateCourseInput,
-  type UpdateResourceInput,
 } from "../api/courses";
 import type { Chapter, CourseStatus } from "../api/types";
 import { teacherKeys } from "../keys";
@@ -53,7 +50,7 @@ export function useChapterMutations() {
   );
   const remove = useTeacherMutation(
     (id: string) => chaptersApi.remove(id),
-    [...refresh, teacherKeys.resourcesAll],
+    [...refresh],
     "Chapitre supprimé",
   );
   /** Échange la position de deux chapitres voisins. */
@@ -66,24 +63,4 @@ export function useChapterMutations() {
     refresh,
   );
   return { create, update, remove, swap };
-}
-
-export function useResourceMutations() {
-  const refresh = [teacherKeys.resourcesAll];
-  const create = useTeacherMutation(
-    (input: CreateResourceInput) => resourcesApi.create(input),
-    refresh,
-    "Ressource ajoutée",
-  );
-  const update = useTeacherMutation(
-    (v: { id: string; input: UpdateResourceInput }) => resourcesApi.update(v.id, v.input),
-    refresh,
-    "Ressource enregistrée",
-  );
-  const remove = useTeacherMutation(
-    (id: string) => resourcesApi.remove(id),
-    refresh,
-    "Ressource supprimée",
-  );
-  return { create, update, remove };
 }

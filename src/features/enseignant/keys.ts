@@ -8,7 +8,6 @@ export const teacherKeys = {
   course: (id: string) => ["teacher", "courses", "detail", id] as const,
   chaptersAll: ["teacher", "chapters"] as const,
   chapters: (courseId: string) => ["teacher", "chapters", courseId] as const,
-  resourcesAll: ["teacher", "resources"] as const,
   resources: (chapterId: string) => ["teacher", "resources", chapterId] as const,
   documents: (chapterId: string) => ["teacher", "documents", chapterId] as const,
   assessments: ["teacher", "assessments"] as const,

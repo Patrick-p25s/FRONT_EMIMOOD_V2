@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { applyServerErrors } from "@/lib/errors";
-import type { CourseResource, ResourceType } from "../../api/types";
-import { useResourceMutations } from "../../hooks/useCourseMutations";
 import { resourceSchema, type ResourceFormValues } from "../../lib/courseSchemas";
+import type { CourseResource, ResourceType } from "@/features/course-ressources/api/schemas";
+import { useCourseResourceMutations } from "@/features/course-ressources/hooks/useCourseRessources";
 
 const SELECT = "h-9 w-full rounded-md border bg-background px-3 text-sm";
 
@@ -25,7 +25,7 @@ type ResourceFormProps = {
 };
 
 export function ResourceForm({ chapterId, resource, onDone }: ResourceFormProps) {
-  const { create, update } = useResourceMutations();
+  const { create, update } = useCourseResourceMutations();
   // NOUVEAU : une ancienne ressource déjà typée « document » garde son type visible à la modification
   const types: { value: ResourceType; label: string }[] =
     resource?.resource_type === "document"

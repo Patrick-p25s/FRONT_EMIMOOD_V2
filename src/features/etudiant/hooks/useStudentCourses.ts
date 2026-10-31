@@ -18,11 +18,3 @@ export const useStudy = (classSubjectId: string) =>
     queryFn: () => studentApi.study(classSubjectId),
     retry: retryPolicy,
   });
-
-export const useChapterResources = (chapterId: string | undefined) =>
-  useQuery({
-    queryKey: studentKeys.resources(chapterId ?? ""),
-    queryFn: () => studentApi.resources(chapterId ?? ""),
-    enabled: !!chapterId,
-    retry: retryPolicy,
-  });

@@ -48,19 +48,6 @@ export const studySchema = z.object({
   chapters: z.array(studyChapterSchema),
 });
 
-export const courseResourceSchema = z.object({
-  id,
-  chapter_id: id,
-  created_by: id,
-  title: z.string(),
-  description: z.string().nullable(),
-  resource_type: z.enum(["document", "video", "link", "other"]),
-  url: z.string(), // l'adresse est contrôlée à l'affichage (http/https seulement)
-  position: z.number().int(),
-  created_at: z.string(),
-  updated_at: z.string(),
-});
-
 export const chapterProgressSchema = z.object({
   chapter_id: id,
   completed: z.literal(true),
@@ -76,5 +63,4 @@ export type SubjectCardData = z.infer<typeof subjectCardSchema>;
 export type MySubjects = z.infer<typeof mySubjectsSchema>;
 export type StudyChapter = z.infer<typeof studyChapterSchema>;
 export type Study = z.infer<typeof studySchema>;
-export type CourseResource = z.infer<typeof courseResourceSchema>;
 export type ChapterProgress = z.infer<typeof chapterProgressSchema>;

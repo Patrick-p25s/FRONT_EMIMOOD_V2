@@ -2,8 +2,8 @@ import { ArrowDown, ArrowUp, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Chapter } from "../../api/types";
 import { ChapterSupportsPanel } from "@/features/resource/components/ChapterSupportsPanel";
-import { useResources } from "../../hooks/useCourses";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useChapterResources } from "@/features/course-ressources/hooks/useCourseRessources";
 
 type ChapterCardProps = {
   chapter: Chapter;
@@ -15,7 +15,7 @@ type ChapterCardProps = {
 };
 
 export function ChapterCard({ chapter, index, total, onMove, onEdit, onDelete }: ChapterCardProps) {
-  const resources = useResources(chapter.id);
+  const resources = useChapterResources(chapter.id);
   const texts = chapter.content ?? []; // NOUVEAU
 
   return (
