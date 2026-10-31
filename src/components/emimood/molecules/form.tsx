@@ -1,4 +1,3 @@
-// src/components/emimood/molecules/form.tsx
 import type { ReactNode } from "react";
 import { Label } from "@/components/ui/label";
 

@@ -1,4 +1,3 @@
-// molecules/StatGrid.tsx
 import type { ReactNode } from "react";
 
 export function StatGrid({ label, children }: { label: string; children: ReactNode }) {

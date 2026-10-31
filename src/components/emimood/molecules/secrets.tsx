@@ -1,4 +1,3 @@
-// src/components/emimood/molecules/secrets.tsx
 import { useEffect, useRef, useState } from "react";
 import { Check, Copy, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";

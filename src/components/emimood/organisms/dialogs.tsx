@@ -1,4 +1,3 @@
-// src/components/emimood/organisms/dialogs.tsx
 import { useEffect, useState, type ReactNode } from "react";
 import { CopyButton } from "@/components/emimood/molecules/secrets";
 import { Field } from "@/components/emimood/molecules/form";

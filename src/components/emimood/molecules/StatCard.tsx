@@ -1,4 +1,3 @@
-// molecules/StatCard.tsx
 import type { ReactNode } from "react";
 import { ArrowUpRight, type LucideIcon } from "lucide-react";
 import { IconBox } from "@/components/emimood/atoms/IconBox";

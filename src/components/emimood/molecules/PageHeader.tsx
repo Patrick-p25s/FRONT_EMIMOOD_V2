@@ -1,4 +1,3 @@
-// src/components/emimood/molecules/PageHeader.tsx
 import type { ReactNode } from "react";
 
 type PageHeaderProps = { title: string; description?: string | undefined; actions?: ReactNode };

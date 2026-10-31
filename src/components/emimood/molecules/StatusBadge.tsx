@@ -1,4 +1,3 @@
-// src/components/emimood/molecules/StatusBadge.tsx
 import { cn } from "@/lib/utils";
 import { statutLabel, type Statut } from "@/lib/domain";
 

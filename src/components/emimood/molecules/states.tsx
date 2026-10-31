@@ -1,4 +1,3 @@
-// src/components/emimood/molecules/states.tsx
 import type { ReactNode } from "react";
 import { AlertTriangle, Inbox, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";

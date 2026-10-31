@@ -1,4 +1,3 @@
-// src/components/emimood/organisms/DataTable.tsx
 import type { ReactNode } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ErrorState } from "@/components/emimood/molecules/states";

@@ -21,11 +21,23 @@ export function SectionPanel({ section }: { section: Section }) {
             onSubmit={(e) => {
               e.preventDefault();
               if (!draft.trim()) return;
-              setRows((rs) => [{ id: Date.now(), title: draft.trim(), meta: "Ajouté à l’instant", status: "Brouillon" }, ...rs]);
+              setRows((rs) => [
+                {
+                  id: Date.now(),
+                  title: draft.trim(),
+                  meta: "Ajouté à l’instant",
+                  status: "Brouillon",
+                },
+                ...rs,
+              ]);
               setDraft("");
             }}
           >
-            <Input value={draft} onChange={(e) => setDraft(e.target.value)} placeholder={section.addLabel} />
+            <Input
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              placeholder={section.addLabel}
+            />
             <Button type="submit">
               <Plus /> Ajouter
             </Button>
@@ -38,14 +50,26 @@ export function SectionPanel({ section }: { section: Section }) {
                 <strong className="text-sm">{row.title}</strong>
                 <p className="small">{row.meta}</p>
               </div>
-              <span className={`tag ${done.includes(row.status) ? "text-success" : ""}`}>{row.status}</span>
+              <span className={`tag ${done.includes(row.status) ? "text-success" : ""}`}>
+                {row.status}
+              </span>
               <div className="flex gap-1">
                 {section.review && row.status === "En attente" && (
                   <>
-                    <Button size="sm" variant="outline" onClick={() => setStatus(row.id, "Approuvé")} aria-label="Approuver">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setStatus(row.id, "Approuvé")}
+                      aria-label="Approuver"
+                    >
                       <Check />
                     </Button>
-                    <Button size="sm" variant="outline" onClick={() => setStatus(row.id, "Refusé")} aria-label="Refuser">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setStatus(row.id, "Refusé")}
+                      aria-label="Refuser"
+                    >
                       <X />
                     </Button>
                   </>
@@ -55,7 +79,12 @@ export function SectionPanel({ section }: { section: Section }) {
                     Publier
                   </Button>
                 )}
-                <Button size="sm" variant="ghost" onClick={() => setRows((rs) => rs.filter((x) => x.id !== row.id))} aria-label="Supprimer">
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => setRows((rs) => rs.filter((x) => x.id !== row.id))}
+                  aria-label="Supprimer"
+                >
                   <Trash2 />
                 </Button>
               </div>
