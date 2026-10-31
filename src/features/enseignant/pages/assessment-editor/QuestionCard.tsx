@@ -18,7 +18,7 @@ export function QuestionCard({ question, index, locked, onEdit, onDelete }: Ques
   const choices = [...question.choices].sort((a, b) => a.position - b.position);
 
   return (
-    <li className="rounded-xl border bg-card p-4 shadow-[var(--shadow)]">
+    <li className="rounded-xl border bg-card p-4 shadow-(--shadow)">
       <div className="flex items-start gap-3">
         <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-primary/10 text-sm font-bold text-primary">
           {index + 1}

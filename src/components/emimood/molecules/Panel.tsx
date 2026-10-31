@@ -15,7 +15,7 @@ export function Panel({ title, description, action, children, className }: Panel
   return (
     <section
       aria-labelledby={titleId}
-      className={cn("rounded-xl border bg-card p-5 shadow-[var(--shadow)]", className)}
+      className={cn("rounded-xl border bg-card p-5 shadow-(--shadow)", className)}
     >
       <div className="mb-4 flex items-start justify-between gap-3">
         <div>

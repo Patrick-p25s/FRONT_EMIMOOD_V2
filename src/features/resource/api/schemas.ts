@@ -72,3 +72,55 @@ export const updateSchema = z.object({
 
 export type ResourceDoc = z.output<typeof resourceSchema>;
 export type ResourcesPageData = z.output<typeof resourcesPageSchema>;
+export const MAX_UPLOAD_BYTES = 50 * 1024 * 1024; // limite de confort : le serveur reste l'autorité
+
+const isHttpUrl = (value: string) => {
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+};
+
+export const uploadSchema = z
+  .object({
+    source: z.enum(["chapter", "subject", "other"]),
+    title: z.string().trim().max(200, "Le titre fait 200 caractères au maximum.").optional(),
+    description: z
+      .string()
+      .trim()
+      .max(5000, "La description fait 5000 caractères au maximum.")
+      .optional(),
+    chapterId: id.optional(),
+    subjectId: id.optional(),
+    universityId: id.optional(),
+    url: z
+      .string()
+      .trim()
+      .max(2083, "Adresse trop longue.")
+      .refine(isHttpUrl, "L’adresse doit commencer par http:// ou https://.")
+      .optional(),
+    file: z
+      .instanceof(File)
+      .refine((file) => file.size > 0, "Le fichier est vide.")
+      .refine(
+        (file) => file.size <= MAX_UPLOAD_BYTES,
+        `Fichier trop volumineux (${MAX_UPLOAD_BYTES / 1024 / 1024} Mo au maximum).`,
+      )
+      .optional(),
+  })
+  .superRefine((value, ctx) => {
+    if (Boolean(value.url) === Boolean(value.file))
+      ctx.addIssue({
+        code: "custom",
+        message: "Choisissez un fichier ou un lien.",
+        path: ["file"],
+      });
+    if (value.source === "chapter" && !value.chapterId)
+      ctx.addIssue({ code: "custom", message: "Chapitre manquant.", path: ["chapterId"] });
+    if (value.source === "subject" && !value.subjectId)
+      ctx.addIssue({ code: "custom", message: "Matière manquante.", path: ["subjectId"] });
+  });
+
+export type UploadInput = z.input<typeof uploadSchema>;

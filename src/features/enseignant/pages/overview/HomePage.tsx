@@ -10,7 +10,7 @@ import { AssessmentLine } from "./AssessmentLine";
 
 function Stat({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-xl border bg-card p-3 shadow-[var(--shadow)]">
+    <div className="rounded-xl border bg-card p-3 shadow-(--shadow)">
       <p className="text-2xl font-extrabold tracking-tight">{value}</p>
       <p className="text-xs text-muted-foreground">{label}</p>
     </div>
@@ -130,7 +130,7 @@ export function HomePage() {
                 {subjects.map((entry) => (
                   <li
                     key={entry.subject.id}
-                    className="rounded-xl border bg-card p-4 shadow-[var(--shadow)]"
+                    className="rounded-xl border bg-card p-4 shadow-(--shadow)"
                   >
                     <p className="truncate font-bold">{entry.subject.name}</p>
                     <div className="mt-2 flex flex-wrap gap-1.5">

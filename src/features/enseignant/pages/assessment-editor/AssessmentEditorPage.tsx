@@ -148,7 +148,7 @@ export function AssessmentEditorPage({ assessmentId }: { assessmentId: string })
 
       <div className="grid gap-6">
         {draft ? (
-          <div className="rounded-xl border bg-card p-4 text-sm shadow-[var(--shadow)]">
+          <div className="rounded-xl border bg-card p-4 text-sm shadow-(--shadow)">
             <p className="mb-2 font-semibold">Prêt à publier ?</p>
             <ul className="grid gap-1">
               {checks.map((check) => (

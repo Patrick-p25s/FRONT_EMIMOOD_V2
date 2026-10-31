@@ -7,7 +7,7 @@ import {
   type InfiniteData,
 } from "@tanstack/react-query";
 import { toast } from "sonner";
-import type { ResourceDoc, ResourcesPageData } from "../api/schemas";
+import type { ResourceDoc, ResourcesPageData, UploadInput } from "../api/schemas";
 import { type ResourceFilters, resourcesApi } from "../api/resource";
 import { messageOf, retryPolicy } from "@/lib/api/message";
 
@@ -74,6 +74,14 @@ export function useResourceMutations() {
       onSuccess: async () => {
         await refresh();
         toast.success("Ressource supprimée");
+      },
+      onError,
+    }),
+    upload: useMutation({
+      mutationFn: (input: UploadInput) => resourcesApi.upload(input),
+      onSuccess: async () => {
+        await refresh(); // la liste du chapitre et la page Ressources
+        toast.success("Support ajouté");
       },
       onError,
     }),

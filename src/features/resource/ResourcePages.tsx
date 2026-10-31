@@ -54,6 +54,7 @@ import {
 import { formatBytes } from "@/lib/files";
 import { ResourceRow } from "./components/ResourceRows";
 import { ResourcePreviewDialog } from "./components/ResourcePreviewDialog";
+import { AddDocumentDialog } from "./components/AddDocumentDialog";
 
 type Filter = "Toutes" | "Officielles" | "Étudiants" | "Enregistrées";
 const FILTERS: Filter[] = ["Toutes", "Officielles", "Étudiants", "Enregistrées"];
@@ -93,9 +94,20 @@ const hostOf = (url: string | null) => {
   }
 };
 
-type ResourcesPageProps = { classes: ClassOption[]; subjects: SubjectOption[] };
+type ResourcesPageProps = {
+  classes: ClassOption[];
+  subjects: SubjectOption[];
+  canUpload?: boolean;
+  universityId?: string | undefined;
+};
 
-export function ResourcesPage({ classes, subjects }: ResourcesPageProps) {
+export function ResourcesPage({
+  classes,
+  subjects,
+  canUpload = false,
+  universityId,
+}: ResourcesPageProps) {
+  const [uploading, setUploading] = useState(false);
   const { user } = useAuth();
   const client = useQueryClient();
   const toggleSave = useToggleSave();
@@ -147,9 +159,16 @@ export function ResourcesPage({ classes, subjects }: ResourcesPageProps) {
         title="Ressources"
         subtitle="Les connaissances de notre communauté, à portée de main."
         action={
-          <Button onClick={() => changeDialog({ kind: "create", type: "resource" })}>
-            <Plus /> Ajouter une ressource
-          </Button>
+          <div className="flex flex-wrap gap-2">
+            {canUpload && (
+              <Button variant="outline" onClick={() => setUploading(true)}>
+                <Plus /> Déposer un document
+              </Button>
+            )}
+            <Button onClick={() => changeDialog({ kind: "create", type: "resource" })}>
+              <Plus /> Publier une ressource
+            </Button>
+          </div>
         }
       />
 
@@ -293,6 +312,11 @@ export function ResourcesPage({ classes, subjects }: ResourcesPageProps) {
       </Dialog>
 
       <EditResourceDialog doc={editing} onClose={() => setEditing(null)} />
+      <AddDocumentDialog
+        open={uploading}
+        onOpenChange={setUploading}
+        target={{ kind: "library", subjects, universityId }}
+      />
 
       <ConfirmDialog
         open={removing !== null}

@@ -1,6 +1,12 @@
 import { api } from "@/lib/api/client";
 import { parseRequest, parseResponse, safeId } from "@/lib/api/validate";
-import { resourceSchema, resourcesPageSchema, updateSchema } from "./schemas";
+import {
+  resourceSchema,
+  resourcesPageSchema,
+  updateSchema,
+  UploadInput,
+  uploadSchema,
+} from "./schemas";
 import { z } from "zod";
 
 export const PAGE_SIZE = 20;
@@ -49,4 +55,17 @@ export const resourcesApi = {
       z.array(resourceSchema),
       await api<unknown>(`/chapters/${safeId(chapterId)}/documents`),
     ),
+  upload: async (input: UploadInput) => {
+    const p = parseRequest(uploadSchema, input);
+    const form = new FormData();
+    form.append("source", p.source);
+    if (p.title) form.append("title", p.title);
+    if (p.description) form.append("description", p.description);
+    if (p.chapterId) form.append("chapter_id", safeId(p.chapterId));
+    if (p.subjectId) form.append("subject_id", safeId(p.subjectId));
+    if (p.universityId) form.append("university_id", safeId(p.universityId));
+    if (p.url) form.append("url", p.url);
+    if (p.file) form.append("file", p.file, p.file.name);
+    await api<unknown>("/documents", { method: "POST", body: form });
+  },
 };

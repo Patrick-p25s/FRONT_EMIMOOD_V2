@@ -1,4 +1,3 @@
-// pages/assessment-results/ResultsPanel.tsx
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
@@ -13,7 +12,7 @@ import { attemptStatusMeta, formatScore } from "../../lib/attemptMeta";
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl border bg-card p-3 shadow-[var(--shadow)]">
+    <div className="rounded-xl border bg-card p-3 shadow-(--shadow)">
       <p className="text-xl font-extrabold tracking-tight">{value}</p>
       <p className="text-xs text-muted-foreground">{label}</p>
     </div>
@@ -86,7 +85,7 @@ export function ResultsPanel({ assessmentId }: { assessmentId: string }) {
                   <Link
                     to="/enseignant/copies/$attemptId"
                     params={{ attemptId: row.id }}
-                    className="flex items-center gap-3 rounded-xl border bg-card p-3 no-underline shadow-[var(--shadow)] transition-colors hover:border-primary/40"
+                    className="flex items-center gap-3 rounded-xl border bg-card p-3 no-underline shadow-(--shadow) transition-colors hover:border-primary/40"
                   >
                     <div className="min-w-0 flex-1">
                       <p className="truncate font-semibold text-foreground">{row.student_name}</p>

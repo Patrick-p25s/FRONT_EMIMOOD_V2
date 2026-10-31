@@ -24,7 +24,7 @@ type StatCardProps = {
 };
 
 const shell =
-  "group relative flex min-h-[132px] flex-col justify-between gap-4 rounded-xl border bg-card p-5 shadow-[var(--shadow)]";
+  "group relative flex min-h-[132px] flex-col justify-between gap-4 rounded-xl border bg-card p-5 shadow-(--shadow)";
 const interactive =
   "no-underline transition-colors hover:border-primary/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none";
 

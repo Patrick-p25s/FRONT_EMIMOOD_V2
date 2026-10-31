@@ -22,6 +22,7 @@ import { ChapterCard } from "./ChapterCard";
 import { ChapterForm } from "./ChapterForm";
 import { DocumentForm } from "./DocumentForm"; // NOUVEAU
 import { ResourceForm } from "./ResourceForm";
+import { ChapterSupportsPanel } from "@/features/resource/components/ChapterSupportsPanel";
 
 type ChapterDialog = { kind: "create" } | { kind: "edit"; chapter: Chapter } | null;
 type ResourceDialog =
@@ -43,8 +44,6 @@ export function CourseEditorPage({ courseId }: { courseId: string }) {
   const documentMutations = useDocumentMutations(); // NOUVEAU
 
   const [chapterDialog, setChapterDialog] = useState<ChapterDialog>(null);
-  const [resourceDialog, setResourceDialog] = useState<ResourceDialog>(null);
-  const [documentDialog, setDocumentDialog] = useState<DocumentDialog>(null); // NOUVEAU
   const [deletingChapter, setDeletingChapter] = useState<Chapter | null>(null);
   const [deletingResource, setDeletingResource] = useState<CourseResource | null>(null);
   const [deletingDocument, setDeletingDocument] = useState<ChapterDocument | null>(null); // NOUVEAU
@@ -101,7 +100,7 @@ export function CourseEditorPage({ courseId }: { courseId: string }) {
 
       <div className="grid gap-6">
         {current.status !== "published" && (
-          <div className="rounded-xl border bg-card p-4 text-sm shadow-[var(--shadow)]">
+          <div className="rounded-xl border bg-card p-4 text-sm shadow-(--shadow)">
             <p className="mb-2 font-semibold">Prêt à publier ?</p>
             <p className={canPublish ? "text-success" : "text-muted-foreground"}>
               {canPublish ? "✓" : "○"} Au moins un chapitre
@@ -150,16 +149,6 @@ export function CourseEditorPage({ courseId }: { courseId: string }) {
                   onMove={(direction) => move(index, direction)}
                   onEdit={() => setChapterDialog({ kind: "edit", chapter })}
                   onDelete={() => setDeletingChapter(chapter)}
-                  onAddResource={() => setResourceDialog({ kind: "create", chapter })}
-                  onEditResource={(resource) =>
-                    setResourceDialog({ kind: "edit", chapter, resource })
-                  }
-                  onDeleteResource={setDeletingResource}
-                  onAddDocument={() => setDocumentDialog({ kind: "create", chapter })} // NOUVEAU
-                  onEditDocument={(document) =>
-                    setDocumentDialog({ kind: "edit", chapter, document })
-                  } // NOUVEAU
-                  onDeleteDocument={setDeletingDocument} // NOUVEAU
                 />
               ))}
             </ol>
@@ -184,58 +173,6 @@ export function CourseEditorPage({ courseId }: { courseId: string }) {
               courseId={courseId}
               chapter={chapterDialog.kind === "edit" ? chapterDialog.chapter : undefined}
               onDone={() => setChapterDialog(null)}
-            />
-          )}
-        </DialogContent>
-      </Dialog>
-
-      {/* Dialogues : lien */}
-      <Dialog
-        open={resourceDialog !== null}
-        onOpenChange={(open) => !open && setResourceDialog(null)}
-      >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>
-              {resourceDialog?.kind === "edit" ? "Modifier le lien" : "Nouveau lien"}
-            </DialogTitle>
-          </DialogHeader>
-          {resourceDialog && (
-            <ResourceForm
-              key={
-                resourceDialog.kind === "edit"
-                  ? resourceDialog.resource.id
-                  : `new-${resourceDialog.chapter.id}`
-              }
-              chapterId={resourceDialog.chapter.id}
-              resource={resourceDialog.kind === "edit" ? resourceDialog.resource : undefined}
-              onDone={() => setResourceDialog(null)}
-            />
-          )}
-        </DialogContent>
-      </Dialog>
-
-      {/* NOUVEAU : dialogue document téléversé */}
-      <Dialog
-        open={documentDialog !== null}
-        onOpenChange={(open) => !open && setDocumentDialog(null)}
-      >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>
-              {documentDialog?.kind === "edit" ? "Modifier le document" : "Téléverser un document"}
-            </DialogTitle>
-          </DialogHeader>
-          {documentDialog && (
-            <DocumentForm
-              key={
-                documentDialog.kind === "edit"
-                  ? documentDialog.document.id
-                  : `new-${documentDialog.chapter.id}`
-              }
-              chapterId={documentDialog.chapter.id}
-              document={documentDialog.kind === "edit" ? documentDialog.document : undefined}
-              onDone={() => setDocumentDialog(null)}
             />
           )}
         </DialogContent>
