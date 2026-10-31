@@ -6,8 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { applyServerErrors } from "@/lib/errors";
 import { resourceSchema, type ResourceFormValues } from "../../lib/courseSchemas";
-import type { CourseResource, ResourceType } from "@/features/course-ressources/api/schemas";
-import { useCourseResourceMutations } from "@/features/course-ressources/hooks/useCourseRessources";
+import type { CourseResource, ResourceType } from "@/features/course-resources/api/schemas";
+import { useCourseResourceMutations } from "@/features/course-resources/hooks/useCourseResources";
 
 const SELECT = "h-9 w-full rounded-md border bg-background px-3 text-sm";
 

@@ -1,4 +1,4 @@
-// features/messaging/lib/realtimeHandlers.ts : ce que chaque événement du serveur fait au cache
+// Effet de chaque événement temps réel sur le cache.
 import type { QueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 import type { RealtimeEvent } from "@/lib/realtime/socket";

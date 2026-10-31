@@ -6,7 +6,7 @@ import type {
   UpdateCourseResourceInput,
 } from "../api/schemas";
 import { courseResourceKeys } from "../keys";
-import { courseResourcesApi } from "../api/courseRessources";
+import { courseResourcesApi } from "../api/courseResources";
 import { messageOf, retryPolicy } from "@/lib/api/message";
 
 const byPosition = (items: CourseResource[]) => [...items].sort((a, b) => a.position - b.position);

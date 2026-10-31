@@ -27,7 +27,7 @@ import { links } from "@/components/emimood/templates/navLinks";
 import { ThemeMenu } from "@/components/emimood/molecules/ThemeMenu";
 import { RealtimeBridge } from "@/features/messaging/components/RealtimeBridge";
 import { Brand } from "../atoms/Brand";
-import { useAccount, useMyProfile } from "@/features/profile/hoooks/useProfile";
+import { useAccount, useMyProfile } from "@/features/profile/hooks/useProfile";
 import { MessagesNavBadge } from "@/features/messaging/components/MessageNavBadge";
 import { UserAvatar } from "@/features/profile/components/UserAvatar";
 import { NotificationBadge } from "@/features/notification/components/NotificationBadge";

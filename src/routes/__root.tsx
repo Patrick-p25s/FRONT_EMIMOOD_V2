@@ -17,7 +17,7 @@ import { NotFoundView, FullScreenLoader } from "@/components/emimood/molecules/N
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider, useAuth, canAccess } from "@/lib/auth";
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
+import { reportRuntimeError } from "../lib/error-reporting";
 
 function NotFoundComponent() {
   return <NotFoundView />;
@@ -27,7 +27,7 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
+    reportRuntimeError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
 
   return (

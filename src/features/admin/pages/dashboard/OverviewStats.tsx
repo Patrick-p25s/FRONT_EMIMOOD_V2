@@ -1,4 +1,4 @@
-// OverviewStats.tsx
+// Synthèse des indicateurs de la plateforme.
 import { Link } from "@tanstack/react-router";
 import { StatCard } from "@/components/emimood/molecules/StatCard";
 import { StatGrid } from "@/components/emimood/molecules/StatGrid";

@@ -1,4 +1,4 @@
-// stats.ts : ajouter une carte = ajouter une ligne
+// Ajouter une carte revient à ajouter une ligne à cette configuration.
 import {
   Ban,
   Building2,

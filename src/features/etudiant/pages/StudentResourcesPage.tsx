@@ -1,6 +1,6 @@
 import { ResourcesPage } from "@/features/resource/ResourcePages";
 import { useCampusTargets } from "../hooks/useCampusTargets";
-import { useAccount } from "@/features/profile/hoooks/useProfile";
+import { useAccount } from "@/features/profile/hooks/useProfile";
 
 export function StudentResourcesPage() {
   const { classes, subjects } = useCampusTargets();

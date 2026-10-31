@@ -3,7 +3,7 @@ import { useAdminMutation } from "./useAdminList";
 
 type CreateBody = Parameters<typeof yearsApi.create>[0];
 type UpdateBody = Parameters<typeof yearsApi.update>[1];
-export function useAccademicYearMutations() {
+export function useAcademicYearMutations() {
   const create = useAdminMutation(
     (body: CreateBody) => yearsApi.create(body),
     ["academic-years"],

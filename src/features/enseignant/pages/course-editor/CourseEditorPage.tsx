@@ -15,8 +15,8 @@ import { COURSE_STATUS } from "../../lib/courseStatus";
 import { CourseForm } from "../subject-detail/CourseForm";
 import { ChapterCard } from "./ChapterCard";
 import { ChapterForm } from "./ChapterForm";
-import { CourseResource } from "@/features/course-ressources/api/schemas";
-import { useCourseResourceMutations } from "@/features/course-ressources/hooks/useCourseRessources";
+import { CourseResource } from "@/features/course-resources/api/schemas";
+import { useCourseResourceMutations } from "@/features/course-resources/hooks/useCourseResources";
 
 type ChapterDialog = { kind: "create" } | { kind: "edit"; chapter: Chapter } | null;
 

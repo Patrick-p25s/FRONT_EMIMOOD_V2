@@ -4,7 +4,7 @@ import { EmptyState, ErrorState } from "@/components/emimood/molecules/states";
 import { Skeleton } from "@/components/ui/skeleton";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { usePublicProfile } from "../../hoooks/useProfile";
+import { usePublicProfile } from "../../hooks/useProfile";
 import { isNotFound } from "@/lib/api/message";
 import { ProfileView } from "../ProfileView";
 import { StartChatButton } from "@/features/messaging/components/StartChatButton";

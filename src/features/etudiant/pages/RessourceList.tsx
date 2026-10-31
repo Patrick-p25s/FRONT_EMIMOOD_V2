@@ -4,8 +4,8 @@ import { useChapterDocuments, useToggleSave } from "@/features/resource/hooks/us
 import { ResourceDoc } from "@/features/resource/api/schemas";
 import { ResourceRow } from "@/features/resource/components/ResourceRows";
 import { ResourcePreviewDialog } from "@/features/resource/components/ResourcePreviewDialog";
-import { useChapterResources } from "@/features/course-ressources/hooks/useCourseRessources";
-import { CourseResourceRow } from "@/features/course-ressources/components/CourseRessourceRow";
+import { useChapterResources } from "@/features/course-resources/hooks/useCourseResources";
+import { CourseResourceRow } from "@/features/course-resources/components/CourseResourceRow";
 
 export function ResourceList({ chapterId }: { chapterId: string }) {
   const documents = useChapterDocuments(chapterId); // fichiers (et liens déposés comme documents)

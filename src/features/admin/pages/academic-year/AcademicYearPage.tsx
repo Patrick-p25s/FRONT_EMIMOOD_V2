@@ -31,7 +31,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { keepU } from "../../lib/search";
 import { STATUT_OPTIONS, TRANSITIONS } from "../../lib/statut";
 import { AcademicYearForm } from "./AcademicYearForm";
-import { useAccademicYearMutations } from "../../hooks/useAccademicYearMutations";
+import { useAcademicYearMutations } from "../../hooks/useAcademicYearMutations";
 
 type FormTarget = { kind: "create" } | { kind: "edit"; year: AcademicYear };
 type StatutChange = {
@@ -48,7 +48,7 @@ export function AcademicYearPage() {
 
   const [target, setTarget] = useState<FormTarget | null>(null);
   const [change, setChange] = useState<StatutChange | null>(null);
-  const { setCurrent, remove } = useAccademicYearMutations();
+  const { setCurrent, remove } = useAcademicYearMutations();
   const navigate = useNavigate();
   const { data, isLoading, error, refetch } = useAdminList<AcademicYear>(
     "academic-years",

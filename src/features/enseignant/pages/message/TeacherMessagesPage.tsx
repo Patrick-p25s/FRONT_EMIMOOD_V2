@@ -1,4 +1,4 @@
-// features/enseignant/pages/messages/TeacherMessagesPage.tsx
+// Messagerie de l'espace enseignant.
 import { useMemo } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import {

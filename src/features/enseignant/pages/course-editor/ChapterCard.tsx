@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import type { Chapter } from "../../api/types";
 import { ChapterSupportsPanel } from "@/features/resource/components/ChapterSupportsPanel";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useChapterResources } from "@/features/course-ressources/hooks/useCourseRessources";
+import { useChapterResources } from "@/features/course-resources/hooks/useCourseResources";
 
 type ChapterCardProps = {
   chapter: Chapter;

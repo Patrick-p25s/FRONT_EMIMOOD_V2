@@ -10,7 +10,7 @@ import type { University } from "../../api/types";
 import { useAdminDetail } from "../../hooks/useAdminList";
 import { useAdminSearch } from "../../hooks/useAdminSearch";
 import { keepU } from "../../lib/search";
-import { OverviewTab } from "./OverViewTab";
+import { OverviewTab } from "./OverviewTab";
 import { TeachersTab } from "./TeachersTab";
 import { CodesTab } from "./CodesTab";
 import { ClassesTab } from "./ClassesTab";

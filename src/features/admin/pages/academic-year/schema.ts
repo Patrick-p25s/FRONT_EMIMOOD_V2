@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const accademicYearSchema = z
+export const academicYearSchema = z
   .object({
     name: z.string().trim().min(4, "4 caractères minimum").max(15, "15 caractères maximum"),
 
@@ -15,4 +15,4 @@ export const accademicYearSchema = z
     path: ["end_date"],
   });
 
-export type AccademicYearValues = z.infer<typeof accademicYearSchema>;
+export type AcademicYearValues = z.infer<typeof academicYearSchema>;

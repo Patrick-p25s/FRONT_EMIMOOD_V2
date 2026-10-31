@@ -30,7 +30,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-.lovable
-supabase
-drizzle
 .env

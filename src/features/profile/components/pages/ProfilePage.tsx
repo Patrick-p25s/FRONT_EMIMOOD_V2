@@ -4,7 +4,7 @@ import { Link } from "@tanstack/react-router";
 import { ErrorState } from "@/components/emimood/molecules/states";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useMyProfile } from "../../hoooks/useProfile";
+import { useMyProfile } from "../../hooks/useProfile";
 import { ProfileView } from "../ProfileView";
 import { EditProfileDialog } from "../EditProfileDialog";
 

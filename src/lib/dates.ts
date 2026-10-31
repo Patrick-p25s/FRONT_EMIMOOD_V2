@@ -1,4 +1,3 @@
-// features/etudiant/lib/dates.ts
 const dayStart = (date: Date) =>
   new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
 

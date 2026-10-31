@@ -1,4 +1,4 @@
-// UniversitiesPanel.tsx : cliquer une ligne rend l'université active pour tout l'admin
+// Cliquer une ligne rend l'université active pour tout l'espace d'administration.
 import { Link } from "@tanstack/react-router";
 import { Logo } from "@/components/emimood/atoms/Logo";
 import { Panel } from "@/components/emimood/molecules/Panel";

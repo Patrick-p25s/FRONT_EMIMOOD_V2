@@ -1,4 +1,4 @@
-// QuickActions.tsx
+// Raccourcis vers les actions d'administration les plus fréquentes.
 import { Link } from "@tanstack/react-router";
 import {
   BookOpen,

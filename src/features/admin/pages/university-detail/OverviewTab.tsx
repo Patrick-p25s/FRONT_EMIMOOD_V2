@@ -16,7 +16,7 @@ import { fmtDate } from "@/lib/format";
 import type { University } from "../../api/types";
 import { useCounts } from "../../hooks/useDashboard";
 import { UniversityForm } from "../universities/UniversityForm";
-import { STATS } from "../dasboard/stats";
+import { STATS } from "../dashboard/stats";
 
 const KEYS = ["users", "students", "teachers", "classes"];
 const SPECS = STATS.filter((stat) => KEYS.includes(stat.key));

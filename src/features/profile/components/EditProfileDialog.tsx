@@ -14,7 +14,7 @@ import type { Account, UpdateAccountInput } from "../api/schemas";
 import { ALLOWED_AVATAR_TYPES, MAX_AVATAR_BYTES } from "../lib/avatar";
 import { profileFormSchema, type ProfileFormValues } from "../lib/schemas";
 import { UserAvatar } from "./UserAvatar";
-import { useAccount, useProfileMutations } from "../hoooks/useProfile";
+import { useAccount, useProfileMutations } from "../hooks/useProfile";
 
 function AvatarControls({ name, url }: { name: string; url: string | null }) {
   const { upload, removeAvatar } = useProfileMutations();

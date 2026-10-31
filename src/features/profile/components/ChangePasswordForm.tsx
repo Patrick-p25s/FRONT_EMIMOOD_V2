@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { endSession } from "@/lib/api/client";
 import { passwordFormSchema, type PasswordFormValues } from "../lib/schemas";
-import { useProfileMutations } from "../hoooks/useProfile";
+import { useProfileMutations } from "../hooks/useProfile";
 import { messageOf } from "@/lib/api/message";
 
 export function ChangePasswordForm() {

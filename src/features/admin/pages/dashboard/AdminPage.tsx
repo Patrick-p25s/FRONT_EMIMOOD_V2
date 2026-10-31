@@ -1,4 +1,4 @@
-// AdminPage.tsx : assemble seulement, sans style ni logique
+// Assemble le tableau de bord sans logique métier locale.
 import { Link } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
 import { StatusPill } from "@/components/emimood/atoms/StatusPill";
@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useActiveUniversity } from "../../hooks/useActiveUniversity";
 import { useCurrentYear } from "../../hooks/useDashboard";
 import { keepU } from "../../lib/search";
-import { OverviewStats } from "./overviewstats";
+import { OverviewStats } from "./OverviewStats";
 import { QuickActions } from "./QuickActions";
 import { UniversitiesPanel } from "./UniversityPanel";
 

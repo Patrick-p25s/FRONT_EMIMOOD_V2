@@ -1,25 +1,24 @@
 import { useForm } from "react-hook-form";
 import { AcademicYear } from "../../api/types";
-import { useAccademicYearMutations } from "../../hooks/useAccademicYearMutations";
-import { accademicYearSchema, type AccademicYearValues } from "./schema";
+import { useAcademicYearMutations } from "../../hooks/useAcademicYearMutations";
+import { academicYearSchema } from "./schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Field, FormError } from "@/components/emimood/molecules/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { id } from "zod/v4/locales";
 import { applyServerErrors } from "@/lib/errors";
 import { z } from "zod";
 
 type AcademicYearFormProps = { academicYear: AcademicYear | undefined; onDone: () => void };
 export function AcademicYearForm({ academicYear, onDone }: AcademicYearFormProps) {
-  const { create, update } = useAccademicYearMutations();
+  const { create, update } = useAcademicYearMutations();
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors, isSubmitting },
-  } = useForm<z.input<typeof accademicYearSchema>, unknown, z.output<typeof accademicYearSchema>>({
-    resolver: zodResolver(accademicYearSchema),
+  } = useForm<z.input<typeof academicYearSchema>, unknown, z.output<typeof academicYearSchema>>({
+    resolver: zodResolver(academicYearSchema),
     defaultValues: {
       name: academicYear?.name ?? "",
       start_date: academicYear?.start_date ?? "",
