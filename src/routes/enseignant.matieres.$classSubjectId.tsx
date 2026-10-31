@@ -10,5 +10,10 @@ export const Route = createFileRoute("/enseignant/matieres/$classSubjectId")({
 function DetailRoute() {
   const { classSubjectId } = Route.useParams();
   const { onglet } = Route.useSearch();
-  return <SubjectDetailPage classSubjectId={classSubjectId} initialTab={onglet === "evaluations" ? "assessments" : "courses"} />;
+  return (
+    <SubjectDetailPage
+      classSubjectId={classSubjectId}
+      initialTab={onglet === "evaluations" ? "assessments" : "courses"}
+    />
+  );
 }

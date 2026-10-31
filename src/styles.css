@@ -782,7 +782,9 @@ h1 {
   text-align: left;
   justify-content: start;
   border-radius: 10px;
-  transition: background-color 160ms ease, transform 160ms ease;
+  transition:
+    background-color 160ms ease,
+    transform 160ms ease;
 }
 .chat-person:hover {
   transform: translateX(2px);

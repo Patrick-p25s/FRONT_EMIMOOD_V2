@@ -1,4 +1,3 @@
-
 export const resources = [
   {
     id: 1,

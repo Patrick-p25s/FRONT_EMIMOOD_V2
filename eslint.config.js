@@ -4,9 +4,10 @@ import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
+import react from "eslint-plugin-react";
 
 export default tseslint.config(
-  { ignores: ["dist", ".output", ".vinxi"] },
+  { ignores: ["dist", ".output", ".vinxi", "src/lib/api/schema.gen.ts", "src/routeTree.gen.ts"] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],
@@ -37,4 +38,26 @@ export default tseslint.config(
     },
   },
   eslintPluginPrettier,
+  {
+    files: ["src/**/*.{ts,tsx}"],
+    plugins: { react },
+    rules: {
+      "react/no-danger": "error",
+      "no-eval": "error",
+      "no-new-func": "error",
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector:
+            "JSXAttribute[name.name='href'][value.type='JSXExpressionContainer'] > JSXExpressionContainer > MemberExpression[property.name='url']",
+          message: "Une adresse venant de l'API doit passer par toSafeLink avant d'être affichée.",
+        },
+      ],
+    },
+  },
+  {
+    // composant shadcn standard, sans donnée de l'API
+    files: ["src/components/ui/chart.tsx"],
+    rules: { "react/no-danger": "off" },
+  },
 );

@@ -1,4 +1,3 @@
-
 export function docPages(title: string, subject: string, author: string) {
   return [
     {

@@ -1,4 +1,14 @@
-import { Bell, BookOpen, BriefcaseBusiness, ClipboardCheck, Files, Home, MessageSquare, MessagesSquare, PlayCircle } from "lucide-react";
+import {
+  Bell,
+  BookOpen,
+  BriefcaseBusiness,
+  ClipboardCheck,
+  Files,
+  Home,
+  MessageSquare,
+  MessagesSquare,
+  PlayCircle,
+} from "lucide-react";
 
 export const links = [
   { to: "/accueil", label: "Accueil", icon: Home },

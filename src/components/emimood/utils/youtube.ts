@@ -1,4 +1,3 @@
-
 export function decode(t: string) {
   return t
     .replace(/&#39;/g, "'")

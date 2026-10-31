@@ -40,6 +40,7 @@ import { UserAvatar } from "@/features/profile/components/UserAvatar";
 import { timeAgo } from "@/features/notification/lib/format";
 import { formatBytes } from "@/lib/files";
 import { CommentsSection } from "./CommentsSection";
+import { toSafeLink } from "@/lib/links";
 
 const TYPE_LABEL: Record<string, string> = {
   announcement: "Annonce",
@@ -57,7 +58,7 @@ function Body({ text }: { text: string }) {
   const long = text.length > 320 || text.split("\n").length > 6;
   return (
     <>
-      <p className={cn("whitespace-pre-line break-words", long && !open && "line-clamp-5")}>
+      <p className={cn("whitespace-pre-line wrap-break-word", long && !open && "line-clamp-5")}>
         {text}
       </p>
       {long && (
@@ -103,6 +104,7 @@ export function Post({ post, onEdit, onDelete }: PublicationCardProps) {
       ? document.url
       : null;
   const hidden = post.status === "hidden";
+  const link = linkUrl ? toSafeLink(linkUrl) : null;
 
   const download = async () => {
     if (!document || downloading) return;
@@ -267,7 +269,7 @@ export function Post({ post, onEdit, onDelete }: PublicationCardProps) {
         )}
         {linkUrl && (
           <a
-            href={linkUrl}
+            href={link?.href}
             target="_blank"
             rel="noopener noreferrer"
             className="attachment text-foreground no-underline"
@@ -276,7 +278,7 @@ export function Post({ post, onEdit, onDelete }: PublicationCardProps) {
             <div className="min-w-0">
               <strong className="block truncate text-xs">{document?.title ?? linkUrl}</strong>
               <p className="small flex items-center gap-1">
-                {new URL(linkUrl).hostname} <ExternalLink size={12} aria-hidden />
+                {link?.host} <ExternalLink size={12} aria-hidden />
               </p>
             </div>
           </a>

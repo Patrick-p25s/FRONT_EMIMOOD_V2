@@ -49,7 +49,7 @@ function CommentItem({
             {author.role !== "student" && <span className="tag">{roleLabel(author.role)}</span>}
             {comment.is_mine && <span className="tag">Vous</span>}
           </p>
-          <p className="whitespace-pre-line break-words">{comment.content}</p>
+          <p className="whitespace-pre-line wrap-break-word">{comment.content}</p>
         </div>
         <p className="small mt-0.5 flex items-center gap-3 px-1">
           <time dateTime={comment.created_at} title={fmtDateTime(comment.created_at)}>
