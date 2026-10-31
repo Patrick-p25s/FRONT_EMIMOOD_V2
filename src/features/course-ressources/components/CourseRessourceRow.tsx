@@ -1,4 +1,3 @@
-// features/course-resources/components/CourseResourceRow.tsx : la ligne partagée (étudiant, et enseignant avec `menu`)
 import type { ReactNode } from "react";
 import { ExternalLink, FileText, Link2, PlayCircle, type LucideIcon } from "lucide-react";
 import { toSafeLink } from "@/lib/links";
