@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { ArrowRight, GraduationCap, LockKeyhole, Mail } from "lucide-react";
 import { type ReactNode, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -17,8 +17,8 @@ type LoginSearch = { next?: string | undefined; reason?: string | undefined };
 export const Route = createFileRoute("/connexion")({
   head: () => pageHead("Connexion", "Connectez-vous à votre espace EMIMood."),
   validateSearch: (s: Record<string, unknown>): LoginSearch => ({
-    next: typeof s.next === "string" ? s.next : undefined,
-    reason: typeof s.reason === "string" ? s.reason : undefined,
+    next: typeof s["next"] === "string" ? s["next"] : undefined,
+    reason: typeof s["reason"] === "string" ? s["reason"] : undefined,
   }),
   component: LoginPage,
 });
@@ -27,6 +27,7 @@ function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const search = Route.useSearch();
+  const router = useRouter();
   const [role, setRole] = useState<Role>("student");
   const {
     register,
@@ -43,11 +44,9 @@ function LoginPage() {
       const next = safeNext(search.next);
       const admin =
         !!next && (next === "/admin" || next.startsWith("/admin/") || next.startsWith("/admin?"));
-      navigate(
-        next && (!admin || user.role === "super_admin")
-          ? { href: next, replace: true }
-          : { to: roleHome[user.role], replace: true },
-      );
+      const target = safeNext(next);
+      if (target && (!admin || user.role === "super_admin")) router.history.replace(target);
+      else void navigate({ to: roleHome[user.role], replace: true });
     } catch (error) {
       applyServerErrors(error, setError, ["email", "password"]);
     }
@@ -186,7 +185,7 @@ export function AuthInput({
 }: {
   id: string;
   label: string;
-  error?: string;
+  error?: string | undefined;
   icon: ReactNode;
   children: ReactNode;
 }) {

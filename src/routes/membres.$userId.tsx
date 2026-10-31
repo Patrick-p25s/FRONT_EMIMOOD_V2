@@ -1,4 +1,4 @@
-import { PublicProfilePage } from "@/features/profile/componets/pages/PublicProfilePage";
+import { PublicProfilePage } from "@/features/profile/components/pages/PublicProfilePage";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/membres/$userId")({ component: MemberRoute });

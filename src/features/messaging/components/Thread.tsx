@@ -17,7 +17,7 @@ import { GroupInfoDialog } from "./GroupInfoDialog";
 import { MessageBubble } from "./MessageBubble";
 import { useMessagingNav } from "./MessagingNav";
 import { isNotFound } from "@/lib/api/message";
-import { UserAvatar } from "@/features/profile/componets/UserAvatar";
+import { UserAvatar } from "@/features/profile/components/UserAvatar";
 import { useRealtimeStatus } from "@/lib/realtime/useRealtimeStatus";
 
 export function Thread({ conversationId }: { conversationId: string }) {

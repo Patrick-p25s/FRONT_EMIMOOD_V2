@@ -21,7 +21,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { statutLabel, type Statut } from "@/lib/domain";
+import { type Statut } from "@/lib/domain";
 import { fmtDate } from "@/lib/format";
 import type { University } from "../../api/types";
 import { useAdminList } from "../../hooks/useAdminList";

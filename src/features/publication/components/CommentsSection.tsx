@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import type { PubComment } from "../api/commentSchemas";
 import { timeAgo } from "@/features/notification/lib/format";
 import { useAddComment, useComments } from "../hooks/useComment";
-import { UserAvatar } from "@/features/profile/componets/UserAvatar";
+import { UserAvatar } from "@/features/profile/components/UserAvatar";
 
 const MAX = 2000;
 

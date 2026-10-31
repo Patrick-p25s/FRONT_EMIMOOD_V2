@@ -10,11 +10,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/lib/auth";
 
 import { PublicationForm, type ClassOption, type SubjectOption } from "./PublicationForm";
-import { Post } from "@/components/emimood/organisms/Post copy";
 import type { Publication, PublicationType } from "@/features/enseignant/api/types";
 import { usePublicationMutations } from "@/features/publication/hooks/usePublicationMutations";
 import { usePublicationFeed } from "@/features/publication/hooks/usePublications";
 import { PUB_TYPES } from "@/features/enseignant/lib/meta";
+import { Post } from "./Post";
 
 type Dialogs = { kind: "create" } | { kind: "edit"; publication: Publication } | null;
 

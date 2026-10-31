@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { ArrowRight, KeyRound, Mail, Phone, UserRound } from "lucide-react";
 import type { ReactNode } from "react";
 import { useForm } from "react-hook-form";
@@ -18,7 +18,7 @@ type RegisterSearch = { next?: string | undefined };
 export const Route = createFileRoute("/register")({
   head: () => pageHead("Créer un compte", "Créez votre compte EMIMood."),
   validateSearch: (s: Record<string, unknown>): RegisterSearch => ({
-    next: typeof s.next === "string" ? s.next : undefined,
+    next: typeof s["next"] === "string" ? s["next"] : undefined,
   }),
   component: RegisterPage,
 });
@@ -26,6 +26,7 @@ function RegisterPage() {
   const { register: createAccount } = useAuth();
   const navigate = useNavigate();
   const search = Route.useSearch();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -46,7 +47,9 @@ function RegisterPage() {
     try {
       const user = await createAccount(values);
       const next = safeNext(search.next);
-      navigate(next ? { href: next, replace: true } : { to: roleHome[user.role], replace: true });
+      const target = safeNext(next);
+      if (target) router.history.replace(target);
+      else void navigate({ to: roleHome[user.role], replace: true });
     } catch (error) {
       applyServerErrors(error, setError, [
         "first_name",

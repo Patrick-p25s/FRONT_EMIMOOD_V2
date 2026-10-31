@@ -9,7 +9,7 @@ import type { ConversationDetail, Person } from "../api/schemas";
 import { useMessagingMutations } from "../hooks/useMessagingMutations";
 import { useMessagingNav } from "./MessagingNav";
 import { PeoplePicker } from "./PeoplePicker";
-import { UserAvatar } from "@/features/profile/componets/UserAvatar";
+import { UserAvatar } from "@/features/profile/components/UserAvatar";
 
 const MAX_TOTAL = 50;
 

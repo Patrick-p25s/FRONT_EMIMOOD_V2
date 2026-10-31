@@ -3,7 +3,7 @@ import type { InfiniteData, QueryClient } from "@tanstack/react-query";
 import type { Message, MessagesPage } from "../api/schemas";
 import { msgKeys } from "../keys";
 
-type Thread = InfiniteData<MessagesPage, string | undefined>;
+type Thread = InfiniteData<MessagesPage, unknown>;
 
 /** appendIfNew : vrai pour un message créé, faux pour une modification ou une suppression. */
 export function upsertMessage(client: QueryClient, message: Message, appendIfNew: boolean): void {

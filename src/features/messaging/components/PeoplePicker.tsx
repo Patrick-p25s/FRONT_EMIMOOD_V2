@@ -8,7 +8,7 @@ import { useAuth } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 import type { Person } from "../api/schemas";
 import { useDebounced, usePeopleSearch } from "../hooks/useMessaging";
-import { UserAvatar } from "@/features/profile/componets/UserAvatar";
+import { UserAvatar } from "@/features/profile/components/UserAvatar";
 import { messageOf } from "@/lib/api/message";
 
 type PeoplePickerProps = {

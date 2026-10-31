@@ -8,11 +8,10 @@ import { ConfirmDialog } from "@/components/emimood/organisms/dialogs";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { Chapter, ChapterDocument, CourseResource } from "../../api/types";
+import type { Chapter, CourseResource } from "../../api/types";
 import {
   useChapterMutations,
   useCourseMutations,
-  useDocumentMutations, // NOUVEAU
   useResourceMutations,
 } from "../../hooks/useCourseMutations";
 import { useChapters, useCourse } from "../../hooks/useCourses";
@@ -20,20 +19,8 @@ import { COURSE_STATUS } from "../../lib/courseStatus";
 import { CourseForm } from "../subject-detail/CourseForm";
 import { ChapterCard } from "./ChapterCard";
 import { ChapterForm } from "./ChapterForm";
-import { DocumentForm } from "./DocumentForm"; // NOUVEAU
-import { ResourceForm } from "./ResourceForm";
-import { ChapterSupportsPanel } from "@/features/resource/components/ChapterSupportsPanel";
 
 type ChapterDialog = { kind: "create" } | { kind: "edit"; chapter: Chapter } | null;
-type ResourceDialog =
-  | { kind: "create"; chapter: Chapter }
-  | { kind: "edit"; chapter: Chapter; resource: CourseResource }
-  | null;
-// NOUVEAU
-type DocumentDialog =
-  | { kind: "create"; chapter: Chapter }
-  | { kind: "edit"; chapter: Chapter; document: ChapterDocument }
-  | null;
 
 export function CourseEditorPage({ courseId }: { courseId: string }) {
   const course = useCourse(courseId);
@@ -41,12 +28,10 @@ export function CourseEditorPage({ courseId }: { courseId: string }) {
   const { setStatus } = useCourseMutations();
   const chapterMutations = useChapterMutations();
   const resourceMutations = useResourceMutations();
-  const documentMutations = useDocumentMutations(); // NOUVEAU
 
   const [chapterDialog, setChapterDialog] = useState<ChapterDialog>(null);
   const [deletingChapter, setDeletingChapter] = useState<Chapter | null>(null);
   const [deletingResource, setDeletingResource] = useState<CourseResource | null>(null);
-  const [deletingDocument, setDeletingDocument] = useState<ChapterDocument | null>(null); // NOUVEAU
 
   if (course.error)
     return <ErrorState error={course.error} onRetry={() => void course.refetch()} />;
@@ -215,7 +200,7 @@ export function CourseEditorPage({ courseId }: { courseId: string }) {
         }}
       />
 
-      {/* NOUVEAU */}
+      {/* NOUVEAU
       <ConfirmDialog
         open={deletingDocument !== null}
         onOpenChange={(open) => !open && setDeletingDocument(null)}
@@ -232,7 +217,7 @@ export function CourseEditorPage({ courseId }: { courseId: string }) {
             // message déjà affiché par la mutation
           }
         }}
-      />
+      /> */}
     </>
   );
 }

@@ -58,21 +58,6 @@ export type CourseResource = {
   created_at: string;
   updated_at: string;
 };
-
-export type ChapterDocument = {
-  id: string;
-  chapter_id: string;
-  created_by: string;
-  title: string;
-  description: string | null;
-  file_name: string;
-  file_type: string | null;
-  file_size: number | null;
-  url: string;
-  position: number;
-  created_at: string;
-  updated_at: string;
-};
 export type AssessmentType = "quiz" | "exam" | "assignment";
 export type AssessmentStatus = "draft" | "published" | "archived";
 export type Assessment = {

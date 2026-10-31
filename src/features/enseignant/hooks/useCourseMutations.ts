@@ -2,7 +2,6 @@
 import {
   chaptersApi,
   coursesApi,
-  documentsApi,
   resourcesApi,
   type CreateChapterInput,
   type CreateCourseInput,
@@ -87,25 +86,4 @@ export function useResourceMutations() {
     "Ressource supprimée",
   );
   return { create, update, remove };
-}
-
-export function useDocumentMutations() {
-  const refresh = [teacherKeys.documentAll];
-  const upload = useTeacherMutation(
-    (form: FormData) => documentsApi.upload(form),
-    refresh,
-    "Document ajouté",
-  );
-  const update = useTeacherMutation(
-    (v: { id: string; input: { title?: string; description?: string | null } }) =>
-      documentsApi.update(v.id, v.input),
-    refresh,
-    "Document enregistré",
-  );
-  const remove = useTeacherMutation(
-    (id: string) => documentsApi.remove(id),
-    refresh,
-    "Document supprimé",
-  );
-  return { upload, update, remove };
 }

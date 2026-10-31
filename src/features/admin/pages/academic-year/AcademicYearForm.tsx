@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { id } from "zod/v4/locales";
 import { applyServerErrors } from "@/lib/errors";
+import { z } from "zod";
 
 type AcademicYearFormProps = { academicYear: AcademicYear | undefined; onDone: () => void };
 export function AcademicYearForm({ academicYear, onDone }: AcademicYearFormProps) {
@@ -17,7 +18,7 @@ export function AcademicYearForm({ academicYear, onDone }: AcademicYearFormProps
     handleSubmit,
     setError,
     formState: { errors, isSubmitting },
-  } = useForm<AccademicYearValues>({
+  } = useForm<z.input<typeof accademicYearSchema>, unknown, z.output<typeof accademicYearSchema>>({
     resolver: zodResolver(accademicYearSchema),
     defaultValues: {
       name: academicYear?.name ?? "",

@@ -81,7 +81,7 @@ export function ResourceList({ chapterId }: { chapterId: string }) {
         );
       })}
 
-      {(documents.error || links.error) && (
+      {(documents.isError || links.isError) && (
         <p className="small">Une partie des supports n’a pas pu être chargée.</p>
       )}
       <ResourcePreviewDialog doc={selected} onClose={() => setSelected(null)} />

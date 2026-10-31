@@ -8,7 +8,7 @@ import type { Conversation } from "../api/schemas";
 import { useConversations } from "../hooks/useMessaging";
 import { listTime } from "../lib/format";
 import { useMessagingNav } from "./MessagingNav";
-import { UserAvatar } from "@/features/profile/componets/UserAvatar";
+import { UserAvatar } from "@/features/profile/components/UserAvatar";
 
 function preview(conversation: Conversation): string {
   const last = conversation.last_message;

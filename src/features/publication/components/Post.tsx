@@ -36,7 +36,7 @@ import { downloadFile } from "@/lib/api/download";
 import { errorMessage } from "@/lib/errors";
 import { fmtDateTime } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { UserAvatar } from "@/features/profile/componets/UserAvatar";
+import { UserAvatar } from "@/features/profile/components/UserAvatar";
 import { timeAgo } from "@/features/notification/lib/format";
 import { formatBytes } from "@/lib/files";
 import { CommentsSection } from "./CommentsSection";

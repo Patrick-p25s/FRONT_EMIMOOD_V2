@@ -10,7 +10,7 @@ import { PublicationDialogs, type PublicationDialog } from "./PublicationDialogs
 import type { ClassOption, SubjectOption } from "./PublicationForm";
 import type { Publication, PublicationType } from "@/features/enseignant/api/types";
 import { useMyProfile } from "@/features/profile/hoooks/useProfile";
-import { UserAvatar } from "@/features/profile/componets/UserAvatar";
+import { UserAvatar } from "@/features/profile/components/UserAvatar";
 import { Post } from "./Post";
 
 type Tab = { key: string; label: string; type?: PublicationType | undefined; mine?: boolean };

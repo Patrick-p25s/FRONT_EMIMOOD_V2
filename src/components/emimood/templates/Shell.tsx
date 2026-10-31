@@ -29,7 +29,7 @@ import { RealtimeBridge } from "@/features/messaging/components/RealtimeBridge";
 import { Brand } from "../atoms/Brand";
 import { useAccount, useMyProfile } from "@/features/profile/hoooks/useProfile";
 import { MessagesNavBadge } from "@/features/messaging/components/MessageNavBadge";
-import { UserAvatar } from "@/features/profile/componets/UserAvatar";
+import { UserAvatar } from "@/features/profile/components/UserAvatar";
 import { NotificationBadge } from "@/features/notification/components/NotificationBadge";
 import { useMyUniversity } from "@/features/university/useMyUniversity";
 

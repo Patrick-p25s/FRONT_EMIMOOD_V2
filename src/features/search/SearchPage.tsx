@@ -8,7 +8,7 @@ import { ErrorState } from "@/components/emimood/molecules/states";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSearch } from "./hooks/useSearch";
-import { UserAvatar } from "../profile/componets/UserAvatar";
+import { UserAvatar } from "../profile/components/UserAvatar";
 import { downloadFile } from "@/lib/api/download";
 import { messageOf } from "../etudiant/lib/messages";
 import { toast } from "sonner";

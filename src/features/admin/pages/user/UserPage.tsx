@@ -19,7 +19,7 @@ import type { AdminUser } from "../../api/types";
 import { useAdminList } from "../../hooks/useAdminList";
 import { useAdminSearch, useDebouncedQ } from "../../hooks/useAdminSearch";
 import { STATUT_OPTIONS } from "../../lib/statut";
-import { UserAvatar } from "@/features/profile/componets/UserAvatar";
+import { UserAvatar } from "@/features/profile/components/UserAvatar";
 
 type UsersPageProps = {
   role: string; // "student", "teacher"… : fixé par la route
