@@ -1,4 +1,3 @@
-// pages/result/ResultPage.tsx
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft, CheckCircle2, XCircle } from "lucide-react";
 import { Heading } from "@/components/emimood/molecules/Heading";

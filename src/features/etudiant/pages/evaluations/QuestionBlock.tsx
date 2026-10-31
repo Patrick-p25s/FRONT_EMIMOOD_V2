@@ -1,4 +1,3 @@
-// pages/attempt/QuestionBlock.tsx : un bloc par question, selon son type
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import type { SessionQuestion } from "../../api/assessmentSchemas";

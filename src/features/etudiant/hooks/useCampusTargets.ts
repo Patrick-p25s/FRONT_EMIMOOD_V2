@@ -1,4 +1,3 @@
-// features/etudiant/hooks/useCampusTargets.ts : la classe et les matières de l'étudiant pour publier
 import { useStudentSubjects } from "./useStudentCourses";
 
 export function useCampusTargets() {

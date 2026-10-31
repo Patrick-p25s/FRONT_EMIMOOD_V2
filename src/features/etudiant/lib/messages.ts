@@ -1,4 +1,3 @@
-// lib/messages.ts
 import { ApiError } from "@/lib/api/client";
 
 export const messageOf = (error: unknown): string =>

@@ -1,4 +1,3 @@
-// hooks/useAttempts.ts
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { studentAssessmentsApi } from "../api/assessments";

@@ -1,4 +1,3 @@
-// hooks/useStudentCourses.ts
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { studentApi } from "../api/student";
 import { studentKeys } from "../keys";

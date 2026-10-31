@@ -1,4 +1,3 @@
-// hooks/useStudentAssessments.ts : toutes les évaluations de l'étudiant, avec ses tentatives
 import { useQueries } from "@tanstack/react-query";
 import type { MyAttempt, StudentAssessment } from "../api/assessmentSchemas";
 import { studentAssessmentsApi } from "../api/assessments";

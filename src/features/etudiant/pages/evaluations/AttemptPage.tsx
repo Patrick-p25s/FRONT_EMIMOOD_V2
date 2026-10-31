@@ -1,4 +1,3 @@
-// pages/attempt/AttemptPage.tsx
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Navigate, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, Clock } from "lucide-react";

@@ -1,4 +1,3 @@
-// hooks/useTeachingAssessments.ts
 import { useQueries } from "@tanstack/react-query";
 import { assessmentsApi } from "../api/assessments";
 import { attemptsApi } from "../api/attempts";
@@ -45,6 +44,7 @@ export function useTeachingAssessments() {
       staleTime: 30_000,
     })),
   });
+
   const pendingById = new Map(
     published.map(
       (item, index) => [item.id, results[index]?.data?.pending_attempts ?? null] as const,

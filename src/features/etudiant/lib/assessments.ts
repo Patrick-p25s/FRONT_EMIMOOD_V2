@@ -1,4 +1,3 @@
-// lib/assessments.ts
 import type { MyAttempt } from "../api/assessmentSchemas";
 
 export const TYPE_LABEL: Record<string, string> = {

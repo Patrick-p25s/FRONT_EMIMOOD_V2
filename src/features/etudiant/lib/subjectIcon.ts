@@ -1,4 +1,3 @@
-// lib/subjectIcon.ts : le serveur ne fournit pas d'icône, on la déduit
 import { BookOpen, Code2, Database, Kanban, type LucideIcon } from "lucide-react";
 
 const RULES: { match: string[]; icon: LucideIcon }[] = [

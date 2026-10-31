@@ -1,4 +1,3 @@
-// hooks/useChapterProgress.ts
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { studentApi } from "../api/student";
