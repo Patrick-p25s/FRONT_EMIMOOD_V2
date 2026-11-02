@@ -48,7 +48,7 @@ export function ChapterList({ classSubjectId, chapters, activeId, onSelect }: Ch
               {chapter.completed ? (
                 <CheckCircle2 size={18} className="shrink-0 text-success" aria-label="Terminé" />
               ) : (
-                <span className="small w-[18px]">{chapter.number}</span>
+                <span className="small w-4.5">{chapter.number}</span>
               )}
               <span className="text-sm font-medium">{chapter.title}</span>
             </Link>

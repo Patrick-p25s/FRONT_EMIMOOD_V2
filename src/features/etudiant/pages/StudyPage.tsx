@@ -8,10 +8,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { ChapterList } from "./ChapterList";
 import { FinishScreen } from "./FinishScreen";
-import { useStudy } from "../hooks/useStudentCourses";
+import { useChapterContent, useStudy } from "../hooks/useStudentCourses";
 import { useChapterProgress } from "../hooks/useChapterProgress";
 import { ProgressBar } from "../components/ProgressBar";
 import { ResourceList } from "./RessourceList";
+import { ChapterContent } from "../components/ChapterContent";
 
 type StudyPageProps = { classSubjectId: string; chapterId?: string | undefined };
 
@@ -138,7 +139,7 @@ export function StudyPage({ classSubjectId, chapterId }: StudyPageProps) {
             </span>
             <h2>{active.title}</h2>
             {active.description && <p>{active.description}</p>}
-
+            <ChapterContent chapterId={active.id} />
             <ResourceList chapterId={active.id} />
 
             <div className="mt-5 flex flex-wrap justify-between gap-2">

@@ -2,12 +2,17 @@
 import { z } from "zod";
 import { api } from "@/lib/api/client";
 import { parseResponse, safeId } from "@/lib/api/validate";
-import { chapterProgressSchema, mySubjectsSchema, studySchema } from "./schemas";
+import {
+  chapterProgressSchema,
+  mySubjectsSchema,
+  studySchema,
+  chapterContentSchema,
+  chapterContentsSchema,
+} from "./schemas";
 
 const semesterSchema = z.number().int().min(1).max(12).optional();
 
 export const studentApi = {
-  // ① le semestre est contrôlé avant l'appel
   mine: async (semester?: number) =>
     parseResponse(
       mySubjectsSchema,
@@ -29,5 +34,13 @@ export const studentApi = {
 
   uncomplete: async (chapterId: string) => {
     await api<unknown>(`/chapters/${safeId(chapterId)}/progress`, { method: "DELETE" });
+  },
+};
+
+export const chapterContentApi = {
+  get: async (chapterId: string) => {
+    const raw = await api<unknown>(`/chapters/${safeId(chapterId)}/content`);
+    console.log(raw);
+    return parseResponse(chapterContentsSchema, raw);
   },
 };

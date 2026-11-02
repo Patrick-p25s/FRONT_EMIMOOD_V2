@@ -59,6 +59,10 @@ export const chapterProgressSchema = z.object({
   subject_completed: z.boolean(),
 });
 
+export const chapterContentSchema = z.object({ id, content: z.string() });
+export const chapterContentsSchema = z.array(chapterContentSchema);
+export type ChapterContent = z.output<typeof chapterContentSchema>;
+
 export type SubjectCardData = z.infer<typeof subjectCardSchema>;
 export type MySubjects = z.infer<typeof mySubjectsSchema>;
 export type StudyChapter = z.infer<typeof studyChapterSchema>;

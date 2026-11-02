@@ -15,7 +15,7 @@ export const courseResourcesApi = {
   list: async (chapterId: string) =>
     parseResponse(
       courseResourcesSchema,
-      await api<unknown>(`/chapters/${safeId(chapterId)}/resources`),
+      await api<unknown>(`/chapters/${safeId(chapterId)}/documents`),
     ),
   create: async (input: CreateCourseResourceInput) =>
     parseResponse(

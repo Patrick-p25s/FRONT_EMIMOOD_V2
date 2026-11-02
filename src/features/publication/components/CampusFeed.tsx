@@ -46,7 +46,7 @@ export function CampusFeed({ classes, subjects, compact = false }: CampusFeedPro
     authorId: tab.mine && user ? user.id : undefined,
   });
   const items = feed.data?.pages.flatMap((page) => page.items) ?? [];
-  const visible = compact ? items.slice(0, 2) : items;
+  const visible = compact ? items.slice(0, 3) : items;
 
   const sentinel = useInfiniteSentinel(
     !compact && Boolean(feed.hasNextPage) && !feed.isFetchingNextPage,
