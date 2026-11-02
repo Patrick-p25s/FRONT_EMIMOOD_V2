@@ -40,7 +40,6 @@ export const studentApi = {
 export const chapterContentApi = {
   get: async (chapterId: string) => {
     const raw = await api<unknown>(`/chapters/${safeId(chapterId)}/content`);
-    console.log(raw);
     return parseResponse(chapterContentsSchema, raw);
   },
 };

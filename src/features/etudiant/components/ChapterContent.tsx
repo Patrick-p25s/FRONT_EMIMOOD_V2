@@ -6,7 +6,6 @@ import { useChapterContent } from "../hooks/useStudentCourses";
 
 export function ChapterContent({ chapterId }: { chapterId: string }) {
   const content = useChapterContent(chapterId);
-  console.log(content.status, content.error, content.data);
   if (content.isLoading) return <Skeleton className="mt-4 h-40 w-full" />;
   if (content.isError) {
     return (

@@ -1,4 +1,4 @@
-import { RT_KEY, accessExpiresIn, tokenStore } from "@/lib/api/tokenStore";
+import { SESSION_KEY, accessExpiresIn, tokenStore } from "@/lib/api/tokenStore";
 
 export const API_URL = ((import.meta.env["VITE_API_URL"] as string | undefined) ?? "").replace(
   /\/$/,
@@ -55,8 +55,9 @@ export function initCrossTab() {
     };
   }
   // Repli : suppression du refresh token par un autre onglet
+  // Repli : l'indicateur de session effacé par un autre onglet
   window.addEventListener("storage", (e) => {
-    if (e.key === RT_KEY && e.newValue === null && tokenStore.getAccess())
+    if (e.key === SESSION_KEY && e.newValue === null && tokenStore.getAccess())
       localEnd({ kind: "logout" });
   });
 }
@@ -75,23 +76,16 @@ class Transient extends Error {}
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 async function rawRefresh(): Promise<boolean> {
-  const rt = tokenStore.getRefresh(); // relu à l'intérieur du verrou
-  if (!rt) return false;
+  if (!tokenStore.hasSession()) return false; // vérifié dans le verrou, comme avant
   let res: Response;
   try {
-    res = await fetch(`${API_URL}/auth/refresh`, {
-      method: "POST",
-      credentials: "omit",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ refreshToken: rt }),
-    });
+    res = await fetch(`${API_URL}/auth/refresh`, { method: "POST", credentials: "include" });
   } catch {
     throw new Transient();
   }
   if (res.status >= 500 || res.status === 429) throw new Transient();
-  if (!res.ok) return false;
-  const data = (await res.json()) as { accessToken: string; refreshToken: string };
-  tokenStore.setRefresh(data.refreshToken);
+  if (!res.ok) return false; // 401 : session terminée
+  const data = (await res.json()) as { accessToken: string };
   tokenStore.setAccess(data.accessToken);
   post({ type: "access", token: data.accessToken });
   return true;
@@ -196,7 +190,7 @@ async function request(path: string, opts: Opts): Promise<Response> {
       const res = await fetch(buildUrl(path, query), {
         method,
         headers,
-        credentials: "omit",
+        credentials: path.startsWith("/auth/") ? "include" : "omit",
         body: body === undefined ? null : isForm ? body : JSON.stringify(body),
       });
       return { res, token };
@@ -205,7 +199,9 @@ async function request(path: string, opts: Opts): Promise<Response> {
     }
   };
 
-  let { res, token } = await send();
+  const first = await send();
+  const token = first.token;
+  let res = first.res;
   if (res.status === 401 && auth && !path.startsWith("/auth/")) {
     const ok = await refreshTokens(token);
     if (!ok) throw new ApiError(401, "Session expirée");

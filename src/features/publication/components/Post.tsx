@@ -88,7 +88,6 @@ export function Post({ post, onEdit, onDelete }: PublicationCardProps) {
   const saveMutation = useSaveMutation();
   const signalMutation = useSignalMutation();
   const message = useMessageUser();
-
   // Le fil a été rechargé : on reprend les chiffres du serveur (sauf pendant une action en cours).
   useEffect(() => {
     if (!likeMutation.isPending) setLike({ liked: post.liked_by_me, count: post.likes_count });

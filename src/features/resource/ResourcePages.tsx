@@ -159,31 +159,38 @@ export function ResourcesPage({
         title="Ressources"
         subtitle="Les connaissances de notre communauté, à portée de main."
         action={
-          <div className="flex flex-wrap gap-2">
+          <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
             {canUpload && (
-              <Button variant="outline" onClick={() => setUploading(true)}>
+              <Button
+                variant="outline"
+                className="w-full sm:w-auto"
+                onClick={() => setUploading(true)}
+              >
                 <Plus /> Déposer un document
               </Button>
             )}
-            <Button onClick={() => changeDialog({ kind: "create", type: "resource" })}>
+            <Button
+              className="w-full sm:w-auto"
+              onClick={() => changeDialog({ kind: "create", type: "resource" })}
+            >
               <Plus /> Publier une ressource
             </Button>
           </div>
         }
       />
 
-      <div className="mb-5 flex flex-wrap gap-3">
+      <div className="mb-4 grid gap-2 sm:grid-cols-2 lg:flex lg:flex-wrap lg:items-center lg:gap-3">
         <Input
           placeholder="Rechercher un document…"
           value={input}
           maxLength={100}
           onChange={(event) => setInput(event.target.value)}
           aria-label="Rechercher un document"
-          className="max-w-md"
+          className="sm:col-span-2 lg:w-72"
         />
         <select
           aria-label="Type de document"
-          className="rounded-md border bg-card p-2 text-sm"
+          className="w-full rounded-md border bg-card p-2 text-base sm:text-sm lg:w-auto"
           value={media}
           onChange={(event) => setMedia(event.target.value as Media | "")}
         >
@@ -196,7 +203,7 @@ export function ResourcesPage({
         {subjects.length > 0 && (
           <select
             aria-label="Matière"
-            className="rounded-md border bg-card p-2 text-sm"
+            className="w-full rounded-md border bg-card p-2 text-base sm:text-sm lg:w-auto"
             value={subjectId}
             onChange={(event) => setSubjectId(event.target.value)}
           >

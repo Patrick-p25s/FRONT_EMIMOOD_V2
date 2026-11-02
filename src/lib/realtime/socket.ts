@@ -1,5 +1,6 @@
 // src/lib/realtime/socket.ts
-import { API_URL, refreshTokens } from "@/lib/api/client";
+import { API_URL, onSessionEnd, refreshTokens } from "@/lib/api/client";
+
 import { accessExpiresIn, tokenStore } from "@/lib/api/tokenStore";
 
 export type RealtimeEvent = { type: string; data?: unknown };
@@ -32,6 +33,8 @@ export const subscribeRealtime = (listener: (event: RealtimeEvent) => void) => (
   eventListeners.add(listener),
   () => eventListeners.delete(listener)
 );
+
+if (typeof window !== "undefined") onSessionEnd(() => shutdownRealtime());
 
 function stopPing() {
   if (pingTimer) clearInterval(pingTimer);

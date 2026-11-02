@@ -17,7 +17,7 @@ export const links = [
   { to: "/videos", label: "Vidéos", icon: PlayCircle },
   { to: "/publications", label: "Publications", icon: MessagesSquare },
   { to: "/evaluations", label: "Évaluations", icon: ClipboardCheck },
-  { to: "/opportunites", label: "Opportunités", icon: BriefcaseBusiness },
+  // { to: "/opportunites", label: "Opportunités", icon: BriefcaseBusiness },
   { to: "/messages", label: "Messages", icon: MessageSquare },
   { to: "/notifications", label: "Notifications", icon: Bell },
 ] as const;

@@ -145,7 +145,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     document.addEventListener("visibilitychange", onVisible);
 
     (async () => {
-      if (isDemo || !tokenStore.getRefresh()) return setReady(true);
+      if (isDemo || !tokenStore.hasSession()) return setReady(true);
       const ok = await refreshTokens(null);
       if (ok) {
         try {
@@ -184,13 +184,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return u;
     }
     try {
-      const t = await api<{ accessToken: string; refreshToken: string }>("/auth/login", {
+      const t = await api<{ accessToken: string }>("/auth/login", {
         method: "POST",
         body: { email, password },
         auth: false,
       });
-      tokenStore.setRefresh(t.refreshToken);
       tokenStore.setAccess(t.accessToken);
+      tokenStore.markSession();
     } catch (e) {
       if (e instanceof ApiError && e.status === 429) throw e;
       if (e instanceof ApiError && e.status === 0) throw e;
@@ -203,29 +203,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function register(payload: RegisterPayload) {
     if (isDemo) return login(payload.email, payload.password, "student");
-    const tokens = await api<{ accessToken: string; refreshToken: string }>("/auth/register", {
+    const tokens = await api<{ accessToken: string }>("/auth/register", {
       method: "POST",
       body: payload,
       auth: false,
     });
-    tokenStore.setRefresh(tokens.refreshToken);
     tokenStore.setAccess(tokens.accessToken);
+    tokenStore.markSession();
     const u = toUser(await api<MeResponse>("/users/me"));
     setUser(u);
     return u;
   }
 
   async function logout() {
-    const rt = tokenStore.getRefresh();
-    if (rt && !isDemo) {
-      await api("/auth/logout", { method: "POST", body: { refreshToken: rt }, auth: false }).catch(
-        () => undefined,
-      );
-    }
+    if (!isDemo) await api("/auth/logout", { method: "POST", auth: false }).catch(() => undefined);
     endSession({ kind: "logout" });
     setUser(null);
   }
-
   async function changePassword(current: string, next: string) {
     await api("/auth/change-password", {
       method: "POST",

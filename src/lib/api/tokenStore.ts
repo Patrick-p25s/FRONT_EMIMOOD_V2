@@ -1,39 +1,41 @@
-// Seul module qui lit/écrit les jetons.
-// accessToken : en mémoire uniquement. refreshToken : localStorage (l'API le renvoie dans le corps).
-// TODO : migrer le refresh token vers un cookie httpOnly quand l'API le permettra.
-export const RT_KEY = "app.rt";
+// Seul module qui lit/écrit l'état de session côté navigateur.
+// accessToken : en mémoire uniquement. Le refresh token est un cookie httpOnly,
+// invisible pour le JavaScript : seul un indicateur NON SECRET est conservé.
+export const SESSION_KEY = "app.session";
+const LEGACY_RT_KEY = "app.rt"; // ancien stockage du refresh token : à purger
 
 let accessToken: string | null = null;
+
+const safe = (fn: () => void) => {
+  try {
+    fn();
+  } catch {
+    /* stockage indisponible */
+  }
+};
 
 export const tokenStore = {
   getAccess: (): string | null => accessToken,
   setAccess: (t: string | null) => {
     accessToken = t;
   },
-  getRefresh: (): string | null => {
+  hasSession: (): boolean => {
+    safe(() => localStorage.removeItem(LEGACY_RT_KEY));
     try {
-      return localStorage.getItem(RT_KEY);
+      return localStorage.getItem(SESSION_KEY) === "1";
     } catch {
-      return null;
+      return false;
     }
   },
-  setRefresh: (t: string) => {
-    try {
-      localStorage.setItem(RT_KEY, t);
-    } catch {
-      /* stockage indisponible */
-    }
-  },
+  markSession: () => safe(() => localStorage.setItem(SESSION_KEY, "1")),
   clear: () => {
     accessToken = null;
-    try {
-      localStorage.removeItem(RT_KEY);
-    } catch {
-      /* ignore */
-    }
+    safe(() => {
+      localStorage.removeItem(SESSION_KEY);
+      localStorage.removeItem(LEGACY_RT_KEY);
+    });
   },
 };
-
 /** Secondes avant expiration de l'access token (décodage pour le calendrier uniquement). */
 export function accessExpiresIn(token: string | null = accessToken): number {
   if (!token) return -Infinity;

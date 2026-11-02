@@ -59,8 +59,10 @@ React Hook Form + zod, sonner, lucide. TypeScript strict
   embed en `youtube-nocookie.com`.
 - Redirections après connexion : `safeNext` (`src/lib/navigation.ts`).
 - Jetons : jamais dans une URL ni dans les logs ; le jeton d'accès reste en
-  mémoire. [Passage aux cookies httpOnly + CSRF en attente du backend :
-  l'authentification est isolée dans `tokenStore.ts`, `client.ts`, `auth.tsx`.]
+  mémoire.
+- Le refresh token est un cookie httpOnly (jamais lu ni stocké par le JS). Seul
+  l'indicateur non secret `app.session` est dans localStorage. Le jeton d'accès
+  reste en mémoire. `credentials: "include"` uniquement vers /auth/*.
 - À la déconnexion : vider le cache Query, fermer le socket, effacer les jetons.
 
 ## Temps réel

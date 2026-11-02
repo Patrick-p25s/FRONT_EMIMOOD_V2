@@ -216,6 +216,8 @@ export function Thread({ conversationId }: { conversationId: string }) {
             variant="secondary"
             onClick={() => {
               if (scroller.current) scroller.current.scrollTop = scroller.current.scrollHeight;
+              stickToBottom.current = true;
+              setHasNew(false);
             }}
           >
             Nouveaux messages ↓

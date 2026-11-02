@@ -12,7 +12,7 @@ export function MessagesPage({ conversationId }: { conversationId?: string | und
   const [newGroup, setNewGroup] = useState(false);
 
   return (
-    <div className="page">
+    <div className="page page--messages">
       <div className={cn(conversationId && "max-md:hidden")}>
         <Heading title="Messages" subtitle="La collaboration commence par une conversation." />
       </div>
