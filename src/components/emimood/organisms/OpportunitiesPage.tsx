@@ -9,16 +9,15 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Heading } from "@/components/emimood/molecules/Heading";
-import { opportunities } from "@/components/emimood/data/opportunities";
 
 export function OpportunitiesPage() {
-  const [selected, setSelected] = useState<(typeof opportunities)[number] | null>(null);
+  const [selected, setSelected] = useState<null>(null);
   const [saved, setSaved] = useState<number[]>([]);
   return (
     <div className="page">
       <Heading title="Opportunités" subtitle="Votre prochain défi commence peut-être ici." />
       <div className="content-grid">
-        {opportunities.map((o) => (
+        {opportunities?.map((o) => (
           <article className="item-card" key={o.id}>
             <span className="tag">{o.type}</span>
             <h2>{o.title}</h2>

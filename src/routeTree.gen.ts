@@ -15,7 +15,6 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as ConnexionRouteImport } from './routes/connexion'
 import { Route as CoursRouteImport } from './routes/cours'
 import { Route as Cours1RouteImport } from './routes/cours1'
-import { Route as DelegueRouteImport } from './routes/delegue'
 import { Route as EnseignantRouteImport } from './routes/enseignant'
 import { Route as EvaluationsRouteImport } from './routes/evaluations'
 import { Route as MessagesRouteImport } from './routes/messages'
@@ -88,11 +87,6 @@ const CoursRoute = CoursRouteImport.update({
 const Cours1Route = Cours1RouteImport.update({
   id: '/cours1',
   path: '/cours1',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DelegueRoute = DelegueRouteImport.update({
-  id: '/delegue',
-  path: '/delegue',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EnseignantRoute = EnseignantRouteImport.update({
@@ -328,7 +322,6 @@ export interface FileRoutesByFullPath {
   '/connexion': typeof ConnexionRoute
   '/cours': typeof CoursRouteWithChildren
   '/cours1': typeof Cours1Route
-  '/delegue': typeof DelegueRoute
   '/enseignant': typeof EnseignantRouteWithChildren
   '/evaluations': typeof EvaluationsRouteWithChildren
   '/messages': typeof MessagesRouteWithChildren
@@ -378,7 +371,6 @@ export interface FileRoutesByTo {
   '/accueil': typeof AccueilRoute
   '/connexion': typeof ConnexionRoute
   '/cours1': typeof Cours1Route
-  '/delegue': typeof DelegueRoute
   '/notifications': typeof NotificationsRoute
   '/opportunites': typeof OpportunitesRoute
   '/parametres': typeof ParametresRoute
@@ -423,7 +415,6 @@ export interface FileRoutesById {
   '/connexion': typeof ConnexionRoute
   '/cours': typeof CoursRouteWithChildren
   '/cours1': typeof Cours1Route
-  '/delegue': typeof DelegueRoute
   '/enseignant': typeof EnseignantRouteWithChildren
   '/evaluations': typeof EvaluationsRouteWithChildren
   '/messages': typeof MessagesRouteWithChildren
@@ -477,7 +468,6 @@ export interface FileRouteTypes {
     | '/connexion'
     | '/cours'
     | '/cours1'
-    | '/delegue'
     | '/enseignant'
     | '/evaluations'
     | '/messages'
@@ -527,7 +517,6 @@ export interface FileRouteTypes {
     | '/accueil'
     | '/connexion'
     | '/cours1'
-    | '/delegue'
     | '/notifications'
     | '/opportunites'
     | '/parametres'
@@ -571,7 +560,6 @@ export interface FileRouteTypes {
     | '/connexion'
     | '/cours'
     | '/cours1'
-    | '/delegue'
     | '/enseignant'
     | '/evaluations'
     | '/messages'
@@ -624,7 +612,6 @@ export interface RootRouteChildren {
   ConnexionRoute: typeof ConnexionRoute
   CoursRoute: typeof CoursRouteWithChildren
   Cours1Route: typeof Cours1Route
-  DelegueRoute: typeof DelegueRoute
   EnseignantRoute: typeof EnseignantRouteWithChildren
   EvaluationsRoute: typeof EvaluationsRouteWithChildren
   MessagesRoute: typeof MessagesRouteWithChildren
@@ -682,13 +669,6 @@ declare module '@tanstack/react-router' {
       path: '/cours1'
       fullPath: '/cours1'
       preLoaderRoute: typeof Cours1RouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/delegue': {
-      id: '/delegue'
-      path: '/delegue'
-      fullPath: '/delegue'
-      preLoaderRoute: typeof DelegueRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/enseignant': {
@@ -1157,7 +1137,6 @@ const rootRouteChildren: RootRouteChildren = {
   ConnexionRoute: ConnexionRoute,
   CoursRoute: CoursRouteWithChildren,
   Cours1Route: Cours1Route,
-  DelegueRoute: DelegueRoute,
   EnseignantRoute: EnseignantRouteWithChildren,
   EvaluationsRoute: EvaluationsRouteWithChildren,
   MessagesRoute: MessagesRouteWithChildren,

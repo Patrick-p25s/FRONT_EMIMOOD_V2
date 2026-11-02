@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { loginSchema, type LoginFormValues } from "@/features/auth/schema";
 import { safeNext } from "@/lib/api/list";
-import { useAuth, roleHome, roleLabels, isDemo, type Role } from "@/lib/auth";
+import { useAuth, roleHome, type Role } from "@/lib/auth";
 import { applyServerErrors } from "@/lib/errors";
 
 type LoginSearch = { next?: string | undefined; reason?: string | undefined };
@@ -36,7 +36,7 @@ function LoginPage() {
     formState: { errors, isSubmitting },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: isDemo ? "patrick@emit.mg" : "", password: isDemo ? "demo1234" : "" },
+    defaultValues: { email: "", password: "" },
   });
   const onSubmit = handleSubmit(async (values) => {
     try {
@@ -101,26 +101,6 @@ function LoginPage() {
             {...register("password")}
           />
         </AuthInput>
-        {isDemo && (
-          <fieldset className="grid gap-2 rounded-xl border bg-muted/40 p-3">
-            <legend className="px-1 text-xs font-medium text-muted-foreground">
-              Compte de démo
-            </legend>
-            <div className="grid grid-cols-2 gap-2">
-              {(Object.keys(roleLabels) as Role[]).map((item) => (
-                <label key={item} className="flex cursor-pointer items-center gap-2 text-sm">
-                  <input
-                    type="radio"
-                    name="role"
-                    checked={role === item}
-                    onChange={() => setRole(item)}
-                  />
-                  {roleLabels[item]}
-                </label>
-              ))}
-            </div>
-          </fieldset>
-        )}
         <Button type="submit" size="lg" className="mt-1 w-full" disabled={isSubmitting}>
           {isSubmitting ? (
             "Connexion…"

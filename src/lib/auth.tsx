@@ -67,7 +67,6 @@ export const roleHome: Record<Role, "/accueil" | "/enseignant" | "/admin"> = {
   moderator: "/accueil",
   super_admin: "/admin",
 };
-export const isDemo = !API_URL;
 
 type Ctx = {
   user: SessionUser | null;
@@ -134,18 +133,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .catch(() => undefined);
     });
     const onVisible = () => {
-      if (
-        document.visibilityState === "visible" &&
-        userRef.current &&
-        !isDemo &&
-        accessExpiresIn() < 60
-      )
+      if (document.visibilityState === "visible" && userRef.current && accessExpiresIn() < 60)
         void refreshTokens();
     };
     document.addEventListener("visibilitychange", onVisible);
 
     (async () => {
-      if (isDemo || !tokenStore.hasSession()) return setReady(true);
+      if (!tokenStore.hasSession()) return setReady(true);
       const ok = await refreshTokens(null);
       if (ok) {
         try {
@@ -165,24 +159,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [navigate, queryClient]);
 
   async function login(email: string, password: string, demoRole: Role) {
-    if (isDemo) {
-      const names: Record<Role, string> = {
-        student: "Patrick Nomentsoa",
-        teacher: "Hanta Rakoto",
-        moderator: "Modérateur EMIT",
-        super_admin: "Administrateur EMIT",
-      };
-      const u: SessionUser = {
-        id: "demo",
-        name: names[demoRole],
-        email,
-        role: demoRole,
-        statut: "active",
-        university_id: null,
-      };
-      setUser(u);
-      return u;
-    }
     try {
       const t = await api<{ accessToken: string }>("/auth/login", {
         method: "POST",
@@ -202,7 +178,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   async function register(payload: RegisterPayload) {
-    if (isDemo) return login(payload.email, payload.password, "student");
     const tokens = await api<{ accessToken: string }>("/auth/register", {
       method: "POST",
       body: payload,
@@ -216,7 +191,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   async function logout() {
-    if (!isDemo) await api("/auth/logout", { method: "POST", auth: false }).catch(() => undefined);
+    await api("/auth/logout", { method: "POST", auth: false }).catch(() => undefined);
     endSession({ kind: "logout" });
     setUser(null);
   }

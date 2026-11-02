@@ -1,4 +1,3 @@
-// src/features/enseignant/layout/TeacherLayout.tsx
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { ClipboardCheck, Home, Megaphone, NotebookText } from "lucide-react";

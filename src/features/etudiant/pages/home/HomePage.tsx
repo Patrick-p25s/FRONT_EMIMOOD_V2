@@ -12,7 +12,6 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import campus from "@/assets/campus-community.jpg";
-import { resources } from "@/components/emimood/data/resources"; // maquette : en attente du backend
 import { Heading } from "@/components/emimood/molecules/Heading";
 import { SectionHeading } from "@/components/emimood/molecules/SectionHeading";
 import { useAuth } from "@/lib/auth";
@@ -191,7 +190,7 @@ export function HomePage() {
           {/* maquette : en attente du backend (liste de ressources) */}
           <section className="right-section">
             <SectionHeading title="Dernières ressources" to="/ressources" />
-            {resources.slice(0, 3).map((r) => (
+            {/* {resources.slice(0, 3).map((r) => (
               <Link to="/ressources" className="resource-item" key={r.id}>
                 <span className="resource-symbol">
                   <FileText size={19} />
@@ -204,7 +203,7 @@ export function HomePage() {
                 </div>
                 <ChevronRight size={13} className="ml-auto text-muted-foreground" />
               </Link>
-            ))}
+            ))} */}
           </section>
 
           {/* maquette : en attente du type « opportunité » côté backend */}
