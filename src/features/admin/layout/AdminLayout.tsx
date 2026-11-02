@@ -1,4 +1,3 @@
-// src/features/admin/layout/AdminLayout.tsx
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { BookOpen, Building2, CalendarRange, LayoutDashboard, School, Users } from "lucide-react";

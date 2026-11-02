@@ -1,5 +1,4 @@
-// features/admin/pages/users/UsersPage.tsx
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { MoreHorizontal, UserRound } from "lucide-react";
 import { SearchInput, SimpleSelect } from "@/components/emimood/molecules/filters";
@@ -13,13 +12,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { roleLabel } from "@/features/profile/lib/labels";
 import { fmtDate } from "@/lib/format";
 import type { AdminUser } from "../../api/types";
 import { useAdminList } from "../../hooks/useAdminList";
 import { useAdminSearch, useDebouncedQ } from "../../hooks/useAdminSearch";
-import { STATUT_OPTIONS } from "../../lib/statut";
+import { STATUT_OPTIONS, TRANSITIONS } from "../../lib/statut";
 import { UserAvatar } from "@/features/profile/components/UserAvatar";
+import { Statut } from "@/lib/domain";
+import { useUserMutation } from "../../hooks/useUserMutation";
+import { ConfirmDialog } from "@/components/emimood/organisms/dialogs";
 
 type UsersPageProps = {
   role: string; // "student", "teacher"… : fixé par la route
@@ -28,11 +29,15 @@ type UsersPageProps = {
   singular: string; // « étudiant » (libellés de recherche et d'actions)
 };
 
+type StatutChange = { user: AdminUser; statut: Statut; label: string; destructive: boolean };
+
 const fullName = (user: AdminUser) => `${user.first_name} ${user.last_name}`.trim();
 
 export function UsersPage({ role, title, description, singular }: UsersPageProps) {
   const navigate = useNavigate();
   const [search, setSearch] = useAdminSearch();
+  const [change, setChange] = useState<StatutChange | null>(null);
+  const { setStatut, setClass } = useUserMutation();
   const onQ = useCallback((value: string) => setSearch({ q: value }), [setSearch]);
   const [q, setQ] = useDebouncedQ(search.q, onQ);
 
@@ -78,6 +83,14 @@ export function UsersPage({ role, title, description, singular }: UsersPageProps
                 <UserRound /> Voir le profil
               </Link>
             </DropdownMenuItem>
+            {TRANSITIONS[user.statut].map((transition) => (
+              <DropdownMenuItem
+                key={transition.statut}
+                onSelect={() => setChange({ user, ...transition })}
+              >
+                {transition.label}
+              </DropdownMenuItem>
+            ))}
           </DropdownMenuContent>
         </DropdownMenu>
       ),
@@ -132,6 +145,24 @@ export function UsersPage({ role, title, description, singular }: UsersPageProps
               }
             : undefined
         }
+      />
+
+      <ConfirmDialog
+        open={change !== null}
+        onOpenChange={(open) => !open && setChange(null)}
+        title={change ? `${change.label} « ${change.user.first_name} » ?` : ""}
+        description="Ce changement s’applique tout de suite à toute l’université."
+        confirmLabel={change?.label ?? "Confirmer"}
+        destructive={change?.destructive === true}
+        onConfirm={async () => {
+          if (!change) return;
+          try {
+            await setStatut.mutateAsync({ id: change.user.id, statut: change.statut });
+            setChange(null);
+          } catch {
+            // le message d'erreur est déjà affiché par la mutation ; la boîte reste ouverte
+          }
+        }}
       />
     </>
   );

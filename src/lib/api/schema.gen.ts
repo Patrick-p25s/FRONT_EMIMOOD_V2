@@ -1091,56 +1091,21 @@ export interface paths {
         patch: operations["update_chapter_chapters__chapter_id__patch"];
         trace?: never;
     };
-    "/course-resources/create": {
+    "/chapters/{chapter_id}/content": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get?: never;
-        put?: never;
-        /** Create Resource */
-        post: operations["create_resource_course_resources_create_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/chapters/{chapter_id}/resources": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List Resources */
-        get: operations["list_resources_chapters__chapter_id__resources_get"];
+        /** List Chapter Content */
+        get: operations["list_chapter_content_chapters__chapter_id__content_get"];
         put?: never;
         post?: never;
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
-        trace?: never;
-    };
-    "/course-resources/{resource_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Delete Resource */
-        delete: operations["delete_resource_course_resources__resource_id__delete"];
-        options?: never;
-        head?: never;
-        /** Update Resource */
-        patch: operations["update_resource_course_resources__resource_id__patch"];
         trace?: never;
     };
     "/assessments/create": {
@@ -2132,6 +2097,11 @@ export interface components {
             /** End Date */
             end_date?: string | null;
         };
+        /** AccessTokenOut */
+        AccessTokenOut: {
+            /** Accesstoken */
+            accessToken: string;
+        };
         /** ActorBrief */
         ActorBrief: {
             /**
@@ -2463,19 +2433,6 @@ export interface components {
          * @enum {string}
          */
         AttemptStatus: "in_progress" | "submitted" | "graded";
-        /**
-         * AuthTokens
-         * @example {
-         *       "accessToken": "jwt",
-         *       "refreshToken": "jwt"
-         *     }
-         */
-        AuthTokens: {
-            /** Accesstoken */
-            accessToken: string;
-            /** Refreshtoken */
-            refreshToken: string;
-        };
         /** AuthorBrief */
         AuthorBrief: {
             /**
@@ -2493,21 +2450,6 @@ export interface components {
         AvatarOut: {
             /** Avatar Url */
             avatar_url: string | null;
-        };
-        /** Body_create_resource_course_resources_create_post */
-        Body_create_resource_course_resources_create_post: {
-            /** Chapter Id */
-            chapter_id?: string | null;
-            /** Title */
-            title: string;
-            /** Description */
-            description?: string | null;
-            /** @default link */
-            kind: components["schemas"]["DocumentKind"];
-            /** Url */
-            url?: string | null;
-            /** File */
-            file?: string | null;
         };
         /** Body_create_resource_with_file_publications_create_resource_file_post */
         Body_create_resource_with_file_publications_create_resource_file_post: {
@@ -2556,6 +2498,16 @@ export interface components {
             current_password: string;
             /** New Password */
             new_password: string;
+        };
+        /** ChapterContentOut */
+        ChapterContentOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Content */
+            content: string;
         };
         /** ChapterCreate */
         ChapterCreate: {
@@ -3091,6 +3043,27 @@ export interface components {
          * @enum {string}
          */
         DocumentKind: "file" | "link";
+        /** DocumentOut */
+        DocumentOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            kind: components["schemas"]["DocumentKind"];
+            /** Url */
+            url: string | null;
+            /** Download Path */
+            download_path: string | null;
+            /** File Name */
+            file_name: string | null;
+            /** File Type */
+            file_type: string | null;
+            /** File Size */
+            file_size: number | null;
+            /** Subject Id */
+            subject_id: string | null;
+        };
         /**
          * DocumentSource
          * @enum {string}
@@ -3197,24 +3170,6 @@ export interface components {
             email: string;
             /** Password */
             password: string;
-        };
-        /**
-         * LogoutRequest
-         * @example {
-         *       "refreshToken": "jwt"
-         *     }
-         */
-        LogoutRequest: {
-            /** Refreshtoken */
-            refreshToken?: string | null;
-        };
-        /** LogoutResponse */
-        LogoutResponse: {
-            /**
-             * Success
-             * @default true
-             */
-            success: boolean;
         };
         /** MemberOut */
         MemberOut: {
@@ -3698,7 +3653,7 @@ export interface components {
              */
             updated_at: string;
             author: components["schemas"]["AuthorBrief"];
-            document: components["schemas"]["app__modules__publication__schema__DocumentOut"] | null;
+            document: components["schemas"]["DocumentOut"] | null;
             /** Likes Count */
             likes_count: number;
             /** Comments Count */
@@ -3824,16 +3779,6 @@ export interface components {
             position?: number | null;
             /** Choices */
             choices?: components["schemas"]["ChoiceCreate"][] | null;
-        };
-        /**
-         * RefreshRequest
-         * @example {
-         *       "refreshToken": "jwt"
-         *     }
-         */
-        RefreshRequest: {
-            /** Refreshtoken */
-            refreshToken?: string | null;
         };
         /** RegisterRequest */
         RegisterRequest: {
@@ -3983,16 +3928,6 @@ export interface components {
             id: string;
             /** Name */
             name: string;
-        };
-        /** ResourceUpdate */
-        ResourceUpdate: {
-            /** Title */
-            title?: string | null;
-            /** Description */
-            description?: string | null;
-            resource_type?: components["schemas"]["DocumentKind"] | null;
-            /** Url */
-            url?: string | null;
         };
         /** SaveAnswers */
         SaveAnswers: {
@@ -4455,73 +4390,10 @@ export interface components {
             /** Code Invitation */
             code_invitation: string;
         };
-        /** DocumentOut */
-        app__modules__course__schema__DocumentOut: {
-            /**
-             * Id
-             * Format: uuid
-             */
-            id: string;
-            /** Chapter Id */
-            chapter_id: string | null;
-            /**
-             * Created By
-             * Format: uuid
-             */
-            created_by: string;
-            /** Title */
-            title: string;
-            /** Description */
-            description: string | null;
-            kind: components["schemas"]["DocumentKind"];
-            /** Url */
-            url: string | null;
-            /** Storage Key */
-            storage_key: string | null;
-            /** File Name */
-            file_name: string | null;
-            /** File Size */
-            file_size: number | null;
-            /** File Type */
-            file_type: string | null;
-            /** Is Official */
-            is_official: boolean;
-            /**
-             * Created At
-             * Format: date-time
-             */
-            created_at: string;
-            /**
-             * Updated At
-             * Format: date-time
-             */
-            updated_at: string;
-        };
         /** SaveOut */
         app__modules__document__schema__SaveOut: {
             /** Saved */
             saved: boolean;
-        };
-        /** DocumentOut */
-        app__modules__publication__schema__DocumentOut: {
-            /**
-             * Id
-             * Format: uuid
-             */
-            id: string;
-            kind: components["schemas"]["DocumentKind"];
-            /** Url */
-            url: string | null;
-            /** Download Path */
-            download_path: string | null;
-            /** File Name */
-            file_name: string | null;
-            /** File Type */
-            file_type: string | null;
-            /** File Size */
-            file_size: number | null;
-            /** Subject Id */
-            subject_id: string | null;
         };
         /** SaveOut */
         app__modules__publication__schema__SaveOut: {
@@ -4600,7 +4472,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AuthTokens"];
+                    "application/json": components["schemas"]["AccessTokenOut"];
                 };
             };
             /** @description Validation Error */
@@ -4633,7 +4505,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AuthTokens"];
+                    "application/json": components["schemas"]["AccessTokenOut"];
                 };
             };
             /** @description Validation Error */
@@ -4654,11 +4526,7 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["RefreshRequest"];
-            };
-        };
+        requestBody?: never;
         responses: {
             /** @description Successful Response */
             200: {
@@ -4666,16 +4534,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AuthTokens"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
+                    "application/json": components["schemas"]["AccessTokenOut"];
                 };
             };
         };
@@ -4687,29 +4546,14 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["LogoutRequest"];
-            };
-        };
+        requestBody?: never;
         responses: {
             /** @description Successful Response */
-            200: {
+            204: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": components["schemas"]["LogoutResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
+                content?: never;
             };
         };
     };
@@ -6839,40 +6683,7 @@ export interface operations {
             };
         };
     };
-    create_resource_course_resources_create_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "multipart/form-data": components["schemas"]["Body_create_resource_course_resources_create_post"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["app__modules__course__schema__DocumentOut"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    list_resources_chapters__chapter_id__resources_get: {
+    list_chapter_content_chapters__chapter_id__content_get: {
         parameters: {
             query?: never;
             header?: never;
@@ -6889,71 +6700,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["app__modules__course__schema__DocumentOut"][];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    delete_resource_course_resources__resource_id__delete: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                resource_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    update_resource_course_resources__resource_id__patch: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                resource_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["ResourceUpdate"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["app__modules__course__schema__DocumentOut"];
+                    "application/json": components["schemas"]["ChapterContentOut"][];
                 };
             };
             /** @description Validation Error */
