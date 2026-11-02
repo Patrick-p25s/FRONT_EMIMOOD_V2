@@ -5,5 +5,4 @@ export * from "./opportunities";
 export * from "./posts";
 export * from "./quizzes";
 export * from "./resources";
-export * from "./seo";
 export * from "./consoles";

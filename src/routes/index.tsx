@@ -3,7 +3,7 @@ import { BookOpen, MessagesSquare, ClipboardCheck, Building2, ArrowRight } from 
 import campus from "@/assets/campus-community.jpg";
 import { Button } from "@/components/ui/button";
 import { Brand } from "@/components/emimood/atoms/Brand";
-import { pageHead } from "@/components/emimood/data";
+import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/")({
   head: () =>

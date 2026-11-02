@@ -4,7 +4,7 @@ import { NotFoundView } from "@/components/emimood/molecules/NotFoundView";
 import { AdminLayout } from "@/features/admin/layout/AdminLayout";
 import { validateAdminSearch } from "@/features/admin/lib/search";
 import { canAccess, useAuth } from "@/lib/auth";
-import { pageHead } from "@/components/emimood/data";
+import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/admin")({
   head: () => pageHead("Administration", "Gestion global Emimood"),

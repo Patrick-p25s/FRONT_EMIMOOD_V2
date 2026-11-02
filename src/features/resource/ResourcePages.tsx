@@ -1,8 +1,6 @@
 import { useMemo, useState } from "react";
-import { Link } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import {
-  Bookmark,
   File,
   FileSpreadsheet,
   FileText,
@@ -18,7 +16,7 @@ import {
 import { Heading } from "@/components/emimood/molecules/Heading";
 import { ErrorState } from "@/components/emimood/molecules/states";
 import { ConfirmDialog } from "@/components/emimood/organisms/dialogs";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -51,7 +49,6 @@ import {
   PublicationDialog,
   PublicationDialogs,
 } from "../publication/components/PublicationDialogs";
-import { formatBytes } from "@/lib/files";
 import { ResourceRow } from "./components/ResourceRows";
 import { ResourcePreviewDialog } from "./components/ResourcePreviewDialog";
 import { AddDocumentDialog } from "./components/AddDocumentDialog";
@@ -84,14 +81,6 @@ const CONTEXT: Record<string, string> = {
   publication: "Dans une publication",
   subject: "Dans une matière",
   university: "Partagé avec l’université",
-};
-
-const hostOf = (url: string | null) => {
-  try {
-    return url ? new URL(url).hostname : "";
-  } catch {
-    return "";
-  }
 };
 
 type ResourcesPageProps = {

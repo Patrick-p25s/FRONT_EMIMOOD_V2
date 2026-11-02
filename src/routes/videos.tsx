@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { pageHead } from "@/components/emimood/data";
+import { pageHead } from "@/lib/seo";
 import { StudentVideosPage } from "@/features/etudiant/pages/StudentVideosPage";
 export const Route = createFileRoute("/videos")({
   head: () =>

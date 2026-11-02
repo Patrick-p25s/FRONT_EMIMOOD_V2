@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { RoleConsolePage } from "@/components/emimood/templates";
 import { delegateConsole } from "@/components/emimood/data";
-import { pageHead } from "@/components/emimood/data";
+import { pageHead } from "@/lib/seo";
 export const Route = createFileRoute("/delegue")({
   head: () =>
     pageHead(

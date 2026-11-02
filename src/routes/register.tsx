@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { Brand } from "@/components/emimood/atoms/Brand";
 import { FormError } from "@/components/emimood/molecules/form";
-import { pageHead } from "@/components/emimood/data";
+import { pageHead } from "@/lib/seo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { registerSchema, type RegisterFormValues } from "@/features/auth/schema";

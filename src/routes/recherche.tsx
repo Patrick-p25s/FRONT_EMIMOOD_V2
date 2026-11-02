@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { pageHead } from "@/components/emimood/data";
+import { pageHead } from "@/lib/seo";
 import { SearchPage } from "@/features/search/SearchPage";
 export const Route = createFileRoute("/recherche")({
   validateSearch: (search: Record<string, unknown>) => ({
