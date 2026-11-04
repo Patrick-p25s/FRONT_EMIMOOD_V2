@@ -79,19 +79,23 @@ export function UniversitiesPage() {
       className: "w-16 text-right",
       cell: (university) => (
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
             <Button variant="ghost" size="icon" aria-label={`Actions pour ${university.name}`}>
               <MoreHorizontal className="size-4" aria-hidden />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onSelect={() => setTarget({ kind: "edit", university })}>
+            <DropdownMenuItem
+              onSelect={() => setTarget({ kind: "edit", university })}
+              onClick={(e) => e.stopPropagation()}
+            >
               Modifier
             </DropdownMenuItem>
             {TRANSITIONS[university.statut].map((transition) => (
               <DropdownMenuItem
                 key={transition.statut}
                 onSelect={() => setChange({ university, ...transition })}
+                onClick={(e) => e.stopPropagation()}
               >
                 {transition.label}
               </DropdownMenuItem>

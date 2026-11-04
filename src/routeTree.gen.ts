@@ -14,7 +14,6 @@ import { Route as AccueilRouteImport } from './routes/accueil'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as ConnexionRouteImport } from './routes/connexion'
 import { Route as CoursRouteImport } from './routes/cours'
-import { Route as Cours1RouteImport } from './routes/cours1'
 import { Route as EnseignantRouteImport } from './routes/enseignant'
 import { Route as EvaluationsRouteImport } from './routes/evaluations'
 import { Route as MessagesRouteImport } from './routes/messages'
@@ -82,11 +81,6 @@ const ConnexionRoute = ConnexionRouteImport.update({
 const CoursRoute = CoursRouteImport.update({
   id: '/cours',
   path: '/cours',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const Cours1Route = Cours1RouteImport.update({
-  id: '/cours1',
-  path: '/cours1',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EnseignantRoute = EnseignantRouteImport.update({
@@ -321,7 +315,6 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/connexion': typeof ConnexionRoute
   '/cours': typeof CoursRouteWithChildren
-  '/cours1': typeof Cours1Route
   '/enseignant': typeof EnseignantRouteWithChildren
   '/evaluations': typeof EvaluationsRouteWithChildren
   '/messages': typeof MessagesRouteWithChildren
@@ -370,7 +363,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/accueil': typeof AccueilRoute
   '/connexion': typeof ConnexionRoute
-  '/cours1': typeof Cours1Route
   '/notifications': typeof NotificationsRoute
   '/opportunites': typeof OpportunitesRoute
   '/parametres': typeof ParametresRoute
@@ -414,7 +406,6 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/connexion': typeof ConnexionRoute
   '/cours': typeof CoursRouteWithChildren
-  '/cours1': typeof Cours1Route
   '/enseignant': typeof EnseignantRouteWithChildren
   '/evaluations': typeof EvaluationsRouteWithChildren
   '/messages': typeof MessagesRouteWithChildren
@@ -467,7 +458,6 @@ export interface FileRouteTypes {
     | '/admin'
     | '/connexion'
     | '/cours'
-    | '/cours1'
     | '/enseignant'
     | '/evaluations'
     | '/messages'
@@ -516,7 +506,6 @@ export interface FileRouteTypes {
     | '/'
     | '/accueil'
     | '/connexion'
-    | '/cours1'
     | '/notifications'
     | '/opportunites'
     | '/parametres'
@@ -559,7 +548,6 @@ export interface FileRouteTypes {
     | '/admin'
     | '/connexion'
     | '/cours'
-    | '/cours1'
     | '/enseignant'
     | '/evaluations'
     | '/messages'
@@ -611,7 +599,6 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   ConnexionRoute: typeof ConnexionRoute
   CoursRoute: typeof CoursRouteWithChildren
-  Cours1Route: typeof Cours1Route
   EnseignantRoute: typeof EnseignantRouteWithChildren
   EvaluationsRoute: typeof EvaluationsRouteWithChildren
   MessagesRoute: typeof MessagesRouteWithChildren
@@ -662,13 +649,6 @@ declare module '@tanstack/react-router' {
       path: '/cours'
       fullPath: '/cours'
       preLoaderRoute: typeof CoursRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cours1': {
-      id: '/cours1'
-      path: '/cours1'
-      fullPath: '/cours1'
-      preLoaderRoute: typeof Cours1RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/enseignant': {
@@ -1136,7 +1116,6 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
   ConnexionRoute: ConnexionRoute,
   CoursRoute: CoursRouteWithChildren,
-  Cours1Route: Cours1Route,
   EnseignantRoute: EnseignantRouteWithChildren,
   EvaluationsRoute: EvaluationsRouteWithChildren,
   MessagesRoute: MessagesRouteWithChildren,

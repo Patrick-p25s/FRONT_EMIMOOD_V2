@@ -1,7 +1,0 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { CoursesPage } from "@/components/emimood/pages";
-import { pageHead } from "@/lib/seo";
-export const Route = createFileRoute("/cours1")({
-  head: () => pageHead("Mes cours", "Les cours et chapitres de votre semestre à l’EMIT."),
-  component: CoursesPage,
-});

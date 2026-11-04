@@ -19,7 +19,7 @@ export function ChapterContent({ chapterId }: { chapterId: string }) {
   }
 
   const MARKDOWN_COMPONENTS = {
-    a: ({ href, children }) => {
+    a: ({ href, children }: { href: string; children: React.ReactNode }) => {
       const link = href ? toSafeLink(href) : null;
       return link ? (
         <a href={link.href} target="_blank" rel="noopener noreferrer">
@@ -29,7 +29,7 @@ export function ChapterContent({ chapterId }: { chapterId: string }) {
         <span>{children}</span>
       );
     },
-    img: ({ src, alt }) => {
+    img: ({ src, alt }: { src: unknown | string; alt: string }) => {
       const link = typeof src === "string" ? toSafeLink(src) : null;
       return link?.href.startsWith("https:") ? (
         <img

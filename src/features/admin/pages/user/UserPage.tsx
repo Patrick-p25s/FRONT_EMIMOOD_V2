@@ -49,8 +49,9 @@ export function UsersPage({ role, title, description, singular }: UsersPageProps
     role,
   });
 
-  const openProfile = (user: AdminUser) =>
+  const openProfile = (user: AdminUser) => {
     void navigate({ to: "/membres/$userId", params: { userId: user.id } });
+  };
 
   const columns: Column<AdminUser>[] = [
     {
@@ -72,7 +73,7 @@ export function UsersPage({ role, title, description, singular }: UsersPageProps
       className: "w-16 text-right",
       cell: (user) => (
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
             <Button variant="ghost" size="icon" aria-label={`Actions pour ${fullName(user)}`}>
               <MoreHorizontal className="size-4" aria-hidden />
             </Button>
@@ -85,6 +86,7 @@ export function UsersPage({ role, title, description, singular }: UsersPageProps
             </DropdownMenuItem>
             {TRANSITIONS[user.statut].map((transition) => (
               <DropdownMenuItem
+                onClick={(e) => e.stopPropagation()}
                 key={transition.statut}
                 onSelect={() => setChange({ user, ...transition })}
               >
