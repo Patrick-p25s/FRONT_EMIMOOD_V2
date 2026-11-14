@@ -36,6 +36,7 @@ import { Route as CoursIndexRouteImport } from './routes/cours.index'
 import { Route as CoursClassSubjectIdRouteImport } from './routes/cours.$classSubjectId'
 import { Route as EnseignantIndexRouteImport } from './routes/enseignant.index'
 import { Route as EnseignantAnnoncesRouteImport } from './routes/enseignant.annonces'
+import { Route as EnseignantEtudiantRouteImport } from './routes/enseignant.etudiant'
 import { Route as EnseignantEvaluationsRouteImport } from './routes/enseignant.evaluations'
 import { Route as EnseignantMatieresRouteImport } from './routes/enseignant.matieres'
 import { Route as EnseignantMessagesRouteImport } from './routes/enseignant.messages'
@@ -193,6 +194,11 @@ const EnseignantAnnoncesRoute = EnseignantAnnoncesRouteImport.update({
   path: '/annonces',
   getParentRoute: () => EnseignantRoute,
 } as any)
+const EnseignantEtudiantRoute = EnseignantEtudiantRouteImport.update({
+  id: '/etudiant',
+  path: '/etudiant',
+  getParentRoute: () => EnseignantRoute,
+} as any)
 const EnseignantEvaluationsRoute = EnseignantEvaluationsRouteImport.update({
   id: '/evaluations',
   path: '/evaluations',
@@ -334,6 +340,7 @@ export interface FileRoutesByFullPath {
   '/admin/users': typeof AdminUsersRoute
   '/cours/$classSubjectId': typeof CoursClassSubjectIdRouteWithChildren
   '/enseignant/annonces': typeof EnseignantAnnoncesRoute
+  '/enseignant/etudiant': typeof EnseignantEtudiantRoute
   '/enseignant/evaluations': typeof EnseignantEvaluationsRouteWithChildren
   '/enseignant/matieres': typeof EnseignantMatieresRouteWithChildren
   '/enseignant/messages': typeof EnseignantMessagesRouteWithChildren
@@ -377,6 +384,7 @@ export interface FileRoutesByTo {
   '/admin/subjects': typeof AdminSubjectsRoute
   '/admin/users': typeof AdminUsersRoute
   '/enseignant/annonces': typeof EnseignantAnnoncesRoute
+  '/enseignant/etudiant': typeof EnseignantEtudiantRoute
   '/membres/$userId': typeof MembresUserIdRoute
   '/messages/$conversationId': typeof MessagesConversationIdRoute
   '/admin': typeof AdminIndexRoute
@@ -425,6 +433,7 @@ export interface FileRoutesById {
   '/admin/users': typeof AdminUsersRoute
   '/cours/$classSubjectId': typeof CoursClassSubjectIdRouteWithChildren
   '/enseignant/annonces': typeof EnseignantAnnoncesRoute
+  '/enseignant/etudiant': typeof EnseignantEtudiantRoute
   '/enseignant/evaluations': typeof EnseignantEvaluationsRouteWithChildren
   '/enseignant/matieres': typeof EnseignantMatieresRouteWithChildren
   '/enseignant/messages': typeof EnseignantMessagesRouteWithChildren
@@ -477,6 +486,7 @@ export interface FileRouteTypes {
     | '/admin/users'
     | '/cours/$classSubjectId'
     | '/enseignant/annonces'
+    | '/enseignant/etudiant'
     | '/enseignant/evaluations'
     | '/enseignant/matieres'
     | '/enseignant/messages'
@@ -520,6 +530,7 @@ export interface FileRouteTypes {
     | '/admin/subjects'
     | '/admin/users'
     | '/enseignant/annonces'
+    | '/enseignant/etudiant'
     | '/membres/$userId'
     | '/messages/$conversationId'
     | '/admin'
@@ -567,6 +578,7 @@ export interface FileRouteTypes {
     | '/admin/users'
     | '/cours/$classSubjectId'
     | '/enseignant/annonces'
+    | '/enseignant/etudiant'
     | '/enseignant/evaluations'
     | '/enseignant/matieres'
     | '/enseignant/messages'
@@ -803,6 +815,13 @@ declare module '@tanstack/react-router' {
       path: '/annonces'
       fullPath: '/enseignant/annonces'
       preLoaderRoute: typeof EnseignantAnnoncesRouteImport
+      parentRoute: typeof EnseignantRoute
+    }
+    '/enseignant/etudiant': {
+      id: '/enseignant/etudiant'
+      path: '/etudiant'
+      fullPath: '/enseignant/etudiant'
+      preLoaderRoute: typeof EnseignantEtudiantRouteImport
       parentRoute: typeof EnseignantRoute
     }
     '/enseignant/evaluations': {
@@ -1058,6 +1077,7 @@ const EnseignantMessagesRouteWithChildren =
 
 interface EnseignantRouteChildren {
   EnseignantAnnoncesRoute: typeof EnseignantAnnoncesRoute
+  EnseignantEtudiantRoute: typeof EnseignantEtudiantRoute
   EnseignantEvaluationsRoute: typeof EnseignantEvaluationsRouteWithChildren
   EnseignantMatieresRoute: typeof EnseignantMatieresRouteWithChildren
   EnseignantMessagesRoute: typeof EnseignantMessagesRouteWithChildren
@@ -1068,6 +1088,7 @@ interface EnseignantRouteChildren {
 
 const EnseignantRouteChildren: EnseignantRouteChildren = {
   EnseignantAnnoncesRoute: EnseignantAnnoncesRoute,
+  EnseignantEtudiantRoute: EnseignantEtudiantRoute,
   EnseignantEvaluationsRoute: EnseignantEvaluationsRouteWithChildren,
   EnseignantMatieresRoute: EnseignantMatieresRouteWithChildren,
   EnseignantMessagesRoute: EnseignantMessagesRouteWithChildren,

@@ -1,4 +1,3 @@
-// features/enseignant/api/http.ts : petits raccourcis au-dessus du client commun
 import { api } from "@/lib/api/client";
 
 export const post = <T>(path: string, body?: unknown) =>

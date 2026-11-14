@@ -4,6 +4,7 @@ import type { Chapter } from "../../api/types";
 import { ChapterSupportsPanel } from "@/features/resource/components/ChapterSupportsPanel";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useChapterResources } from "@/features/course-resources/hooks/useCourseResources";
+import { ChapterContentsPanel } from "@/features/chapter-content/components/ChapterContentsPanel";
 
 type ChapterCardProps = {
   chapter: Chapter;
@@ -85,12 +86,9 @@ export function ChapterCard({ chapter, index, total, onMove, onEdit, onDelete }:
         </div>
       )}
 
-      <div className="mt-3 grid gap-1.5 pl-11">
-        {resources.isLoading ? (
-          <Skeleton className="h-8 w-full" />
-        ) : (
-          <ChapterSupportsPanel chapterId={chapter.id} />
-        )}
+      <div className="mt-3 grid gap-4 pl-11">
+        <ChapterContentsPanel chapterId={chapter.id} />
+        <ChapterSupportsPanel chapterId={chapter.id} />
       </div>
     </li>
   );

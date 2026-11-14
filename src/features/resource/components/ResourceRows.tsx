@@ -48,8 +48,8 @@ export function ResourceRow({ doc, onOpen, onToggleSave, menu }: ResourceRowProp
             <Icon />
           </span>
           <div className="min-w-0 flex-1">
-            <h2 className="line-clamp-2 break-words sm:line-clamp-1">{doc.title}</h2>
-            <p className="small break-words">
+            <h2 className="line-clamp-2 wrap-break-word sm:line-clamp-1">{doc.title}</h2>
+            <p className="small wrap-break-word">
               {doc.subject?.name}
               {doc.owner && (
                 <>

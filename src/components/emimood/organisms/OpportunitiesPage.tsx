@@ -1,25 +1,11 @@
-import { useState } from "react";
-import { ArrowUpRight, Bookmark, CalendarDays, MapPin } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Heading } from "@/components/emimood/molecules/Heading";
-import { PageHeader } from "../molecules/PageHeader";
 
 export function OpportunitiesPage() {
-  return (
-    <PageHeader title="Opportunités" description="Votre prochain défi commence peut-être ici." />
-  );
+  return <Heading title="Opportunités" subtitle="Votre prochain défi commence peut-être ici." />;
   // const [selected, setSelected] = useState<null>(null);
   // const [saved, setSaved] = useState<number[]>([]);
   // return (
   //   <div className="page">
-  //     <Heading title="Opportunités" subtitle="Votre prochain défi commence peut-être ici." />
   //     <div className="content-grid">
   //       {opportunities?.map((o) => (
   //         <article className="item-card" key={o.id}>
